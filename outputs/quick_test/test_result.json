@@ -1,0 +1,12 @@
+{
+  "image_path": "data\\quick_test\\images\\val\\doc_val_00000.jpg",
+  "image_size": {
+    "width": 640,
+    "height": 480
+  },
+  "num_detections": 0,
+  "detections": [],
+  "lines": [],
+  "aggregated_text": "",
+  "processing_time_ms": 249.97
+}

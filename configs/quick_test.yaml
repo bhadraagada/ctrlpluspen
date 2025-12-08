@@ -1,0 +1,26 @@
+# Quick Test Configuration
+# For pipeline validation with minimal resources
+
+# Model
+model: yolov8n.pt
+pretrained: true
+
+# Minimal training
+epochs: 5
+patience: 3
+batch: 2
+imgsz: 640
+device: 0
+
+# Memory Optimization
+amp: true
+workers: 2
+cache: false
+
+# Save settings
+project: models/detector
+name: quick_test
+exist_ok: true
+save: true
+plots: true
+val: true

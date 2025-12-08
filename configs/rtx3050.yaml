@@ -1,0 +1,72 @@
+# RTX 3050 Optimized Configuration (8GB VRAM)
+# Handwriting Detection Training Config
+
+# Model
+model: yolov8n.pt # Nano model for low VRAM (use yolov8s.pt if stable)
+pretrained: true
+
+# Training
+epochs: 50
+patience: 10 # Early stopping
+batch: 4 # Reduce to 2 if OOM
+imgsz: 640 # Reduce to 512 if OOM
+device: 0 # GPU device
+
+# Memory Optimization (CRITICAL for RTX 3050)
+amp: true # Mixed precision - saves ~50% VRAM
+workers: 4 # DataLoader workers
+cache: false # Don't cache images in RAM
+rect: false # Rectangular training
+
+# Gradient Accumulation (simulate larger batch)
+# Effective batch = batch * accumulate = 4 * 4 = 16
+accumulate: 4
+
+# Optimizer
+optimizer: AdamW
+lr0: 0.001 # Initial learning rate
+lrf: 0.01 # Final learning rate factor
+momentum: 0.937
+weight_decay: 0.0005
+warmup_epochs: 3
+warmup_momentum: 0.8
+warmup_bias_lr: 0.1
+
+# Loss weights
+box: 7.5 # Box loss gain
+cls: 0.5 # Class loss gain
+dfl: 1.5 # Distribution focal loss gain
+
+# Augmentation
+hsv_h: 0.015 # Hue augmentation
+hsv_s: 0.7 # Saturation augmentation
+hsv_v: 0.4 # Value augmentation
+degrees: 5.0 # Rotation (+/- degrees)
+translate: 0.1 # Translation (+/- fraction)
+scale: 0.3 # Scale (+/- gain)
+shear: 2.0 # Shear (+/- degrees)
+perspective: 0.0001 # Perspective (+/- fraction)
+flipud: 0.0 # Vertical flip (disabled for text)
+fliplr: 0.0 # Horizontal flip (disabled for text)
+mosaic: 0.5 # Mosaic augmentation
+mixup: 0.1 # Mixup augmentation
+copy_paste: 0.0 # Copy-paste augmentation
+
+# Saving
+project: models/detector
+name: handwriting_v1
+exist_ok: true
+save: true
+save_period: 5 # Save checkpoint every N epochs
+plots: true
+
+# Validation
+val: true
+split: val
+save_json: false
+save_hybrid: false
+# Fallback settings (uncomment if OOM persists)
+# batch: 2
+# imgsz: 512
+# workers: 2
+# accumulate: 8

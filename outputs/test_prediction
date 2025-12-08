@@ -1,0 +1,74 @@
+{
+  "image_path": "data\\yolo_format\\images\\val\\doc_val_00000.jpg",
+  "image_size": {
+    "width": 640,
+    "height": 480
+  },
+  "num_detections": 3,
+  "detections": [
+    {
+      "id": 0,
+      "box": [
+        29,
+        90,
+        462,
+        155
+      ],
+      "confidence": 0.9184,
+      "ocr_text": "HEFOCPODO",
+      "ocr_confidence": 0.9,
+      "line_id": 1
+    },
+    {
+      "id": 1,
+      "box": [
+        42,
+        159,
+        467,
+        224
+      ],
+      "confidence": 0.9143,
+      "ocr_text": "Y )' 8 yA.E NO.",
+      "ocr_confidence": 0.9,
+      "line_id": 2
+    },
+    {
+      "id": 2,
+      "box": [
+        23,
+        21,
+        407,
+        85
+      ],
+      "confidence": 0.9116,
+      "ocr_text": "soered p. 5",
+      "ocr_confidence": 0.9,
+      "line_id": 0
+    }
+  ],
+  "lines": [
+    {
+      "line_id": 0,
+      "text": "soered p. 5",
+      "box_ids": [
+        2
+      ]
+    },
+    {
+      "line_id": 1,
+      "text": "HEFOCPODO",
+      "box_ids": [
+        0
+      ]
+    },
+    {
+      "line_id": 2,
+      "text": "Y )' 8 yA.E NO.",
+      "box_ids": [
+        1
+      ]
+    }
+  ],
+  "aggregated_text": "soered p. 5\nHEFOCPODO\nY )' 8 yA.E NO.",
+  "processing_time_ms": 1826.68
+}

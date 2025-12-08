@@ -1,0 +1,71 @@
+[project]
+authors = [{name = "Handwriting OCR Project"}]
+description = "Handwriting Detection & OCR Pipeline - RTX 3050 Optimized"
+keywords = ["handwriting", "ocr", "yolo", "trocr", "deep-learning"]
+license = {text = "MIT"}
+name = "handwriting-ocr"
+readme = "README.md"
+requires-python = ">=3.10"
+version = "1.0.0"
+
+dependencies = [
+  # Core ML/DL (PyTorch installed separately with CUDA)
+  "ultralytics>=8.0.200",
+  "transformers>=4.35.0",
+  "accelerate>=0.24.0", # OCR alternatives
+  "easyocr>=1.7.1", # Image processing
+  "opencv-python>=4.8.1.78",
+  "Pillow>=10.1.0",
+  "albumentations>=1.3.1", # Data & utilities
+  "numpy>=1.24.3",
+  "pandas>=2.1.1",
+  "scipy>=1.11.3",
+  "scikit-learn>=1.3.2", # Evaluation metrics
+  "editdistance>=0.6.2",
+  "jiwer>=3.0.3", # Visualization
+  "matplotlib>=3.8.0",
+  "seaborn>=0.13.0", # Config & CLI
+  "pyyaml>=6.0.1",
+  "click>=8.1.7",
+  "tqdm>=4.66.1",
+  "rich>=13.6.0", # Logging
+  "tensorboard>=2.15.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=7.4.0",
+  "black>=23.9.0",
+  "ruff>=0.1.0",
+]
+
+[project.scripts]
+hw-check = "scripts.check_environment:main"
+hw-convert = "scripts.convert_to_yolo:main"
+hw-eval = "scripts.evaluate:main"
+hw-predict = "scripts.predict:main"
+hw-train = "scripts.train_detector:main"
+
+[tool.uv]
+dev-dependencies = [
+  "pytest>=7.4.0",
+  "black>=23.9.0",
+  "ruff>=0.1.0",
+]
+
+[tool.uv.sources]
+# PyTorch with CUDA 11.8 - install manually first:
+# uv pip install torch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0 --index-url https://download.pytorch.org/whl/cu118
+
+[tool.black]
+line-length = 100
+target-version = ["py310"]
+
+[tool.ruff]
+ignore = ["E501"]
+line-length = 100
+select = ["E", "F", "W", "I"]
+
+[build-system]
+build-backend = "hatchling.build"
+requires = ["hatchling"]
