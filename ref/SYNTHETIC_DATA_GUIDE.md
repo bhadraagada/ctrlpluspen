@@ -12,6 +12,7 @@ conda run -n ref_env python synthesize_training_data.py --num_samples 2000 --num
 ```
 
 This will create synthetic handwriting samples in `data/processed/` with the following files:
+
 - `x.npy` - Stroke sequences (2000, 1200, 3)
 - `x_len.npy` - Length of each stroke sequence
 - `c.npy` - Encoded text labels (2000, 75)
@@ -33,6 +34,7 @@ conda run -n ref_env python train_model.py --num_steps 50000
 ```
 
 Training options:
+
 - `--data_dir`: Path to training data (default: `data/processed`)
 - `--checkpoint_dir`: Where to save model checkpoints (default: `checkpoints`)
 - `--log_dir`: Where to save training logs (default: `logs`)
@@ -54,22 +56,26 @@ conda run -n ref_env python demo.py
 The model expects the following numpy arrays:
 
 ### Stroke Data (`x.npy`)
+
 - Shape: `(N, MAX_STROKE_LEN, 3)` where N is number of samples
 - Each stroke point has: `[x_offset, y_offset, end_of_stroke]`
 - `MAX_STROKE_LEN = 1200` points maximum
 - Offsets are normalized to median unit norm
 
 ### Character Data (`c.npy`)
+
 - Shape: `(N, MAX_CHAR_LEN)` where N is number of samples
 - Each character is encoded as an integer using the alphabet
 - `MAX_CHAR_LEN = 75` characters maximum
 - Alphabet includes: space, punctuation, digits, A-Z, a-z
 
 ### Lengths
+
 - `x_len.npy`: Actual length of each stroke sequence (before padding)
 - `c_len.npy`: Actual length of each text sequence (before padding)
 
 ### Writer IDs (`w_id.npy`)
+
 - Integer IDs for different "writers" to learn style variations
 - Helps the model learn diverse handwriting styles
 
@@ -78,11 +84,13 @@ The model expects the following numpy arrays:
 The `synthesize_training_data.py` script:
 
 1. **Generates stroke patterns** for each character based on:
+
    - Character type (uppercase, lowercase, digit, punctuation)
    - Writer ID (for style variation)
    - Random variations (skew, stretch, noise)
 
 2. **Applies transformations** to make strokes realistic:
+
    - Skewing (-15° to +15°)
    - Stretching (0.8x to 1.2x in both axes)
    - Gaussian noise
@@ -140,6 +148,7 @@ conda run -n ref_env python synthesize_training_data.py \
 ## Model Architecture
 
 The RNN model uses:
+
 - **LSTM cells** with attention mechanism
 - **Mixture Density Network** for stroke generation
 - **Attention over character sequence** to align strokes with text
@@ -149,29 +158,35 @@ The RNN model uses:
 ## Output Files
 
 ### During Training
+
 - `checkpoints/checkpoint` - Checkpoint metadata
 - `checkpoints/model-XXXX.{data,index,meta}` - Model weights
 - `logs/` - Training logs with loss values
 
 ### After Generation
+
 - Generated handwriting images
 - Style files for conditioning
 
 ## Troubleshooting
 
 ### "Data files not found"
+
 Run `synthesize_training_data.py` first to generate data.
 
 ### "Model diverged / NaN loss"
+
 - Reduce learning rate: `--learning_rate 0.00005`
 - Reduce batch size: `--batch_size 16`
 - Generate cleaner synthetic data
 
 ### "Out of memory"
+
 - Reduce batch size: `--batch_size 16`
 - Reduce LSTM size: `--lstm_size 200`
 
 ### "Poor quality handwriting"
+
 - Train longer: `--num_steps 100000`
 - Generate more diverse data: `--num_samples 5000 --num_writers 200`
 - Improve synthetic stroke patterns in `synthesize_training_data.py`
