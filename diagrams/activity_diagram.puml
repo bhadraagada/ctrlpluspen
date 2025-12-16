@@ -1,0 +1,41 @@
+@startuml
+
+skinparam monochrome true
+skinparam shadowing false
+
+|DataReader|
+start
+:Load training data;
+:Split train/val;
+
+|Model|
+:Initialize rnn model;
+:Build TF graph;
+:Create session;
+
+|Training Loop|
+repeat
+  |DataReader|
+  :Generate batch;
+  
+  |Model|
+  :Forward pass;
+  :Compute NLL loss;
+  :Backward pass;
+  :Update weights;
+  
+  if (step % log_interval?) then (yes)
+    :Log metrics;
+  endif
+  
+  if (step % checkpoint_interval?) then (yes)
+    :Save checkpoint;
+  endif
+  
+repeat while (step < max_steps?)
+
+|Model|
+:Save final model;
+stop
+
+@enduml

@@ -1,0 +1,35 @@
+@startuml
+
+skinparam monochrome true
+skinparam shadowing false
+
+object ":rnn" as model {
+    lstm_size = 400
+    batch_size = 32
+}
+
+object ":DataReader" as reader {
+    train_df
+    val_df
+}
+
+object ":tf.Session" as session {
+    graph
+}
+
+object ":LSTMAttentionCell" as cell {
+    lstm_size = 400
+    attention_components = 10
+}
+
+object "batch" as batch {
+    x[32, 1200, 3]
+    c[32, 75]
+}
+
+model --> reader
+model --> session
+session --> cell
+reader ..> batch
+
+@enduml

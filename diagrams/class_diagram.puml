@@ -1,0 +1,51 @@
+@startuml
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+
+abstract class TFBaseModel {
+    - reader
+    - session
+    - graph
+    __
+    + {abstract} calculate_loss()
+    + fit()
+}
+
+class rnn {
+    - lstm_size
+    - output_mixture_components
+    __
+    + calculate_loss()
+    + NLL()
+}
+
+class DataFrame {
+    - data
+    - columns
+    __
+    + batch_generator()
+    + train_test_split()
+}
+
+class DataReader {
+    - train_df
+    - val_df
+    __
+    + train_batch_generator()
+}
+
+class LSTMAttentionCell {
+    - lstm_size
+    - attention_values
+    __
+    + __call__()
+}
+
+TFBaseModel <|-- rnn
+rnn --> DataReader
+rnn --> LSTMAttentionCell
+DataReader --> DataFrame
+
+@enduml
