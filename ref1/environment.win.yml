@@ -1,0 +1,33 @@
+name: copycat-win
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  # Python 3.6 is required by the pinned numpy/matplotlib + legacy torch stack.
+  - python=3.6
+
+  # Tooling (last pip that supports Python 3.6)
+  - pip=21.3.1
+
+  # Core deps from ref1/requirements.txt
+  - numpy=1.17.4
+  - flask=1.1.2
+  - matplotlib=2.2.2
+
+  # Web-app deps used by ref1/app/* (not listed in requirements.txt)
+  - python-dotenv=0.10.3
+  - flask-wtf=0.14.2
+  - flask-sqlalchemy=2.4.0
+  - flask-migrate=2.4.0
+  - sqlalchemy=1.3.6
+  - alembic=1.0.11
+  - wtforms=2.2.1
+
+  # Image / plotting helpers
+  - pillow=6.1.0
+
+  # Torch stack: conda no longer serves pytorch=1.1.0 on all channels,
+  # so install a PyPI-available torch stack that still supports Python 3.6.
+  - pip:
+      - torch==1.10.2
+      - torchvision==0.11.3

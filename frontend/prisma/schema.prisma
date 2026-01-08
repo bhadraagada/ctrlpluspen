@@ -1,0 +1,257 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+    output   = "../generated/prisma"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+// Necessary for Next auth
+model Account {
+    id                       String  @id @default(cuid())
+    userId                   String
+    type                     String
+    provider                 String
+    providerAccountId        String
+    refresh_token            String? @db.Text
+    access_token             String? @db.Text
+    expires_at               Int?
+    token_type               String?
+    scope                    String?
+    id_token                 String? @db.Text
+    session_state            String?
+    user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    refresh_token_expires_in Int?
+
+    @@unique([provider, providerAccountId])
+}
+
+model Session {
+    id           String   @id @default(cuid())
+    sessionToken String   @unique
+    userId       String
+    expires      DateTime
+    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+    id            String    @id @default(cuid())
+    name          String?
+    email         String?   @unique
+    emailVerified DateTime?
+    image         String?
+    
+    // Password for credentials auth (hashed)
+    password      String?
+    
+    // Credit system
+    credits       Int       @default(10) // Free credits on signup
+    
+    // Relations
+    accounts         Account[]
+    sessions         Session[]
+    usageHistory     Usage[]
+    synthesisHistory SynthesisUsage[]
+    savedGenerations SavedGeneration[]
+    batchJobs        BatchJob[]
+    payments         Payment[]
+    
+    createdAt     DateTime  @default(now())
+    updatedAt     DateTime  @updatedAt
+}
+
+model VerificationToken {
+    identifier String
+    token      String   @unique
+    expires    DateTime
+
+    @@unique([identifier, token])
+}
+
+// OCR Usage tracking
+model Usage {
+    id              String   @id @default(cuid())
+    userId          String
+    user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    
+    // OCR details
+    creditsUsed     Int      @default(1)
+    imageSize       Int?     // bytes
+    regionsDetected Int?
+    charactersRecognized Int?
+    processingTimeMs Float?
+    
+    // Result summary (don't store full text for privacy)
+    success         Boolean  @default(true)
+    errorMessage    String?
+    
+    createdAt       DateTime @default(now())
+    
+    @@index([userId])
+    @@index([createdAt])
+}
+
+// Synthesis Usage tracking
+model SynthesisUsage {
+    id              String   @id @default(cuid())
+    userId          String
+    user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    
+    // Synthesis details
+    creditsUsed     Int      @default(1)
+    linesCount      Int
+    charactersCount Int
+    style           Int
+    bias            Float
+    processingTimeMs Float?
+    
+    // Result tracking
+    success         Boolean  @default(true)
+    errorMessage    String?
+    
+    createdAt       DateTime @default(now())
+    
+    @@index([userId])
+    @@index([createdAt])
+}
+
+// Payment/Credit purchase tracking
+model Payment {
+    id              String        @id @default(cuid())
+    userId          String
+    user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+    
+    // Payment details
+    amount          Float         // Amount in dollars
+    credits         Int           // Credits purchased
+    status          PaymentStatus @default(PENDING)
+    
+    // Payment provider details (for Stripe, etc.)
+    stripePaymentId String?       @unique
+    stripeSessionId String?       @unique
+    
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @default(now()) @updatedAt
+    
+    @@index([userId])
+    @@index([status])
+}
+
+enum PaymentStatus {
+    PENDING
+    COMPLETED
+    FAILED
+    REFUNDED
+}
+
+// Credit packages available for purchase
+model CreditPackage {
+    id          String   @id @default(cuid())
+    name        String
+    credits     Int
+    price       Float    // Price in dollars
+    description String?
+    popular     Boolean  @default(false)
+    active      Boolean  @default(true)
+    
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+}
+
+// Saved handwriting generations (stored in UploadThing)
+model SavedGeneration {
+    id              String   @id @default(cuid())
+    userId          String
+    user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    
+    // Generation status (for batch processing)
+    status          GenerationStatus @default(COMPLETED)
+    
+    // Generation details
+    text            String   @db.Text
+    style           Int
+    bias            Float
+    strokeColor     String   @default("black")
+    strokeWidth     Int      @default(2)
+    
+    // File storage (UploadThing) - optional until generation completes
+    fileUrl         String?
+    fileKey         String?  @unique
+    fileName        String?
+    
+    // SVG data (stored directly for batch, can be uploaded later)
+    svgContent      String?  @db.Text
+    
+    // Metadata
+    linesCount      Int      @default(0)
+    charactersCount Int      @default(0)
+    
+    // Error tracking
+    errorMessage    String?
+    
+    // Optional: part of a batch
+    batchJobId      String?
+    batchJob        BatchJob? @relation(fields: [batchJobId], references: [id], onDelete: SetNull)
+    
+    // Favorites/organization
+    isFavorite      Boolean  @default(false)
+    tags            String[] @default([])
+    
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @updatedAt
+    
+    @@index([userId])
+    @@index([createdAt])
+    @@index([batchJobId])
+    @@index([status])
+}
+
+enum GenerationStatus {
+    PENDING
+    GENERATING
+    COMPLETED
+    FAILED
+}
+
+// Batch generation jobs
+model BatchJob {
+    id              String   @id @default(cuid())
+    userId          String
+    user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    
+    // Batch details
+    name            String?
+    text            String   @db.Text  // The source text
+    totalVariants   Int               // How many variants to generate
+    creditsUsed     Int
+    
+    // Status tracking
+    status          BatchStatus @default(PENDING)
+    completedCount  Int         @default(0)
+    errorMessage    String?
+    
+    // Store raw results as JSON (before saving to gallery)
+    results         Json?     // Array of variant results with SVG data
+    
+    // Generated outputs (saved to gallery)
+    generations     SavedGeneration[]
+    
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @updatedAt
+    
+    @@index([userId])
+    @@index([status])
+}
+
+enum BatchStatus {
+    PENDING
+    PROCESSING
+    COMPLETED
+    FAILED
+    CANCELLED
+}

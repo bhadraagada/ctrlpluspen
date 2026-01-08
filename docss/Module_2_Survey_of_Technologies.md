@@ -13,9 +13,9 @@ This project focuses on **handwriting synthesis**: generating human-like handwri
 
 ### 2.1.1 User Interface Frameworks
 
-- **Command Line Interface (CLI)**: A CLI is well-suited for training and generation runs (e.g., `--text`, `--style`, `--steps`, `--output`). It is simple, reproducible, and easy to integrate into other scripts.
-- **Notebook-based exploration**: Jupyter notebooks can be used to explore stroke data, visualize generated handwriting, and compare styles during experimentation.
-- **Minimal demo UI (optional)**: A minimal web UI (or local desktop UI) can be used to input text, select/upload a style sample, and download generated outputs. (The report allows either a CLI or a minimal web page.)
+- **Next.js (Primary Frontend)**: A production-ready React framework providing SSR/SSG, API routes, and modern tooling for a professional user experience. Enables real-time handwriting generation, style upload/preview, parameter tuning (bias/temperature), and sample gallery browsing.
+- **Command Line Interface (CLI)**: A CLI is well-suited for training and generation runs (e.g., `--text`, `--style`, `--steps`, `--output`). It is simple, reproducible, and easy to integrate into other scripts and batch workflows.
+- **Notebook-based exploration**: Jupyter notebooks can be used to explore stroke data, visualize generated handwriting, and compare styles during experimentation and research validation.
 
 ### 2.1.2 Front-End Design Tools
 
@@ -42,7 +42,8 @@ This project focuses on **handwriting synthesis**: generating human-like handwri
 
 ### 2.2.3 Database Systems
 
-- **No database required (file-based storage)**: Typical storage for this project is filesystem-based:
+- **PostgreSQL**: Primary database for user accounts, API credentials, style library management, and credits/usage tracking. Provides ACID guarantees and scalability for production deployments.
+- **File-based storage**: Training datasets and model checkpoints remain filesystem-based (or cloud storage like S3):
   - **Numpy arrays / NPZ** for processed stroke datasets,
   - **model checkpoints** for trained weights,
   - **JSON/YAML** for configs and run metadata,
@@ -86,9 +87,13 @@ This project focuses on **handwriting synthesis**: generating human-like handwri
 
 ### Summary (Technology Stack at a Glance)
 
-- **Modeling**: RNN (LSTM/GRU) + Attention
-- **Output Head**: MDN / GMM for continuous stroke generation
-- **Optimization**: Supervised learning + optional RL fine-tuning
-- **Pre/Post-processing**: NumPy/SciPy + visualization tooling
+- **Frontend**: Next.js (React, SSR/SSG, API routes), CLI, Jupyter notebooks
+- **Front-End Tools**: Matplotlib/Seaborn, PlantUML, VS Code
+- **Backend Language**: Python (>= 3.10)
+- **ML Libraries**: TensorFlow / PyTorch, NumPy/SciPy, Scikit-learn, Matplotlib, TensorBoard
+- **Database**: PostgreSQL (user/credits/styles), filesystem/S3 (datasets/checkpoints)
+- **Data**: IAM-OnDB and similar handwriting corpora, text transcripts, synthetic augmentation
+- **Preprocessing**: Stroke normalization, sequence padding, denoising, train/val/test splits
+- **Modeling**: RNN (LSTM/GRU) + Attention, MDN/GMM output head
+- **Fine-tuning**: Optional RL with rewards (smoothness, legibility, style similarity)
 - **Outputs**: SVG/PNG rendered handwriting
-- **Storage**: Filesystem (datasets/checkpoints/configs), no DB

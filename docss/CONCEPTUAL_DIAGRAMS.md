@@ -1,11 +1,5 @@
 # 3 Requirement and Analysis (Ref Project)
 
-This document covers **Requirement and Analysis (3.1–3.5)** and **Conceptual Diagrams (3.6)** for the `ref/` handwriting synthesis system.
-
-Diagrams are written in **PlantUML** so they can be rendered directly in VS Code (PlantUML extension) or any PlantUML renderer.
-
----
-
 ## 3.1 Problem Definition
 
 ### 3.1.1 Problem Analysis
@@ -333,7 +327,9 @@ reader ..> batch
 
 ---
 
-## 3.6.6 Activity Diagram
+## 3.6.6 Activity Diagrams
+
+### 3.6.6.1 Training Activity
 
 ```plantuml
 @startuml
@@ -369,6 +365,37 @@ stop
 @enduml
 ```
 
+### 3.6.6.2 Inference Activity (Handwriting Generation)
+
+```plantuml
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+
+start
+:User provides text lines;
+:Initialize Hand / rnn model;
+:Restore latest checkpoint;
+
+repeat
+  :Encode text line to ASCII IDs;
+  if (Style priming requested?) then (yes)
+    :Load style strokes/chars;
+    :Run primed_sample();
+  else (no)
+    :Run sample();
+  endif
+  :Get stroke offsets from session;
+  :Convert offsets to coordinates;
+  :Apply denoising & alignment;
+  :Render to SVG path;
+repeat while (more lines?)
+
+:Save SVG file;
+stop
+@enduml
+```
+
 ---
 
 ## 3.6.7 Sequence Diagram
@@ -378,34 +405,40 @@ stop
 skinparam monochrome true
 skinparam shadowing false
 
-actor User
-participant "train_model.py" as Train
+actor "User / Developer" as Actor
+participant "Entry Script\n(train_model.py / demo.py)" as Script
 participant "DataReader" as DR
-participant "rnn (TFBaseModel)" as Model
+participant "rnn (Model)" as Model
 participant "tf.Session" as Sess
+participant "drawing.py" as Render
 participant "Filesystem" as FS
 
-User -> Train : python train_model.py --num_steps N
-Train -> DR : DataReader(data_dir)
-Train -> Model : rnn(reader=DR, ...)
-Model -> Sess : Session(graph)
-
-loop each step
-  Model -> DR : next(train_batch)
-  DR --> Model : feed_dict data
-  Model -> Sess : run([loss, train_op])
-  Sess --> Model : loss
-
-  alt log interval
-    Model -> FS : append logs/log_*.txt
-  end
-
-  alt checkpoint interval
-    Model -> FS : save checkpoints/model-STEP.*
-  end
+alt Training Mode (Developer Flow)
+    Actor -> Script : python train_model.py --num_steps N
+    Script -> DR : DataReader(data_dir)
+    Script -> Model : rnn(reader=DR, ...)
+    Model -> Sess : Session(graph)
+    loop each step
+        Model -> DR : next(train_batch)
+        DR --> Model : feed_dict data
+        Model -> Sess : run([loss, train_op])
+        Sess --> Model : loss
+        alt checkpoint interval
+            Model -> FS : save checkpoints/model-STEP.*
+        end
+    end
+else Generation Mode (End-User Flow)
+    Actor -> Script : python demo.py --text "Hello"
+    Script -> Model : rnn(checkpoint_dir)
+    Model -> FS : read latest checkpoint
+    Model -> Sess : restore(checkpoint)
+    Script -> Model : sample(text, bias, style)
+    Model -> Sess : run(sampled_sequence)
+    Sess --> Script : stroke offsets
+    Script -> Render : draw(offsets)
+    Render -> FS : save output.svg
+    Actor <-- Script : "Saved to img/*.svg"
 end
-
-Train <-- Model : fit() returns
 @enduml
 ```
 
@@ -418,23 +451,33 @@ Train <-- Model : fit() returns
 skinparam monochrome true
 skinparam shadowing false
 
-[*] --> Uninitialized
-Uninitialized --> GraphBuilt : build_graph()
-GraphBuilt --> Training : fit()
+state "Training Flow" as TrainingFlow {
+  [*] --> Uninitialized
+  Uninitialized --> GraphBuilt : build_graph()
+  GraphBuilt --> Training : fit()
 
-Training --> Validating : evaluate batch
-Validating --> Training : continue
+  Training --> Validating : evaluate batch
+  Validating --> Training : continue
 
-Training --> Checkpointing : min_steps_to_checkpoint
-Checkpointing --> Training
+  Training --> Checkpointing : min_steps_to_checkpoint
+  Checkpointing --> Training
 
-Training --> EarlyStopped : patience exhausted
-Training --> Finished : reached max_steps
-Training --> Error : exception
+  Training --> EarlyStopped : patience exhausted
+  Training --> FinishedTraining : reached max_steps
+}
 
-EarlyStopped --> Finished
+state "Inference Flow" as InferenceFlow {
+  [*] --> LoadingModel
+  LoadingModel --> ModelReady : restore(checkpoint)
+  ModelReady --> Sampling : sample(text)
+  Sampling --> Rendering : draw(strokes)
+  Rendering --> ModelReady : next line
+  Rendering --> FinishedInference : all lines done
+}
+
+FinishedTraining --> [*]
+FinishedInference --> [*]
 Error --> [*]
-Finished --> [*]
 @enduml
 ```
 

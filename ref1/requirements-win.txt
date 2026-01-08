@@ -1,0 +1,23 @@
+# Windows-friendly runtime requirements for ref1
+# Notes:
+# - gunicorn doesn't support Windows (use `python main.py` or `flask run` for local dev).
+# - torch/torchvision are pinned because modern versions won't install on Python 3.6.
+
+numpy==1.17.4
+Flask==1.1.2
+matplotlib==2.2.2
+
+# Used by ref1/app/*
+python-dotenv==0.10.3
+Flask-WTF==0.14.2
+WTForms==2.2.1
+Flask-SQLAlchemy==2.4.0
+Flask-Migrate==2.4.0
+SQLAlchemy==1.3.6
+alembic==1.0.11
+
+# Torch stack (Py3.6-compatible, still available on PyPI)
+torch==1.10.2
+torchvision==0.11.3
+
+Pillow==6.1.0

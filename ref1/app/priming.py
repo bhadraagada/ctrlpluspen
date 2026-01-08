@@ -1,7 +1,11 @@
+import os
+# Workaround for Windows OpenMP runtime duplication (numpy/mkl + torch).
+# This must be set before importing torch/numpy.
+os.environ.setdefault("KMP_DUPLICATE_LIB_OK", "TRUE")
+
 import torch
 import numpy as np
 import sys
-import os
 # import matplotlib.pyplot as plt
 
 sys.path.append("../")
@@ -17,6 +21,13 @@ from models.models import HandWritingSynthesisNet
 from generate import generate_conditional_sequence
 
 
+def _pick_existing_checkpoint(*candidates):
+    for path in candidates:
+        if path and os.path.exists(path):
+            return path
+    return None
+
+
 def generate_handwriting(
     char_seq="hello world",
     real_text="",
@@ -28,7 +39,19 @@ def generate_handwriting(
 ):
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     data_path = os.path.join(app_path, "../data/")
-    model_path = os.path.join(app_path, "../results/synthesis/best_model_synthesis.pt")
+
+    # Prefer the original filename, but fall back to the checkpoints that exist in this repo.
+    model_path = _pick_existing_checkpoint(
+        os.path.join(app_path, "../results/synthesis/best_model_synthesis.pt"),
+        os.path.join(app_path, "../results/synthesis/best_model_synthesis_4.pt"),
+        os.path.join(app_path, "../results/synthesis/best_model_synthesis_3.pt"),
+        os.path.join(app_path, "../results/synthesis/best_model_synthesis_2.pt"),
+    )
+    if model_path is None:
+        raise FileNotFoundError(
+            "No synthesis checkpoint found under ../results/synthesis/. "
+            "Expected best_model_synthesis.pt or best_model_synthesis_{2,3,4}.pt"
+        )
     # seed = 194
     # print("seed:",seed)
     # torch.manual_seed(seed)

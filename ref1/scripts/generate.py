@@ -1,9 +1,13 @@
+import os
+# Workaround for Windows OpenMP runtime duplication (numpy/mkl + torch).
+# This must be set before importing torch/numpy.
+os.environ.setdefault("KMP_DUPLICATE_LIB_OK", "TRUE")
+
 import torch
 import numpy as np
 import argparse
 import matplotlib
 from pathlib import Path
-import os
 import matplotlib.pyplot as plt
 from utils import plot_stroke
 from utils.constants import Global

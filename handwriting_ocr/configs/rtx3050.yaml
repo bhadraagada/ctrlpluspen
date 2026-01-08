@@ -1,0 +1,65 @@
+# RTX 3050 Optimized Training Configuration
+# 6GB VRAM friendly settings
+
+# Model
+model: yolov8n.pt  # Nano model (smallest, fastest)
+pretrained: true
+
+# Training
+epochs: 50
+patience: 15
+batch: 2          # Small batch for 6GB VRAM
+imgsz: 512        # Reduced image size to save memory
+device: 0         # GPU device (0 = first GPU)
+
+# Memory Optimization
+amp: true         # Automatic Mixed Precision (FP16)
+workers: 2        # Data loading workers
+cache: false      # Don't cache images (saves RAM)
+
+# Optimizer
+optimizer: AdamW
+lr0: 0.001        # Initial learning rate
+lrf: 0.01         # Final learning rate (lr0 * lrf)
+momentum: 0.937
+weight_decay: 0.0005
+warmup_epochs: 3
+
+# Loss weights
+box: 7.5
+cls: 0.5
+dfl: 1.5
+
+# Augmentation (optimized for handwriting)
+hsv_h: 0.01       # Hue augmentation
+hsv_s: 0.5        # Saturation
+hsv_v: 0.3        # Value
+degrees: 3.0      # Rotation (+/- deg)
+translate: 0.1    # Translation (+/- fraction)
+scale: 0.2        # Scale (+/- gain)
+shear: 2.0        # Shear (+/- deg)
+flipud: 0.0       # No vertical flip (text should stay upright)
+fliplr: 0.0       # No horizontal flip (text direction matters)
+mosaic: 0.5       # Mosaic augmentation probability
+mixup: 0.1        # Mixup augmentation probability
+
+# Saving
+project: runs/detect
+name: train
+exist_ok: true
+save: true
+save_period: 10   # Save checkpoint every 10 epochs
+plots: true
+
+# Validation
+val: true
+split: val
+
+# Other
+verbose: true
+seed: 42
+deterministic: false
+single_cls: true  # Single class detection (handwriting)
+rect: false       # Rectangular training
+cos_lr: true      # Cosine LR scheduler
+close_mosaic: 10  # Disable mosaic augmentation last N epochs

@@ -1,0 +1,19 @@
+{
+  "name": "handwriting",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:api": "cd synthesis_api && uvicorn main:app --reload --host 0.0.0.0 --port 8001",
+    "dev:all": "concurrently \"pnpm:dev:frontend\" \"pnpm:dev:api\" --names \"frontend,api\" --prefix-colors \"cyan,magenta\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.19.0",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
