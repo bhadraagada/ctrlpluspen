@@ -763,6 +763,318 @@ export const synthesisRouter = createTRPCRouter({
       byStyle: byStyle.map((s) => ({ style: s.style, count: s._count })),
     };
   }),
+
+  // ==================== REALISTIC RENDERING ====================
+
+  // Get available realistic rendering options
+  getRealisticOptions: publicProcedure.query(async () => {
+    try {
+      const response = await fetch(`${API_URL}/realistic/options`);
+      if (!response.ok) {
+        throw new Error("Failed to get realistic options");
+      }
+      return await response.json() as {
+        paper_types: Array<{ id: string; name: string; description: string }>;
+        ink_types: Array<{ id: string; name: string; description: string }>;
+        wear_level: { min: number; max: number; default: number; description: string };
+      };
+    } catch {
+      // Return defaults if API unavailable
+      return {
+        paper_types: [
+          { id: "white", name: "White Paper", description: "Clean white paper" },
+          { id: "cream", name: "Cream Paper", description: "Warm ivory/cream colored" },
+          { id: "aged", name: "Aged Paper", description: "Yellowed, vintage look" },
+          { id: "lined", name: "Lined Paper", description: "Blue horizontal lines" },
+          { id: "grid", name: "Grid Paper", description: "Light blue grid pattern" },
+          { id: "recycled", name: "Recycled Paper", description: "Grayish with visible fibers" },
+        ],
+        ink_types: [
+          { id: "ballpoint", name: "Ballpoint Pen", description: "Standard ballpoint, medium pressure variation" },
+          { id: "gel", name: "Gel Pen", description: "Smooth, consistent ink flow" },
+          { id: "fountain", name: "Fountain Pen", description: "High variation, feathering" },
+          { id: "marker", name: "Marker", description: "Bold, minimal texture show-through" },
+          { id: "pencil", name: "Pencil", description: "High texture, light strokes" },
+        ],
+        wear_level: {
+          min: 0.0,
+          max: 1.0,
+          default: 0.3,
+          description: "0 = pristine digital, 1 = heavily worn/scanned document",
+        },
+      };
+    }
+  }),
+
+  // Generate realistic handwriting (one-shot with post-processing)
+  generateRealistic: protectedProcedure
+    .input(
+      z.object({
+        text: z.string().min(1).max(1600),
+        style: z.number().min(0).max(12).default(9),
+        bias: z.number().min(0).max(1.5).default(0.75),
+        strokeColor: z.string().default("black"),
+        strokeWidth: z.number().min(1).max(5).default(2),
+        paperType: z.string().default("white"),
+        inkType: z.string().default("ballpoint"),
+        wearLevel: z.number().min(0).max(1).default(0.3),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+
+      // Validate text
+      const validation = validateText(input.text);
+      if (!validation.valid) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: validation.error ?? "Invalid text",
+        });
+      }
+
+      // Check credits
+      const user = await ctx.db.user.findUnique({
+        where: { id: userId },
+        select: { credits: true },
+      });
+
+      if (!user || user.credits < 1) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Insufficient credits.",
+        });
+      }
+
+      const startTime = Date.now();
+      const lines = input.text.split('\n');
+
+      try {
+        const response = await fetch(`${API_URL}/synthesize/realistic`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            text: input.text,
+            style: input.style,
+            bias: input.bias,
+            stroke_color: input.strokeColor,
+            stroke_width: input.strokeWidth,
+            paper_type: input.paperType,
+            ink_type: input.inkType,
+            wear_level: input.wearLevel,
+          }),
+        });
+
+        if (!response.ok) {
+          const error = await response.text();
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: `Realistic synthesis failed: ${error}`,
+          });
+        }
+
+        const data = await response.json() as {
+          svg_raw: string;
+          realistic_png: string;
+          width: number;
+          height: number;
+          lines_count: number;
+          characters_count: number;
+          style: number;
+          bias: number;
+          paper_type: string;
+          ink_type: string;
+          wear_level: number;
+        };
+
+        const processingTime = Date.now() - startTime;
+
+        // Deduct credit and log usage
+        await ctx.db.$transaction([
+          ctx.db.user.update({
+            where: { id: userId },
+            data: { credits: { decrement: 1 } },
+          }),
+          ctx.db.synthesisUsage.create({
+            data: {
+              userId,
+              creditsUsed: 1,
+              linesCount: data.lines_count,
+              charactersCount: data.characters_count,
+              style: data.style,
+              bias: data.bias,
+              processingTimeMs: processingTime,
+              success: true,
+            },
+          }),
+        ]);
+
+        return {
+          svgRaw: data.svg_raw,
+          realisticPng: data.realistic_png,
+          width: data.width,
+          height: data.height,
+          linesCount: data.lines_count,
+          charactersCount: data.characters_count,
+          style: data.style,
+          bias: data.bias,
+          paperType: data.paper_type,
+          inkType: data.ink_type,
+          wearLevel: data.wear_level,
+          creditsRemaining: user.credits - 1,
+        };
+      } catch (error) {
+        if (error instanceof TRPCError) throw error;
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: error instanceof Error ? error.message : "Realistic synthesis failed",
+        });
+      }
+    }),
+
+  // Convert existing SVG/generation to realistic image
+  makeRealistic: protectedProcedure
+    .input(
+      z.object({
+        generationId: z.string(),
+        paperType: z.string().default("white"),
+        inkType: z.string().default("ballpoint"),
+        wearLevel: z.number().min(0).max(1).default(0.3),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+
+      // Get the generation
+      const generation = await ctx.db.savedGeneration.findFirst({
+        where: {
+          id: input.generationId,
+          userId,
+        },
+      });
+
+      if (!generation) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Generation not found",
+        });
+      }
+
+      // Get SVG content - either from stored content or fetch from URL
+      let svgContent = generation.svgContent;
+      
+      if (!svgContent && generation.fileUrl) {
+        try {
+          const response = await fetch(generation.fileUrl);
+          if (response.ok) {
+            svgContent = await response.text();
+          }
+        } catch {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to fetch SVG content",
+          });
+        }
+      }
+
+      if (!svgContent) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "No SVG content available for this generation",
+        });
+      }
+
+      try {
+        // Call the processing endpoint
+        const response = await fetch(`${API_URL}/process/realistic`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            svg_content: svgContent,
+            stroke_color: generation.strokeColor,
+            paper_type: input.paperType,
+            ink_type: input.inkType,
+            wear_level: input.wearLevel,
+          }),
+        });
+
+        if (!response.ok) {
+          const error = await response.text();
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: `Processing failed: ${error}`,
+          });
+        }
+
+        const data = await response.json() as {
+          realistic_png: string;
+          width: number;
+          height: number;
+          paper_type: string;
+          ink_type: string;
+          wear_level: number;
+        };
+
+        // Update the generation with realistic data
+        const updated = await ctx.db.savedGeneration.update({
+          where: { id: input.generationId },
+          data: {
+            realisticPng: data.realistic_png,
+            paperType: data.paper_type,
+            inkType: data.ink_type,
+            wearLevel: data.wear_level,
+          },
+        });
+
+        return {
+          id: updated.id,
+          realisticPng: data.realistic_png,
+          width: data.width,
+          height: data.height,
+          paperType: data.paper_type,
+          inkType: data.ink_type,
+          wearLevel: data.wear_level,
+        };
+      } catch (error) {
+        if (error instanceof TRPCError) throw error;
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: error instanceof Error ? error.message : "Processing failed",
+        });
+      }
+    }),
+
+  // Clear realistic version from a generation
+  clearRealistic: protectedProcedure
+    .input(z.object({ generationId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const generation = await ctx.db.savedGeneration.findFirst({
+        where: {
+          id: input.generationId,
+          userId: ctx.session.user.id,
+        },
+      });
+
+      if (!generation) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Generation not found",
+        });
+      }
+
+      const updated = await ctx.db.savedGeneration.update({
+        where: { id: input.generationId },
+        data: {
+          realisticPng: null,
+          realisticUrl: null,
+          realisticKey: null,
+          paperType: null,
+          inkType: null,
+          wearLevel: null,
+        },
+      });
+
+      return { success: true, id: updated.id };
+    }),
 });
 
 // Export types for client usage

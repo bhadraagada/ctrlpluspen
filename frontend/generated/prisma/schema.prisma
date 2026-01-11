@@ -136,7 +136,7 @@ model Payment {
   stripeSessionId String? @unique
 
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @default(now()) @updatedAt
 
   @@index([userId])
   @@index([status])
@@ -169,6 +169,9 @@ model SavedGeneration {
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  // Generation status (for batch processing)
+  status GenerationStatus @default(COMPLETED)
+
   // Generation details
   text        String @db.Text
   style       Int
@@ -176,14 +179,28 @@ model SavedGeneration {
   strokeColor String @default("black")
   strokeWidth Int    @default(2)
 
-  // File storage (UploadThing)
-  fileUrl  String
-  fileKey  String  @unique
+  // File storage (UploadThing) - optional until generation completes
+  fileUrl  String?
+  fileKey  String? @unique
   fileName String?
 
+  // SVG data (stored directly for batch, can be uploaded later)
+  svgContent String? @db.Text
+
+  // Realistic rendering (post-processed PNG)
+  realisticPng String? @db.Text // Base64 encoded PNG
+  realisticUrl String? // URL if uploaded to storage
+  realisticKey String? @unique // UploadThing key
+  paperType    String? // white, cream, aged, lined, grid, recycled
+  inkType      String? // ballpoint, gel, fountain, marker, pencil
+  wearLevel    Float? // 0-1 degradation level
+
   // Metadata
-  linesCount      Int
-  charactersCount Int
+  linesCount      Int @default(0)
+  charactersCount Int @default(0)
+
+  // Error tracking
+  errorMessage String?
 
   // Optional: part of a batch
   batchJobId String?
@@ -194,10 +211,19 @@ model SavedGeneration {
   tags       String[] @default([])
 
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([userId])
   @@index([createdAt])
   @@index([batchJobId])
+  @@index([status])
+}
+
+enum GenerationStatus {
+  PENDING
+  GENERATING
+  COMPLETED
+  FAILED
 }
 
 // Batch generation jobs

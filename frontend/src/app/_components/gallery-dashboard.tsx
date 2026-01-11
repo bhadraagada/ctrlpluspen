@@ -29,6 +29,48 @@ const STATUS_CONFIG: Record<string, { label: string; color: string; textColor: s
   FAILED: { label: "Failed", color: "bg-red-500", textColor: "text-red-300" },
 };
 
+// Extended type to include new realistic fields (until Prisma client is regenerated)
+type GalleryItem = {
+  id: string;
+  text: string;
+  style: number;
+  bias: number;
+  strokeColor: string;
+  strokeWidth: number;
+  fileUrl: string | null;
+  fileKey: string | null;
+  svgContent: string | null;
+  status: string;
+  isFavorite: boolean;
+  tags: string[];
+  createdAt: Date;
+  errorMessage: string | null;
+  // New realistic fields
+  realisticPng?: string | null;
+  realisticUrl?: string | null;
+  paperType?: string | null;
+  inkType?: string | null;
+  wearLevel?: number | null;
+};
+
+// Paper and ink type options for realistic rendering
+const PAPER_TYPES = [
+  { id: "white", name: "White", icon: "bg-white" },
+  { id: "cream", name: "Cream", icon: "bg-amber-50" },
+  { id: "aged", name: "Aged", icon: "bg-amber-100" },
+  { id: "lined", name: "Lined", icon: "bg-blue-50" },
+  { id: "grid", name: "Grid", icon: "bg-blue-50" },
+  { id: "recycled", name: "Recycled", icon: "bg-gray-200" },
+];
+
+const INK_TYPES = [
+  { id: "ballpoint", name: "Ballpoint" },
+  { id: "gel", name: "Gel Pen" },
+  { id: "fountain", name: "Fountain" },
+  { id: "marker", name: "Marker" },
+  { id: "pencil", name: "Pencil" },
+];
+
 export function GalleryDashboard() {
   const [filter, setFilter] = useState<{
     favoritesOnly: boolean;
@@ -42,6 +84,15 @@ export function GalleryDashboard() {
     sortBy: "newest",
   });
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  
+  // Realistic rendering state
+  const [viewMode, setViewMode] = useState<"svg" | "realistic">("svg");
+  const [showRealisticSettings, setShowRealisticSettings] = useState(false);
+  const [realisticSettings, setRealisticSettings] = useState({
+    paperType: "white",
+    inkType: "ballpoint",
+    wearLevel: 0.3,
+  });
 
   const utils = api.useUtils();
 
@@ -80,6 +131,22 @@ export function GalleryDashboard() {
     },
   });
 
+  // Realistic rendering mutation
+  const makeRealisticMutation = api.synthesis.makeRealistic.useMutation({
+    onSuccess: () => {
+      void utils.synthesis.getGallery.invalidate();
+      setShowRealisticSettings(false);
+      setViewMode("realistic");
+    },
+  });
+
+  const clearRealisticMutation = api.synthesis.clearRealistic.useMutation({
+    onSuccess: () => {
+      void utils.synthesis.getGallery.invalidate();
+      setViewMode("svg");
+    },
+  });
+
   const handleToggleFavorite = useCallback(
     (id: string, e: React.MouseEvent) => {
       e.stopPropagation();
@@ -97,8 +164,23 @@ export function GalleryDashboard() {
     [deleteMutation]
   );
 
+  const handleMakeRealistic = useCallback(() => {
+    if (!selectedId) return;
+    makeRealisticMutation.mutate({
+      generationId: selectedId,
+      paperType: realisticSettings.paperType,
+      inkType: realisticSettings.inkType,
+      wearLevel: realisticSettings.wearLevel,
+    });
+  }, [selectedId, realisticSettings, makeRealisticMutation]);
+
+  const handleClearRealistic = useCallback(() => {
+    if (!selectedId) return;
+    clearRealisticMutation.mutate({ generationId: selectedId });
+  }, [selectedId, clearRealisticMutation]);
+
   // Flatten paginated data
-  const allItems = galleryQuery.data?.pages.flatMap((page) => page.items) ?? [];
+  const allItems = (galleryQuery.data?.pages.flatMap((page) => page.items) ?? []) as GalleryItem[];
   const selectedItem = allItems.find((item) => item.id === selectedId);
 
   // Check if any items are still processing (for showing refresh indicator)
@@ -282,10 +364,11 @@ export function GalleryDashboard() {
           <>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {allItems.map((item) => {
-                const statusConfig = STATUS_CONFIG[item.status as keyof typeof STATUS_CONFIG] ?? STATUS_CONFIG.COMPLETED;
+                const statusConfig = STATUS_CONFIG[item.status] ?? STATUS_CONFIG.COMPLETED!;
                 const isProcessing = item.status === "PENDING" || item.status === "GENERATING";
                 const isFailed = item.status === "FAILED";
                 const isCompleted = item.status === "COMPLETED";
+                const hasRealistic = !!item.realisticPng;
 
                 return (
                   <div
@@ -310,6 +393,13 @@ export function GalleryDashboard() {
                           <span className="h-2 w-2 animate-pulse rounded-full bg-white" />
                         )}
                         {statusConfig.label}
+                      </div>
+                    )}
+                    
+                    {/* Realistic Badge */}
+                    {isCompleted && hasRealistic && (
+                      <div className="absolute left-3 top-3 z-10 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 px-3 py-1 text-xs font-medium text-white">
+                        Realistic
                       </div>
                     )}
 
@@ -430,15 +520,161 @@ export function GalleryDashboard() {
         {selectedItem && selectedItem.status === "COMPLETED" && (
           <div
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
-            onClick={() => setSelectedId(null)}
+            onClick={() => { setSelectedId(null); setShowRealisticSettings(false); setViewMode("svg"); }}
           >
             <div
-              className="max-h-[90vh] w-full max-w-3xl overflow-auto rounded-2xl border border-white/10 bg-gray-900 shadow-2xl"
+              className="max-h-[90vh] w-full max-w-4xl overflow-auto rounded-2xl border border-white/10 bg-gray-900 shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
+              {/* View Mode Toggle */}
+              <div className="flex items-center justify-between border-b border-white/10 bg-gray-800/50 px-6 py-3">
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setViewMode("svg")}
+                    className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
+                      viewMode === "svg"
+                        ? "bg-white text-gray-900"
+                        : "text-white/70 hover:text-white"
+                    }`}
+                  >
+                    Clean SVG
+                  </button>
+                  <button
+                    onClick={() => setViewMode("realistic")}
+                    className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
+                      viewMode === "realistic"
+                        ? "bg-gradient-to-r from-amber-500 to-orange-500 text-white"
+                        : "text-white/70 hover:text-white"
+                    }`}
+                  >
+                    Realistic
+                  </button>
+                </div>
+                {viewMode === "realistic" && !selectedItem.realisticPng && (
+                  <button
+                    onClick={() => setShowRealisticSettings(!showRealisticSettings)}
+                    className="flex items-center gap-2 text-sm text-amber-400 hover:text-amber-300"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
+                    </svg>
+                    Settings
+                  </button>
+                )}
+              </div>
+
+              {/* Realistic Settings Panel */}
+              {showRealisticSettings && viewMode === "realistic" && !selectedItem.realisticPng && (
+                <div className="border-b border-white/10 bg-gray-800/30 p-6">
+                  <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-white/70">
+                    Realistic Rendering Settings
+                  </h3>
+                  <div className="grid gap-6 sm:grid-cols-3">
+                    {/* Paper Type */}
+                    <div>
+                      <label className="mb-2 block text-xs text-white/50">Paper Type</label>
+                      <div className="grid grid-cols-3 gap-2">
+                        {PAPER_TYPES.map((paper) => (
+                          <button
+                            key={paper.id}
+                            onClick={() => setRealisticSettings((s) => ({ ...s, paperType: paper.id }))}
+                            className={`flex flex-col items-center gap-1 rounded-lg border p-2 transition ${
+                              realisticSettings.paperType === paper.id
+                                ? "border-amber-400 bg-amber-500/20"
+                                : "border-white/10 hover:border-white/30"
+                            }`}
+                          >
+                            <div className={`h-6 w-6 rounded ${paper.icon} border border-gray-300`} />
+                            <span className="text-[10px] text-white/70">{paper.name}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Ink Type */}
+                    <div>
+                      <label className="mb-2 block text-xs text-white/50">Ink Type</label>
+                      <div className="flex flex-wrap gap-2">
+                        {INK_TYPES.map((ink) => (
+                          <button
+                            key={ink.id}
+                            onClick={() => setRealisticSettings((s) => ({ ...s, inkType: ink.id }))}
+                            className={`rounded-lg border px-3 py-1.5 text-xs transition ${
+                              realisticSettings.inkType === ink.id
+                                ? "border-amber-400 bg-amber-500/20 text-amber-300"
+                                : "border-white/10 text-white/70 hover:border-white/30"
+                            }`}
+                          >
+                            {ink.name}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Wear Level */}
+                    <div>
+                      <label className="mb-2 block text-xs text-white/50">
+                        Wear Level: {(realisticSettings.wearLevel * 100).toFixed(0)}%
+                      </label>
+                      <input
+                        type="range"
+                        min="0"
+                        max="1"
+                        step="0.05"
+                        value={realisticSettings.wearLevel}
+                        onChange={(e) => setRealisticSettings((s) => ({ ...s, wearLevel: parseFloat(e.target.value) }))}
+                        className="w-full accent-amber-500"
+                      />
+                      <div className="mt-1 flex justify-between text-[10px] text-white/40">
+                        <span>Pristine</span>
+                        <span>Worn</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={handleMakeRealistic}
+                    disabled={makeRealisticMutation.isPending}
+                    className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-3 font-semibold text-white transition hover:brightness-110 disabled:opacity-50"
+                  >
+                    {makeRealisticMutation.isPending ? (
+                      <>
+                        <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                        Processing...
+                      </>
+                    ) : (
+                      <>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                          <path d="M4 3a2 2 0 100 4h12a2 2 0 100-4H4z" />
+                          <path fillRule="evenodd" d="M3 8h14v7a2 2 0 01-2 2H5a2 2 0 01-2-2V8zm5 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" clipRule="evenodd" />
+                        </svg>
+                        Make Realistic
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
+
               {/* Preview */}
               <div className="bg-white p-6">
-                {selectedItem.svgContent ? (
+                {viewMode === "realistic" && selectedItem.realisticPng ? (
+                  // Show realistic PNG
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={`data:image/png;base64,${selectedItem.realisticPng}`}
+                    alt={selectedItem.text}
+                    className="w-full object-contain"
+                  />
+                ) : viewMode === "realistic" && !selectedItem.realisticPng ? (
+                  // Show prompt to create realistic version
+                  <div className="flex min-h-[200px] flex-col items-center justify-center text-gray-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mb-3 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <p className="text-sm">No realistic version yet</p>
+                    <p className="text-xs text-gray-400 mt-1">Configure settings above and click "Make Realistic"</p>
+                  </div>
+                ) : selectedItem.svgContent ? (
                   <div
                     className="w-full"
                     dangerouslySetInnerHTML={{ __html: selectedItem.svgContent }}
@@ -484,61 +720,97 @@ export function GalleryDashboard() {
                           {new Date(selectedItem.createdAt).toLocaleString()}
                         </span>
                       </div>
+                      {selectedItem.realisticPng && (
+                        <>
+                          <div>
+                            <span className="text-white/50">Paper:</span>{" "}
+                            <span className="text-amber-300 capitalize">
+                              {selectedItem.paperType ?? "white"}
+                            </span>
+                          </div>
+                          <div>
+                            <span className="text-white/50">Ink:</span>{" "}
+                            <span className="text-amber-300 capitalize">
+                              {selectedItem.inkType ?? "ballpoint"}
+                            </span>
+                          </div>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
 
                 {/* Actions */}
                 <div className="mt-6 flex flex-wrap gap-3">
-                  {selectedItem.fileUrl && (
-                    <a
-                      href={selectedItem.fileUrl}
-                      download={`handwriting-${selectedItem.id}.svg`}
-                      className="flex items-center gap-2 rounded-lg bg-cyan-500 px-4 py-2 font-semibold text-white hover:bg-cyan-600"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-4 w-4"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      Download
-                    </a>
-                  )}
-                  {selectedItem.svgContent && !selectedItem.fileUrl && (
+                  {/* Download SVG */}
+                  {(selectedItem.fileUrl || selectedItem.svgContent) && (
                     <button
                       onClick={() => {
-                        const blob = new Blob([selectedItem.svgContent!], { type: "image/svg+xml" });
-                        const url = URL.createObjectURL(blob);
-                        const a = document.createElement("a");
-                        a.href = url;
-                        a.download = `handwriting-${selectedItem.id}.svg`;
-                        a.click();
-                        URL.revokeObjectURL(url);
+                        if (selectedItem.svgContent) {
+                          const blob = new Blob([selectedItem.svgContent], { type: "image/svg+xml" });
+                          const url = URL.createObjectURL(blob);
+                          const a = document.createElement("a");
+                          a.href = url;
+                          a.download = `handwriting-${selectedItem.id}.svg`;
+                          a.click();
+                          URL.revokeObjectURL(url);
+                        } else if (selectedItem.fileUrl) {
+                          const a = document.createElement("a");
+                          a.href = selectedItem.fileUrl;
+                          a.download = `handwriting-${selectedItem.id}.svg`;
+                          a.click();
+                        }
                       }}
                       className="flex items-center gap-2 rounded-lg bg-cyan-500 px-4 py-2 font-semibold text-white hover:bg-cyan-600"
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-4 w-4"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-                          clipRule="evenodd"
-                        />
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
                       </svg>
                       Download SVG
                     </button>
                   )}
+                  
+                  {/* Download Realistic PNG */}
+                  {selectedItem.realisticPng && (
+                    <button
+                      onClick={() => {
+                        const byteCharacters = atob(selectedItem.realisticPng!);
+                        const byteNumbers = new Array(byteCharacters.length);
+                        for (let i = 0; i < byteCharacters.length; i++) {
+                          byteNumbers[i] = byteCharacters.charCodeAt(i);
+                        }
+                        const byteArray = new Uint8Array(byteNumbers);
+                        const blob = new Blob([byteArray], { type: "image/png" });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement("a");
+                        a.href = url;
+                        a.download = `handwriting-realistic-${selectedItem.id}.png`;
+                        a.click();
+                        URL.revokeObjectURL(url);
+                      }}
+                      className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-2 font-semibold text-white hover:brightness-110"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
+                      </svg>
+                      Download Realistic
+                    </button>
+                  )}
+
+                  {/* Regenerate Realistic */}
+                  {selectedItem.realisticPng && (
+                    <button
+                      onClick={handleClearRealistic}
+                      disabled={clearRealisticMutation.isPending}
+                      className="flex items-center gap-2 rounded-lg border border-amber-500/50 bg-amber-500/10 px-4 py-2 font-semibold text-amber-400 hover:bg-amber-500/20 disabled:opacity-50"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
+                      </svg>
+                      Regenerate
+                    </button>
+                  )}
+                  
                   <button
                     onClick={() => handleToggleFavorite(selectedItem.id, {} as React.MouseEvent)}
                     className={`flex items-center gap-2 rounded-lg px-4 py-2 font-semibold ${
@@ -547,17 +819,8 @@ export function GalleryDashboard() {
                         : "border border-white/20 bg-white/10 text-white hover:bg-white/20"
                     }`}
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
-                        clipRule="evenodd"
-                      />
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
                     </svg>
                     {selectedItem.isFavorite ? "Unfavorite" : "Favorite"}
                   </button>
@@ -566,17 +829,8 @@ export function GalleryDashboard() {
                     disabled={deleteMutation.isPending}
                     className="flex items-center gap-2 rounded-lg border border-red-500/50 bg-red-500/10 px-4 py-2 font-semibold text-red-400 hover:bg-red-500/20 disabled:opacity-50"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                        clipRule="evenodd"
-                      />
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
                     </svg>
                     Delete
                   </button>

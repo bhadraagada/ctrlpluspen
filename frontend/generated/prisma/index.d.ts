@@ -10993,6 +10993,7 @@ export namespace Prisma {
     style: number | null
     bias: number | null
     strokeWidth: number | null
+    wearLevel: number | null
     linesCount: number | null
     charactersCount: number | null
   }
@@ -11001,6 +11002,7 @@ export namespace Prisma {
     style: number | null
     bias: number | null
     strokeWidth: number | null
+    wearLevel: number | null
     linesCount: number | null
     charactersCount: number | null
   }
@@ -11018,6 +11020,12 @@ export namespace Prisma {
     fileKey: string | null
     fileName: string | null
     svgContent: string | null
+    realisticPng: string | null
+    realisticUrl: string | null
+    realisticKey: string | null
+    paperType: string | null
+    inkType: string | null
+    wearLevel: number | null
     linesCount: number | null
     charactersCount: number | null
     errorMessage: string | null
@@ -11040,6 +11048,12 @@ export namespace Prisma {
     fileKey: string | null
     fileName: string | null
     svgContent: string | null
+    realisticPng: string | null
+    realisticUrl: string | null
+    realisticKey: string | null
+    paperType: string | null
+    inkType: string | null
+    wearLevel: number | null
     linesCount: number | null
     charactersCount: number | null
     errorMessage: string | null
@@ -11062,6 +11076,12 @@ export namespace Prisma {
     fileKey: number
     fileName: number
     svgContent: number
+    realisticPng: number
+    realisticUrl: number
+    realisticKey: number
+    paperType: number
+    inkType: number
+    wearLevel: number
     linesCount: number
     charactersCount: number
     errorMessage: number
@@ -11078,6 +11098,7 @@ export namespace Prisma {
     style?: true
     bias?: true
     strokeWidth?: true
+    wearLevel?: true
     linesCount?: true
     charactersCount?: true
   }
@@ -11086,6 +11107,7 @@ export namespace Prisma {
     style?: true
     bias?: true
     strokeWidth?: true
+    wearLevel?: true
     linesCount?: true
     charactersCount?: true
   }
@@ -11103,6 +11125,12 @@ export namespace Prisma {
     fileKey?: true
     fileName?: true
     svgContent?: true
+    realisticPng?: true
+    realisticUrl?: true
+    realisticKey?: true
+    paperType?: true
+    inkType?: true
+    wearLevel?: true
     linesCount?: true
     charactersCount?: true
     errorMessage?: true
@@ -11125,6 +11153,12 @@ export namespace Prisma {
     fileKey?: true
     fileName?: true
     svgContent?: true
+    realisticPng?: true
+    realisticUrl?: true
+    realisticKey?: true
+    paperType?: true
+    inkType?: true
+    wearLevel?: true
     linesCount?: true
     charactersCount?: true
     errorMessage?: true
@@ -11147,6 +11181,12 @@ export namespace Prisma {
     fileKey?: true
     fileName?: true
     svgContent?: true
+    realisticPng?: true
+    realisticUrl?: true
+    realisticKey?: true
+    paperType?: true
+    inkType?: true
+    wearLevel?: true
     linesCount?: true
     charactersCount?: true
     errorMessage?: true
@@ -11257,6 +11297,12 @@ export namespace Prisma {
     fileKey: string | null
     fileName: string | null
     svgContent: string | null
+    realisticPng: string | null
+    realisticUrl: string | null
+    realisticKey: string | null
+    paperType: string | null
+    inkType: string | null
+    wearLevel: number | null
     linesCount: number
     charactersCount: number
     errorMessage: string | null
@@ -11299,6 +11345,12 @@ export namespace Prisma {
     fileKey?: boolean
     fileName?: boolean
     svgContent?: boolean
+    realisticPng?: boolean
+    realisticUrl?: boolean
+    realisticKey?: boolean
+    paperType?: boolean
+    inkType?: boolean
+    wearLevel?: boolean
     linesCount?: boolean
     charactersCount?: boolean
     errorMessage?: boolean
@@ -11324,6 +11376,12 @@ export namespace Prisma {
     fileKey?: boolean
     fileName?: boolean
     svgContent?: boolean
+    realisticPng?: boolean
+    realisticUrl?: boolean
+    realisticKey?: boolean
+    paperType?: boolean
+    inkType?: boolean
+    wearLevel?: boolean
     linesCount?: boolean
     charactersCount?: boolean
     errorMessage?: boolean
@@ -11349,6 +11407,12 @@ export namespace Prisma {
     fileKey?: boolean
     fileName?: boolean
     svgContent?: boolean
+    realisticPng?: boolean
+    realisticUrl?: boolean
+    realisticKey?: boolean
+    paperType?: boolean
+    inkType?: boolean
+    wearLevel?: boolean
     linesCount?: boolean
     charactersCount?: boolean
     errorMessage?: boolean
@@ -11374,6 +11438,12 @@ export namespace Prisma {
     fileKey?: boolean
     fileName?: boolean
     svgContent?: boolean
+    realisticPng?: boolean
+    realisticUrl?: boolean
+    realisticKey?: boolean
+    paperType?: boolean
+    inkType?: boolean
+    wearLevel?: boolean
     linesCount?: boolean
     charactersCount?: boolean
     errorMessage?: boolean
@@ -11384,7 +11454,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type SavedGenerationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "status" | "text" | "style" | "bias" | "strokeColor" | "strokeWidth" | "fileUrl" | "fileKey" | "fileName" | "svgContent" | "linesCount" | "charactersCount" | "errorMessage" | "batchJobId" | "isFavorite" | "tags" | "createdAt" | "updatedAt", ExtArgs["result"]["savedGeneration"]>
+  export type SavedGenerationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "status" | "text" | "style" | "bias" | "strokeColor" | "strokeWidth" | "fileUrl" | "fileKey" | "fileName" | "svgContent" | "realisticPng" | "realisticUrl" | "realisticKey" | "paperType" | "inkType" | "wearLevel" | "linesCount" | "charactersCount" | "errorMessage" | "batchJobId" | "isFavorite" | "tags" | "createdAt" | "updatedAt", ExtArgs["result"]["savedGeneration"]>
   export type SavedGenerationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     batchJob?: boolean | SavedGeneration$batchJobArgs<ExtArgs>
@@ -11417,6 +11487,12 @@ export namespace Prisma {
       fileKey: string | null
       fileName: string | null
       svgContent: string | null
+      realisticPng: string | null
+      realisticUrl: string | null
+      realisticKey: string | null
+      paperType: string | null
+      inkType: string | null
+      wearLevel: number | null
       linesCount: number
       charactersCount: number
       errorMessage: string | null
@@ -11862,6 +11938,12 @@ export namespace Prisma {
     readonly fileKey: FieldRef<"SavedGeneration", 'String'>
     readonly fileName: FieldRef<"SavedGeneration", 'String'>
     readonly svgContent: FieldRef<"SavedGeneration", 'String'>
+    readonly realisticPng: FieldRef<"SavedGeneration", 'String'>
+    readonly realisticUrl: FieldRef<"SavedGeneration", 'String'>
+    readonly realisticKey: FieldRef<"SavedGeneration", 'String'>
+    readonly paperType: FieldRef<"SavedGeneration", 'String'>
+    readonly inkType: FieldRef<"SavedGeneration", 'String'>
+    readonly wearLevel: FieldRef<"SavedGeneration", 'Float'>
     readonly linesCount: FieldRef<"SavedGeneration", 'Int'>
     readonly charactersCount: FieldRef<"SavedGeneration", 'Int'>
     readonly errorMessage: FieldRef<"SavedGeneration", 'String'>
@@ -13663,6 +13745,12 @@ export namespace Prisma {
     fileKey: 'fileKey',
     fileName: 'fileName',
     svgContent: 'svgContent',
+    realisticPng: 'realisticPng',
+    realisticUrl: 'realisticUrl',
+    realisticKey: 'realisticKey',
+    paperType: 'paperType',
+    inkType: 'inkType',
+    wearLevel: 'wearLevel',
     linesCount: 'linesCount',
     charactersCount: 'charactersCount',
     errorMessage: 'errorMessage',
@@ -14484,6 +14572,12 @@ export namespace Prisma {
     fileKey?: StringNullableFilter<"SavedGeneration"> | string | null
     fileName?: StringNullableFilter<"SavedGeneration"> | string | null
     svgContent?: StringNullableFilter<"SavedGeneration"> | string | null
+    realisticPng?: StringNullableFilter<"SavedGeneration"> | string | null
+    realisticUrl?: StringNullableFilter<"SavedGeneration"> | string | null
+    realisticKey?: StringNullableFilter<"SavedGeneration"> | string | null
+    paperType?: StringNullableFilter<"SavedGeneration"> | string | null
+    inkType?: StringNullableFilter<"SavedGeneration"> | string | null
+    wearLevel?: FloatNullableFilter<"SavedGeneration"> | number | null
     linesCount?: IntFilter<"SavedGeneration"> | number
     charactersCount?: IntFilter<"SavedGeneration"> | number
     errorMessage?: StringNullableFilter<"SavedGeneration"> | string | null
@@ -14509,6 +14603,12 @@ export namespace Prisma {
     fileKey?: SortOrderInput | SortOrder
     fileName?: SortOrderInput | SortOrder
     svgContent?: SortOrderInput | SortOrder
+    realisticPng?: SortOrderInput | SortOrder
+    realisticUrl?: SortOrderInput | SortOrder
+    realisticKey?: SortOrderInput | SortOrder
+    paperType?: SortOrderInput | SortOrder
+    inkType?: SortOrderInput | SortOrder
+    wearLevel?: SortOrderInput | SortOrder
     linesCount?: SortOrder
     charactersCount?: SortOrder
     errorMessage?: SortOrderInput | SortOrder
@@ -14524,6 +14624,7 @@ export namespace Prisma {
   export type SavedGenerationWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     fileKey?: string
+    realisticKey?: string
     AND?: SavedGenerationWhereInput | SavedGenerationWhereInput[]
     OR?: SavedGenerationWhereInput[]
     NOT?: SavedGenerationWhereInput | SavedGenerationWhereInput[]
@@ -14537,6 +14638,11 @@ export namespace Prisma {
     fileUrl?: StringNullableFilter<"SavedGeneration"> | string | null
     fileName?: StringNullableFilter<"SavedGeneration"> | string | null
     svgContent?: StringNullableFilter<"SavedGeneration"> | string | null
+    realisticPng?: StringNullableFilter<"SavedGeneration"> | string | null
+    realisticUrl?: StringNullableFilter<"SavedGeneration"> | string | null
+    paperType?: StringNullableFilter<"SavedGeneration"> | string | null
+    inkType?: StringNullableFilter<"SavedGeneration"> | string | null
+    wearLevel?: FloatNullableFilter<"SavedGeneration"> | number | null
     linesCount?: IntFilter<"SavedGeneration"> | number
     charactersCount?: IntFilter<"SavedGeneration"> | number
     errorMessage?: StringNullableFilter<"SavedGeneration"> | string | null
@@ -14547,7 +14653,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"SavedGeneration"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     batchJob?: XOR<BatchJobNullableScalarRelationFilter, BatchJobWhereInput> | null
-  }, "id" | "fileKey">
+  }, "id" | "fileKey" | "realisticKey">
 
   export type SavedGenerationOrderByWithAggregationInput = {
     id?: SortOrder
@@ -14562,6 +14668,12 @@ export namespace Prisma {
     fileKey?: SortOrderInput | SortOrder
     fileName?: SortOrderInput | SortOrder
     svgContent?: SortOrderInput | SortOrder
+    realisticPng?: SortOrderInput | SortOrder
+    realisticUrl?: SortOrderInput | SortOrder
+    realisticKey?: SortOrderInput | SortOrder
+    paperType?: SortOrderInput | SortOrder
+    inkType?: SortOrderInput | SortOrder
+    wearLevel?: SortOrderInput | SortOrder
     linesCount?: SortOrder
     charactersCount?: SortOrder
     errorMessage?: SortOrderInput | SortOrder
@@ -14593,6 +14705,12 @@ export namespace Prisma {
     fileKey?: StringNullableWithAggregatesFilter<"SavedGeneration"> | string | null
     fileName?: StringNullableWithAggregatesFilter<"SavedGeneration"> | string | null
     svgContent?: StringNullableWithAggregatesFilter<"SavedGeneration"> | string | null
+    realisticPng?: StringNullableWithAggregatesFilter<"SavedGeneration"> | string | null
+    realisticUrl?: StringNullableWithAggregatesFilter<"SavedGeneration"> | string | null
+    realisticKey?: StringNullableWithAggregatesFilter<"SavedGeneration"> | string | null
+    paperType?: StringNullableWithAggregatesFilter<"SavedGeneration"> | string | null
+    inkType?: StringNullableWithAggregatesFilter<"SavedGeneration"> | string | null
+    wearLevel?: FloatNullableWithAggregatesFilter<"SavedGeneration"> | number | null
     linesCount?: IntWithAggregatesFilter<"SavedGeneration"> | number
     charactersCount?: IntWithAggregatesFilter<"SavedGeneration"> | number
     errorMessage?: StringNullableWithAggregatesFilter<"SavedGeneration"> | string | null
@@ -15377,6 +15495,12 @@ export namespace Prisma {
     fileKey?: string | null
     fileName?: string | null
     svgContent?: string | null
+    realisticPng?: string | null
+    realisticUrl?: string | null
+    realisticKey?: string | null
+    paperType?: string | null
+    inkType?: string | null
+    wearLevel?: number | null
     linesCount?: number
     charactersCount?: number
     errorMessage?: string | null
@@ -15401,6 +15525,12 @@ export namespace Prisma {
     fileKey?: string | null
     fileName?: string | null
     svgContent?: string | null
+    realisticPng?: string | null
+    realisticUrl?: string | null
+    realisticKey?: string | null
+    paperType?: string | null
+    inkType?: string | null
+    wearLevel?: number | null
     linesCount?: number
     charactersCount?: number
     errorMessage?: string | null
@@ -15423,6 +15553,12 @@ export namespace Prisma {
     fileKey?: NullableStringFieldUpdateOperationsInput | string | null
     fileName?: NullableStringFieldUpdateOperationsInput | string | null
     svgContent?: NullableStringFieldUpdateOperationsInput | string | null
+    realisticPng?: NullableStringFieldUpdateOperationsInput | string | null
+    realisticUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    realisticKey?: NullableStringFieldUpdateOperationsInput | string | null
+    paperType?: NullableStringFieldUpdateOperationsInput | string | null
+    inkType?: NullableStringFieldUpdateOperationsInput | string | null
+    wearLevel?: NullableFloatFieldUpdateOperationsInput | number | null
     linesCount?: IntFieldUpdateOperationsInput | number
     charactersCount?: IntFieldUpdateOperationsInput | number
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15447,6 +15583,12 @@ export namespace Prisma {
     fileKey?: NullableStringFieldUpdateOperationsInput | string | null
     fileName?: NullableStringFieldUpdateOperationsInput | string | null
     svgContent?: NullableStringFieldUpdateOperationsInput | string | null
+    realisticPng?: NullableStringFieldUpdateOperationsInput | string | null
+    realisticUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    realisticKey?: NullableStringFieldUpdateOperationsInput | string | null
+    paperType?: NullableStringFieldUpdateOperationsInput | string | null
+    inkType?: NullableStringFieldUpdateOperationsInput | string | null
+    wearLevel?: NullableFloatFieldUpdateOperationsInput | number | null
     linesCount?: IntFieldUpdateOperationsInput | number
     charactersCount?: IntFieldUpdateOperationsInput | number
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15470,6 +15612,12 @@ export namespace Prisma {
     fileKey?: string | null
     fileName?: string | null
     svgContent?: string | null
+    realisticPng?: string | null
+    realisticUrl?: string | null
+    realisticKey?: string | null
+    paperType?: string | null
+    inkType?: string | null
+    wearLevel?: number | null
     linesCount?: number
     charactersCount?: number
     errorMessage?: string | null
@@ -15492,6 +15640,12 @@ export namespace Prisma {
     fileKey?: NullableStringFieldUpdateOperationsInput | string | null
     fileName?: NullableStringFieldUpdateOperationsInput | string | null
     svgContent?: NullableStringFieldUpdateOperationsInput | string | null
+    realisticPng?: NullableStringFieldUpdateOperationsInput | string | null
+    realisticUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    realisticKey?: NullableStringFieldUpdateOperationsInput | string | null
+    paperType?: NullableStringFieldUpdateOperationsInput | string | null
+    inkType?: NullableStringFieldUpdateOperationsInput | string | null
+    wearLevel?: NullableFloatFieldUpdateOperationsInput | number | null
     linesCount?: IntFieldUpdateOperationsInput | number
     charactersCount?: IntFieldUpdateOperationsInput | number
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15514,6 +15668,12 @@ export namespace Prisma {
     fileKey?: NullableStringFieldUpdateOperationsInput | string | null
     fileName?: NullableStringFieldUpdateOperationsInput | string | null
     svgContent?: NullableStringFieldUpdateOperationsInput | string | null
+    realisticPng?: NullableStringFieldUpdateOperationsInput | string | null
+    realisticUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    realisticKey?: NullableStringFieldUpdateOperationsInput | string | null
+    paperType?: NullableStringFieldUpdateOperationsInput | string | null
+    inkType?: NullableStringFieldUpdateOperationsInput | string | null
+    wearLevel?: NullableFloatFieldUpdateOperationsInput | number | null
     linesCount?: IntFieldUpdateOperationsInput | number
     charactersCount?: IntFieldUpdateOperationsInput | number
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -16357,6 +16517,12 @@ export namespace Prisma {
     fileKey?: SortOrder
     fileName?: SortOrder
     svgContent?: SortOrder
+    realisticPng?: SortOrder
+    realisticUrl?: SortOrder
+    realisticKey?: SortOrder
+    paperType?: SortOrder
+    inkType?: SortOrder
+    wearLevel?: SortOrder
     linesCount?: SortOrder
     charactersCount?: SortOrder
     errorMessage?: SortOrder
@@ -16371,6 +16537,7 @@ export namespace Prisma {
     style?: SortOrder
     bias?: SortOrder
     strokeWidth?: SortOrder
+    wearLevel?: SortOrder
     linesCount?: SortOrder
     charactersCount?: SortOrder
   }
@@ -16388,6 +16555,12 @@ export namespace Prisma {
     fileKey?: SortOrder
     fileName?: SortOrder
     svgContent?: SortOrder
+    realisticPng?: SortOrder
+    realisticUrl?: SortOrder
+    realisticKey?: SortOrder
+    paperType?: SortOrder
+    inkType?: SortOrder
+    wearLevel?: SortOrder
     linesCount?: SortOrder
     charactersCount?: SortOrder
     errorMessage?: SortOrder
@@ -16410,6 +16583,12 @@ export namespace Prisma {
     fileKey?: SortOrder
     fileName?: SortOrder
     svgContent?: SortOrder
+    realisticPng?: SortOrder
+    realisticUrl?: SortOrder
+    realisticKey?: SortOrder
+    paperType?: SortOrder
+    inkType?: SortOrder
+    wearLevel?: SortOrder
     linesCount?: SortOrder
     charactersCount?: SortOrder
     errorMessage?: SortOrder
@@ -16423,6 +16602,7 @@ export namespace Prisma {
     style?: SortOrder
     bias?: SortOrder
     strokeWidth?: SortOrder
+    wearLevel?: SortOrder
     linesCount?: SortOrder
     charactersCount?: SortOrder
   }
@@ -17708,6 +17888,12 @@ export namespace Prisma {
     fileKey?: string | null
     fileName?: string | null
     svgContent?: string | null
+    realisticPng?: string | null
+    realisticUrl?: string | null
+    realisticKey?: string | null
+    paperType?: string | null
+    inkType?: string | null
+    wearLevel?: number | null
     linesCount?: number
     charactersCount?: number
     errorMessage?: string | null
@@ -17730,6 +17916,12 @@ export namespace Prisma {
     fileKey?: string | null
     fileName?: string | null
     svgContent?: string | null
+    realisticPng?: string | null
+    realisticUrl?: string | null
+    realisticKey?: string | null
+    paperType?: string | null
+    inkType?: string | null
+    wearLevel?: number | null
     linesCount?: number
     charactersCount?: number
     errorMessage?: string | null
@@ -17980,6 +18172,12 @@ export namespace Prisma {
     fileKey?: StringNullableFilter<"SavedGeneration"> | string | null
     fileName?: StringNullableFilter<"SavedGeneration"> | string | null
     svgContent?: StringNullableFilter<"SavedGeneration"> | string | null
+    realisticPng?: StringNullableFilter<"SavedGeneration"> | string | null
+    realisticUrl?: StringNullableFilter<"SavedGeneration"> | string | null
+    realisticKey?: StringNullableFilter<"SavedGeneration"> | string | null
+    paperType?: StringNullableFilter<"SavedGeneration"> | string | null
+    inkType?: StringNullableFilter<"SavedGeneration"> | string | null
+    wearLevel?: FloatNullableFilter<"SavedGeneration"> | number | null
     linesCount?: IntFilter<"SavedGeneration"> | number
     charactersCount?: IntFilter<"SavedGeneration"> | number
     errorMessage?: StringNullableFilter<"SavedGeneration"> | string | null
@@ -18536,6 +18734,12 @@ export namespace Prisma {
     fileKey?: string | null
     fileName?: string | null
     svgContent?: string | null
+    realisticPng?: string | null
+    realisticUrl?: string | null
+    realisticKey?: string | null
+    paperType?: string | null
+    inkType?: string | null
+    wearLevel?: number | null
     linesCount?: number
     charactersCount?: number
     errorMessage?: string | null
@@ -18559,6 +18763,12 @@ export namespace Prisma {
     fileKey?: string | null
     fileName?: string | null
     svgContent?: string | null
+    realisticPng?: string | null
+    realisticUrl?: string | null
+    realisticKey?: string | null
+    paperType?: string | null
+    inkType?: string | null
+    wearLevel?: number | null
     linesCount?: number
     charactersCount?: number
     errorMessage?: string | null
@@ -18699,6 +18909,12 @@ export namespace Prisma {
     fileKey?: string | null
     fileName?: string | null
     svgContent?: string | null
+    realisticPng?: string | null
+    realisticUrl?: string | null
+    realisticKey?: string | null
+    paperType?: string | null
+    inkType?: string | null
+    wearLevel?: number | null
     linesCount?: number
     charactersCount?: number
     errorMessage?: string | null
@@ -18884,6 +19100,12 @@ export namespace Prisma {
     fileKey?: NullableStringFieldUpdateOperationsInput | string | null
     fileName?: NullableStringFieldUpdateOperationsInput | string | null
     svgContent?: NullableStringFieldUpdateOperationsInput | string | null
+    realisticPng?: NullableStringFieldUpdateOperationsInput | string | null
+    realisticUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    realisticKey?: NullableStringFieldUpdateOperationsInput | string | null
+    paperType?: NullableStringFieldUpdateOperationsInput | string | null
+    inkType?: NullableStringFieldUpdateOperationsInput | string | null
+    wearLevel?: NullableFloatFieldUpdateOperationsInput | number | null
     linesCount?: IntFieldUpdateOperationsInput | number
     charactersCount?: IntFieldUpdateOperationsInput | number
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -18906,6 +19128,12 @@ export namespace Prisma {
     fileKey?: NullableStringFieldUpdateOperationsInput | string | null
     fileName?: NullableStringFieldUpdateOperationsInput | string | null
     svgContent?: NullableStringFieldUpdateOperationsInput | string | null
+    realisticPng?: NullableStringFieldUpdateOperationsInput | string | null
+    realisticUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    realisticKey?: NullableStringFieldUpdateOperationsInput | string | null
+    paperType?: NullableStringFieldUpdateOperationsInput | string | null
+    inkType?: NullableStringFieldUpdateOperationsInput | string | null
+    wearLevel?: NullableFloatFieldUpdateOperationsInput | number | null
     linesCount?: IntFieldUpdateOperationsInput | number
     charactersCount?: IntFieldUpdateOperationsInput | number
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -18928,6 +19156,12 @@ export namespace Prisma {
     fileKey?: NullableStringFieldUpdateOperationsInput | string | null
     fileName?: NullableStringFieldUpdateOperationsInput | string | null
     svgContent?: NullableStringFieldUpdateOperationsInput | string | null
+    realisticPng?: NullableStringFieldUpdateOperationsInput | string | null
+    realisticUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    realisticKey?: NullableStringFieldUpdateOperationsInput | string | null
+    paperType?: NullableStringFieldUpdateOperationsInput | string | null
+    inkType?: NullableStringFieldUpdateOperationsInput | string | null
+    wearLevel?: NullableFloatFieldUpdateOperationsInput | number | null
     linesCount?: IntFieldUpdateOperationsInput | number
     charactersCount?: IntFieldUpdateOperationsInput | number
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -19028,6 +19262,12 @@ export namespace Prisma {
     fileKey?: string | null
     fileName?: string | null
     svgContent?: string | null
+    realisticPng?: string | null
+    realisticUrl?: string | null
+    realisticKey?: string | null
+    paperType?: string | null
+    inkType?: string | null
+    wearLevel?: number | null
     linesCount?: number
     charactersCount?: number
     errorMessage?: string | null
@@ -19049,6 +19289,12 @@ export namespace Prisma {
     fileKey?: NullableStringFieldUpdateOperationsInput | string | null
     fileName?: NullableStringFieldUpdateOperationsInput | string | null
     svgContent?: NullableStringFieldUpdateOperationsInput | string | null
+    realisticPng?: NullableStringFieldUpdateOperationsInput | string | null
+    realisticUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    realisticKey?: NullableStringFieldUpdateOperationsInput | string | null
+    paperType?: NullableStringFieldUpdateOperationsInput | string | null
+    inkType?: NullableStringFieldUpdateOperationsInput | string | null
+    wearLevel?: NullableFloatFieldUpdateOperationsInput | number | null
     linesCount?: IntFieldUpdateOperationsInput | number
     charactersCount?: IntFieldUpdateOperationsInput | number
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -19072,6 +19318,12 @@ export namespace Prisma {
     fileKey?: NullableStringFieldUpdateOperationsInput | string | null
     fileName?: NullableStringFieldUpdateOperationsInput | string | null
     svgContent?: NullableStringFieldUpdateOperationsInput | string | null
+    realisticPng?: NullableStringFieldUpdateOperationsInput | string | null
+    realisticUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    realisticKey?: NullableStringFieldUpdateOperationsInput | string | null
+    paperType?: NullableStringFieldUpdateOperationsInput | string | null
+    inkType?: NullableStringFieldUpdateOperationsInput | string | null
+    wearLevel?: NullableFloatFieldUpdateOperationsInput | number | null
     linesCount?: IntFieldUpdateOperationsInput | number
     charactersCount?: IntFieldUpdateOperationsInput | number
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -19094,6 +19346,12 @@ export namespace Prisma {
     fileKey?: NullableStringFieldUpdateOperationsInput | string | null
     fileName?: NullableStringFieldUpdateOperationsInput | string | null
     svgContent?: NullableStringFieldUpdateOperationsInput | string | null
+    realisticPng?: NullableStringFieldUpdateOperationsInput | string | null
+    realisticUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    realisticKey?: NullableStringFieldUpdateOperationsInput | string | null
+    paperType?: NullableStringFieldUpdateOperationsInput | string | null
+    inkType?: NullableStringFieldUpdateOperationsInput | string | null
+    wearLevel?: NullableFloatFieldUpdateOperationsInput | number | null
     linesCount?: IntFieldUpdateOperationsInput | number
     charactersCount?: IntFieldUpdateOperationsInput | number
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null

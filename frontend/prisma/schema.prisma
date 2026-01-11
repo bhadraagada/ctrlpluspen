@@ -187,6 +187,14 @@ model SavedGeneration {
     // SVG data (stored directly for batch, can be uploaded later)
     svgContent      String?  @db.Text
     
+    // Realistic rendering (post-processed PNG)
+    realisticPng      String?  @db.Text  // Base64 encoded PNG
+    realisticUrl      String?            // URL if uploaded to storage
+    realisticKey      String?  @unique   // UploadThing key
+    paperType         String?            // white, cream, aged, lined, grid, recycled
+    inkType           String?            // ballpoint, gel, fountain, marker, pencil
+    wearLevel         Float?             // 0-1 degradation level
+    
     // Metadata
     linesCount      Int      @default(0)
     charactersCount Int      @default(0)
