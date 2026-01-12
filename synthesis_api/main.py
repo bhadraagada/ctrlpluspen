@@ -561,6 +561,157 @@ async def get_realistic_options():
     }
 
 
+# ============================================================================
+# TrOCR-based Full OCR Endpoints
+# ============================================================================
+
+# Lazy load the TrOCR module
+_trocr_module = None
+
+
+def get_trocr():
+    """Lazy load the TrOCR module"""
+    global _trocr_module
+    if _trocr_module is None:
+        from trocr_ocr import (
+            recognize_from_base64,
+            recognize_document,
+            check_trocr_available,
+        )
+
+        _trocr_module = {
+            "recognize_from_base64": recognize_from_base64,
+            "recognize_document": recognize_document,
+            "check_available": check_trocr_available,
+        }
+    return _trocr_module
+
+
+class OCRRequest(BaseModel):
+    """Request model for OCR from base64 image"""
+
+    image_base64: str = Field(..., description="Base64 encoded image (PNG/JPEG)")
+    preprocess: bool = Field(default=True, description="Whether to preprocess the image")
+    segment_lines: bool = Field(default=True, description="Whether to segment into lines")
+
+
+class OCRLineResult(BaseModel):
+    """Result for a single line of text"""
+
+    line_number: int
+    text: str
+    confidence: float
+
+
+class OCRResponse(BaseModel):
+    """Response model for OCR"""
+
+    text: str = Field(..., description="Full recognized text")
+    lines: list[OCRLineResult] = Field(..., description="Individual line results")
+    num_lines: int = Field(..., description="Number of lines detected")
+    avg_confidence: float = Field(..., description="Average confidence score")
+    processing_time_ms: float = Field(..., description="Processing time in milliseconds")
+
+
+@app.post("/ocr/recognize", response_model=OCRResponse)
+async def ocr_recognize(request: OCRRequest):
+    """
+    Recognize handwritten text from an image using TrOCR.
+
+    - **image_base64**: Base64 encoded image of handwritten text
+    - **preprocess**: Whether to preprocess the image (recommended)
+    - **segment_lines**: Whether to segment into individual lines
+
+    Returns the recognized text with line-by-line results and confidence scores.
+    """
+    try:
+        trocr = get_trocr()
+
+        result = trocr["recognize_from_base64"](
+            request.image_base64,
+            preprocess=request.preprocess,
+            segment_lines_enabled=request.segment_lines,
+        )
+
+        return OCRResponse(
+            text=result["text"],
+            lines=[
+                OCRLineResult(
+                    line_number=line["line_number"],
+                    text=line["text"],
+                    confidence=round(line["confidence"], 4),
+                )
+                for line in result["lines"]
+            ],
+            num_lines=result["num_lines"],
+            avg_confidence=round(result["avg_confidence"], 4),
+            processing_time_ms=round(result["processing_time_ms"], 2),
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"OCR failed: {str(e)}")
+
+
+@app.get("/ocr/health")
+async def ocr_health():
+    """Check if OCR service is available and ready"""
+    try:
+        trocr = get_trocr()
+        status = trocr["check_available"]()
+
+        # Determine device
+        device = "unknown"
+        if status["pytorch_installed"]:
+            import torch
+
+            device = "cuda" if torch.cuda.is_available() else "cpu"
+
+        return {
+            "status": "healthy" if status["ready"] else "unavailable",
+            "models_loaded": _trocr_module is not None,
+            "device": device,
+            "dependencies": status,
+        }
+    except Exception as e:
+        return {
+            "status": "unhealthy",
+            "models_loaded": False,
+            "device": "unknown",
+            "error": str(e),
+        }
+
+
+@app.get("/ocr/info")
+async def get_ocr_info():
+    """Get information about the OCR service"""
+    try:
+        trocr = get_trocr()
+        status = trocr["check_available"]()
+
+        return {
+            "service": "TrOCR Handwriting Recognition",
+            "model": "microsoft/trocr-base-handwritten",
+            "description": "Transformer-based OCR specifically trained for handwritten text",
+            "capabilities": [
+                "Handwritten text recognition",
+                "Multi-line document support",
+                "Automatic line segmentation",
+                "Image preprocessing",
+            ],
+            "supported_formats": ["PNG", "JPEG", "WebP", "BMP"],
+            "max_image_size": "Recommended under 2000x2000 pixels",
+            "dependencies_ready": status["ready"],
+            "note": "For best results, use clear images with good contrast",
+        }
+    except Exception as e:
+        return {
+            "service": "TrOCR Handwriting Recognition",
+            "status": "unavailable",
+            "error": str(e),
+        }
+
+
 if __name__ == "__main__":
     import uvicorn
 

@@ -99,6 +99,18 @@ const PRESET_COLORS = [
   { name: "Forest Green", value: "#276749" },
 ];
 
+interface VerificationResult {
+  text: string;
+  lines: Array<{
+    lineNumber: number;
+    text: string;
+    confidence: number;
+  }>;
+  numLines: number;
+  avgConfidence: number;
+  processingTimeMs: number;
+}
+
 export function SynthesisDashboard() {
   const { data: session } = useSession();
   const [text, setText] = useState("Hello World!");
@@ -116,6 +128,9 @@ export function SynthesisDashboard() {
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [showBatchMode, setShowBatchMode] = useState(false);
+  const [verificationResult, setVerificationResult] =
+    useState<VerificationResult | null>(null);
+  const [isVerifying, setIsVerifying] = useState(false);
 
   const utils = api.useUtils();
 
@@ -138,6 +153,7 @@ export function SynthesisDashboard() {
       setResult(data);
       setError(null);
       setSaveSuccess(false); // Reset save status for new generation
+      setVerificationResult(null); // Clear previous verification
       void utils.credits.getBalance.invalidate();
       void utils.synthesis.getUsageStats.invalidate();
     },
@@ -156,6 +172,9 @@ export function SynthesisDashboard() {
       setError(`Failed to save: ${err.message}`);
     },
   });
+
+  // Recognition mutation for verification
+  const recognizeMutation = api.synthesis.recognizeHandwriting.useMutation();
 
   // Text validation
   const textValidation = useMemo(() => {
@@ -277,6 +296,66 @@ export function SynthesisDashboard() {
       setIsSaving(false);
     }
   }, [result, text, style, bias, strokeColor, strokeWidth, startUpload, saveGenerationMutation]);
+
+  // Verify synthesized handwriting with OCR
+  const handleVerifyWithOcr = useCallback(async () => {
+    if (!result?.svgRaw) return;
+
+    setIsVerifying(true);
+    setVerificationResult(null);
+
+    try {
+      // Convert SVG to PNG using canvas
+      const svgBlob = new Blob([result.svgRaw], { type: "image/svg+xml" });
+      const url = URL.createObjectURL(svgBlob);
+      
+      const img = new Image();
+      img.src = url;
+      
+      await new Promise((resolve, reject) => {
+        img.onload = resolve;
+        img.onerror = reject;
+      });
+
+      // Create canvas and draw SVG
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width || 800;
+      canvas.height = img.height || 200;
+      const ctx = canvas.getContext("2d");
+      
+      if (!ctx) throw new Error("Could not get canvas context");
+      
+      // White background
+      ctx.fillStyle = "white";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, 0, 0);
+      
+      URL.revokeObjectURL(url);
+
+      // Get base64 (remove data URL prefix)
+      const dataUrl = canvas.toDataURL("image/png");
+      const base64Data = dataUrl.split(",")[1]!;
+
+      // Call recognition API
+      const recognitionResult = await recognizeMutation.mutateAsync({
+        imageBase64: base64Data,
+        preprocess: true,
+        segmentLines: true,
+      });
+
+      setVerificationResult({
+        text: recognitionResult.text,
+        lines: recognitionResult.lines,
+        numLines: recognitionResult.numLines,
+        avgConfidence: recognitionResult.avgConfidence,
+        processingTimeMs: recognitionResult.processingTimeMs,
+      });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Verification failed");
+    } finally {
+      setIsVerifying(false);
+    }
+  }, [result, recognizeMutation]);
 
   const isBackendHealthy = healthQuery.data?.status === "healthy";
   const hasNoCredits = (statsQuery.data?.credits ?? 0) < 1;
@@ -696,6 +775,31 @@ export function SynthesisDashboard() {
                   </svg>
                   Download
                 </button>
+                <button
+                  onClick={handleVerifyWithOcr}
+                  disabled={isVerifying}
+                  className="flex items-center gap-2 rounded-full border border-purple-400/40 bg-purple-500/20 px-4 py-2 text-sm font-semibold text-purple-200 transition hover:bg-purple-500/30 disabled:opacity-50"
+                  title="Verify handwriting quality with OCR"
+                >
+                  {isVerifying ? (
+                    <>
+                      <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"></div>
+                      Verifying...
+                    </>
+                  ) : (
+                    <>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
+                      </svg>
+                      Verify OCR
+                    </>
+                  )}
+                </button>
               </div>
             )}
           </div>
@@ -738,6 +842,97 @@ export function SynthesisDashboard() {
                   <p className="text-xs text-white/60">Credits left</p>
                 </div>
               </div>
+
+              {/* OCR Verification Results */}
+              {verificationResult && (
+                <div className="rounded-2xl border border-purple-400/30 bg-purple-500/10 p-5 shadow-lg shadow-purple-500/10">
+                  <div className="mb-4 flex items-center justify-between">
+                    <h3 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.18em] text-purple-200">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
+                      </svg>
+                      OCR Verification
+                    </h3>
+                    <button
+                      onClick={() => setVerificationResult(null)}
+                      className="text-purple-300 hover:text-white"
+                      title="Close verification results"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+
+                  {/* Recognized Text */}
+                  <div className="mb-4 rounded-xl bg-black/30 p-4">
+                    <p className="text-xs text-white/60">OCR Recognized Text</p>
+                    <p className="mt-2 whitespace-pre-wrap font-mono text-sm text-white">
+                      {verificationResult.text || "(No text recognized)"}
+                    </p>
+                  </div>
+
+                  {/* Stats */}
+                  <div className="mb-4 grid grid-cols-3 gap-3">
+                    <div className="rounded-lg bg-black/20 p-3 text-center">
+                      <p className="text-lg font-bold text-white">
+                        {verificationResult.numLines}
+                      </p>
+                      <p className="text-xs text-white/50">Lines</p>
+                    </div>
+                    <div className="rounded-lg bg-black/20 p-3 text-center">
+                      <p
+                        className={`text-lg font-bold ${
+                          verificationResult.avgConfidence >= 0.8
+                            ? "text-green-400"
+                            : verificationResult.avgConfidence >= 0.5
+                            ? "text-amber-400"
+                            : "text-red-400"
+                        }`}
+                      >
+                        {(verificationResult.avgConfidence * 100).toFixed(0)}%
+                      </p>
+                      <p className="text-xs text-white/50">Confidence</p>
+                    </div>
+                    <div className="rounded-lg bg-black/20 p-3 text-center">
+                      <p className="text-lg font-bold text-white">
+                        {verificationResult.processingTimeMs.toFixed(0)}ms
+                      </p>
+                      <p className="text-xs text-white/50">Time</p>
+                    </div>
+                  </div>
+
+                  {/* Comparison with original */}
+                  <div className="rounded-lg bg-black/20 p-3">
+                    <p className="text-xs text-white/60">Original Text</p>
+                    <p className="mt-1 whitespace-pre-wrap font-mono text-sm text-white/80">
+                      {text.slice(0, 100)}{text.length > 100 ? "..." : ""}
+                    </p>
+                    {verificationResult.text.toLowerCase().trim() === text.toLowerCase().trim() && (
+                      <p className="mt-2 flex items-center gap-1 text-xs text-green-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                        Perfect match!
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           ) : (
             <div className="flex min-h-100 items-center justify-center rounded-2xl border-2 border-dashed border-white/15 bg-white/5">

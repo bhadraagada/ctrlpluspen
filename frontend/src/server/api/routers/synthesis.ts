@@ -1075,6 +1075,162 @@ export const synthesisRouter = createTRPCRouter({
 
       return { success: true, id: updated.id };
     }),
+
+  // ==================== HANDWRITING OCR (TrOCR) ====================
+
+  // Health check for OCR service
+  ocrHealth: publicProcedure.query(async () => {
+    try {
+      const response = await fetch(`${API_URL}/ocr/health`);
+      if (!response.ok) {
+        throw new Error("OCR health check failed");
+      }
+      return await response.json() as {
+        status: string;
+        models_loaded: boolean;
+        device: string;
+        dependencies?: {
+          pytorch_installed: boolean;
+          transformers_installed: boolean;
+          cuda_available: boolean;
+          ready: boolean;
+        };
+      };
+    } catch (error) {
+      return {
+        status: "unhealthy",
+        models_loaded: false,
+        device: "unknown",
+        error: error instanceof Error ? error.message : "Connection failed",
+      };
+    }
+  }),
+
+  // Get OCR service info
+  getOcrInfo: publicProcedure.query(async () => {
+    try {
+      const response = await fetch(`${API_URL}/ocr/info`);
+      if (!response.ok) {
+        throw new Error("Failed to get OCR info");
+      }
+      return await response.json() as {
+        service: string;
+        model: string;
+        description: string;
+        capabilities: string[];
+        supported_formats: string[];
+        max_image_size: string;
+        dependencies_ready: boolean;
+        note: string;
+      };
+    } catch {
+      return {
+        service: "TrOCR Handwriting Recognition",
+        model: "microsoft/trocr-base-handwritten",
+        description: "Transformer-based OCR for handwritten text",
+        capabilities: ["Handwritten text recognition"],
+        supported_formats: ["PNG", "JPEG"],
+        max_image_size: "2000x2000",
+        dependencies_ready: false,
+        note: "OCR service unavailable",
+      };
+    }
+  }),
+
+  // Recognize handwritten text from an image
+  recognizeHandwriting: protectedProcedure
+    .input(
+      z.object({
+        imageBase64: z.string().min(1),
+        preprocess: z.boolean().default(true),
+        segmentLines: z.boolean().default(true),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+      
+      // Check if user has enough credits
+      const user = await ctx.db.user.findUnique({
+        where: { id: userId },
+        select: { credits: true },
+      });
+
+      if (!user || user.credits < 1) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Insufficient credits. Please purchase more credits to continue.",
+        });
+      }
+
+      try {
+        const response = await fetch(`${API_URL}/ocr/recognize`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            image_base64: input.imageBase64,
+            preprocess: input.preprocess,
+            segment_lines: input.segmentLines,
+          }),
+        });
+
+        if (!response.ok) {
+          const error = await response.text();
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: `OCR failed: ${error}`,
+          });
+        }
+
+        const data = await response.json() as {
+          text: string;
+          lines: Array<{
+            line_number: number;
+            text: string;
+            confidence: number;
+          }>;
+          num_lines: number;
+          avg_confidence: number;
+          processing_time_ms: number;
+        };
+
+        // Deduct credit and log usage
+        await ctx.db.$transaction([
+          ctx.db.user.update({
+            where: { id: userId },
+            data: { credits: { decrement: 1 } },
+          }),
+          ctx.db.usage.create({
+            data: {
+              userId,
+              creditsUsed: 1,
+              charactersRecognized: data.text.length,
+              regionsDetected: data.num_lines,
+              processingTimeMs: Math.round(data.processing_time_ms),
+              success: true,
+            },
+          }),
+        ]);
+
+        return {
+          text: data.text,
+          lines: data.lines.map((line) => ({
+            lineNumber: line.line_number,
+            text: line.text,
+            confidence: line.confidence,
+          })),
+          numLines: data.num_lines,
+          avgConfidence: data.avg_confidence,
+          processingTimeMs: data.processing_time_ms,
+          creditsRemaining: user.credits - 1,
+        };
+      } catch (error) {
+        if (error instanceof TRPCError) throw error;
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: error instanceof Error ? error.message : "OCR failed",
+        });
+      }
+    }),
 });
 
 // Export types for client usage

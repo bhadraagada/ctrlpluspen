@@ -1,5 +1,4 @@
 import { postRouter } from "~/server/api/routers/post";
-import { ocrRouter } from "~/server/api/routers/ocr";
 import { creditsRouter } from "~/server/api/routers/credits";
 import { authRouter } from "~/server/api/routers/auth";
 import { synthesisRouter } from "~/server/api/routers/synthesis";
@@ -12,7 +11,6 @@ import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
  */
 export const appRouter = createTRPCRouter({
   post: postRouter,
-  ocr: ocrRouter,
   credits: creditsRouter,
   auth: authRouter,
   synthesis: synthesisRouter,
