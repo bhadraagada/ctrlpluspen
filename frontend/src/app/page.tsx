@@ -332,7 +332,7 @@ export default async function Home() {
             <p className="text-sm font-semibold uppercase tracking-[0.18em] text-white/60">
               Starter
             </p>
-            <p className="mt-3 text-4xl font-semibold text-white">$4.99</p>
+            <p className="mt-3 text-4xl font-semibold text-white"><span className="text-2xl">&#8377;</span>399</p>
             <p className="text-white/60">50 credits</p>
             <p className="mt-3 text-sm text-white/70">
               Best for sampling the handwriting styles.
@@ -346,7 +346,7 @@ export default async function Home() {
                 Value
               </span>
             </div>
-            <p className="mt-3 text-4xl font-semibold text-white">$14.99</p>
+            <p className="mt-3 text-4xl font-semibold text-white"><span className="text-2xl">&#8377;</span>1,199</p>
             <p className="text-white/60">200 credits</p>
             <p className="mt-3 text-sm text-white/80">
               Enough to cover weekly synth runs and OCR checks.
@@ -357,7 +357,7 @@ export default async function Home() {
             <p className="text-sm font-semibold uppercase tracking-[0.18em] text-white/60">
               Enterprise
             </p>
-            <p className="mt-3 text-4xl font-semibold text-white">$49.99</p>
+            <p className="mt-3 text-4xl font-semibold text-white"><span className="text-2xl">&#8377;</span>3,999</p>
             <p className="text-white/60">1000 credits</p>
             <p className="mt-3 text-sm text-white/70">
               For teams shipping handwriting-heavy experiences.

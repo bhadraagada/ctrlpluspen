@@ -22,14 +22,14 @@ export const creditsRouter = createTRPCRouter({
       orderBy: { price: "asc" },
     });
 
-    // If no packages exist, return default packages
+    // If no packages exist, return default packages (in INR)
     if (packages.length === 0) {
       return [
         {
           id: "starter",
           name: "Starter",
           credits: 50,
-          price: 4.99,
+          price: 399, // INR
           description: "Perfect for trying out the service",
           popular: false,
         },
@@ -37,7 +37,7 @@ export const creditsRouter = createTRPCRouter({
           id: "pro",
           name: "Pro",
           credits: 200,
-          price: 14.99,
+          price: 1199, // INR
           description: "Best value for regular users",
           popular: true,
         },
@@ -45,7 +45,7 @@ export const creditsRouter = createTRPCRouter({
           id: "enterprise",
           name: "Enterprise",
           credits: 1000,
-          price: 49.99,
+          price: 3999, // INR
           description: "For high-volume users",
           popular: false,
         },

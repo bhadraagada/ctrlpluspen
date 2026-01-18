@@ -29,18 +29,12 @@ export function OcrDashboard() {
 
   const utils = api.useUtils();
 
-  // Get OCR service health
-  const healthQuery = api.synthesis.ocrHealth.useQuery(undefined, {
-    refetchInterval: 30000,
-  });
-
-  // Get OCR info
+  // Queries
+  const healthQuery = api.synthesis.ocrHealth.useQuery(undefined, { refetchInterval: 30000 });
   const infoQuery = api.synthesis.getOcrInfo.useQuery();
-
-  // Get user stats
   const creditsQuery = api.credits.getBalance.useQuery();
 
-  // Recognition mutation
+  // Mutation
   const recognizeMutation = api.synthesis.recognizeHandwriting.useMutation({
     onSuccess: (data) => {
       setResult(data);
@@ -61,17 +55,8 @@ export function OcrDashboard() {
 
   const handleRecognize = useCallback(() => {
     if (!currentImage) return;
-
-    // Extract base64 data (remove data:image/...;base64, prefix)
-    const base64Data = currentImage.includes(",")
-      ? currentImage.split(",")[1]!
-      : currentImage;
-
-    recognizeMutation.mutate({
-      imageBase64: base64Data,
-      preprocess,
-      segmentLines,
-    });
+    const base64Data = currentImage.includes(",") ? currentImage.split(",")[1]! : currentImage;
+    recognizeMutation.mutate({ imageBase64: base64Data, preprocess, segmentLines });
   }, [currentImage, preprocess, segmentLines, recognizeMutation]);
 
   const handleCopyText = useCallback(() => {
@@ -91,304 +76,195 @@ export function OcrDashboard() {
 
   return (
     <div className="space-y-8">
-      {/* Header */}
-      <div className="text-center">
-        <h1 className="text-3xl font-bold text-white">
-          Handwriting Recognition
-        </h1>
-        <p className="mt-2 text-gray-400">
-          Upload an image of handwritten text to convert it to digital text
-        </p>
-        {infoQuery.data && (
-          <p className="mt-1 text-sm text-gray-500">
-            Powered by {infoQuery.data.model}
-          </p>
-        )}
-      </div>
-
-      {/* Status Banner */}
-      <div
-        className={`flex items-center gap-3 rounded-xl border p-3 text-sm shadow-md ${
-          isBackendHealthy
-            ? "border-emerald-400/40 bg-emerald-500/10 text-emerald-200"
-            : healthQuery.isLoading
-            ? "border-amber-300/40 bg-amber-500/10 text-amber-100"
-            : "border-red-400/40 bg-red-500/10 text-red-100"
-        }`}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path
-            fillRule="evenodd"
-            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-            clipRule="evenodd"
-          />
-        </svg>
-        {healthQuery.isLoading ? (
-          <span>Checking OCR service status...</span>
-        ) : isBackendHealthy ? (
-          <span>
-            OCR service online ({healthQuery.data?.device ?? "cpu"})
-            {healthQuery.data?.models_loaded && " - Models loaded"}
-          </span>
-        ) : (
-          <span>
-            OCR service unavailable -{" "}
-            {(healthQuery.data as { error?: string } | undefined)?.error ??
-              "Cannot connect to API"}
-          </span>
-        )}
-      </div>
-
-      {/* Main OCR Area */}
-      <div className="grid gap-8 lg:grid-cols-2">
-        {/* Left Column - Upload */}
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-white">Upload Image</h2>
-          <ImageUpload
-            onImageSelect={handleImageSelect}
-            isLoading={recognizeMutation.isPending}
-            currentImage={currentImage}
-          />
-
-          {/* Settings */}
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-5 shadow-lg shadow-black/30">
-            <h3 className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-white/70">
-              Settings
-            </h3>
-            <div className="space-y-3">
-              <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-3 py-2">
-                <input
-                  type="checkbox"
-                  checked={preprocess}
-                  onChange={(e) => setPreprocess(e.target.checked)}
-                  className="h-4 w-4 rounded border-white/20 bg-black/30 text-cyan-500 focus:ring-cyan-500"
-                />
-                <div>
-                  <span className="text-sm text-white/90">
-                    Preprocess image
-                  </span>
-                  <p className="text-xs text-white/50">
-                    Auto-enhance contrast and brightness
-                  </p>
-                </div>
-              </label>
-              <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-3 py-2">
-                <input
-                  type="checkbox"
-                  checked={segmentLines}
-                  onChange={(e) => setSegmentLines(e.target.checked)}
-                  className="h-4 w-4 rounded border-white/20 bg-black/30 text-cyan-500 focus:ring-cyan-500"
-                />
-                <div>
-                  <span className="text-sm text-white/90">
-                    Segment lines
-                  </span>
-                  <p className="text-xs text-white/50">
-                    Detect and process each line separately
-                  </p>
-                </div>
-              </label>
-            </div>
-          </div>
-
-          {/* Recognize Button */}
-          <button
-            onClick={handleRecognize}
-            disabled={
-              !currentImage ||
-              recognizeMutation.isPending ||
-              !isBackendHealthy ||
-              hasNoCredits
-            }
-            className="w-full rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-500 py-3 font-semibold text-white shadow-lg shadow-cyan-500/30 transition-all hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50 disabled:brightness-90"
-          >
-            {recognizeMutation.isPending ? (
-              <span className="flex items-center justify-center gap-2">
-                <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-                Processing...
-              </span>
-            ) : hasNoCredits ? (
-              <span>
-                No Credits -{" "}
-                <Link href="/credits" className="underline">
-                  Buy More
+      {/* Stats Cards Row */}
+      <div className="grid gap-6 sm:grid-cols-3">
+        {[
+          { label: "Available Credits", value: creditsQuery.data?.credits ?? 0, icon: "M13 10V3L4 14h7v7l9-11h-7z" },
+          { label: "Model Status", value: isBackendHealthy ? "Online" : "Offline", icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" },
+          { label: "Model Type", value: infoQuery.data?.model ?? "Loading...", icon: "M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" },
+        ].map((stat, idx) => (
+           <div key={idx} className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition-all hover:bg-white/[0.05]">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-medium uppercase tracking-wider text-white/40">{stat.label}</span>
+                <svg className="h-4 w-4 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={stat.icon} />
+                </svg>
+              </div>
+              <div className="mt-4 flex items-baseline gap-2">
+                 <span className={`text-2xl font-semibold tracking-tight tabular-nums ${stat.label === "Model Status" ? (isBackendHealthy ? "text-emerald-400" : "text-red-400") : "text-white"}`}>
+                    {stat.value}
+                 </span>
+                 {stat.label === "Model Status" && (
+                    <span className={`h-2 w-2 rounded-full ${isBackendHealthy ? "bg-emerald-500 animate-pulse" : "bg-red-500"}`} />
+                 )}
+              </div>
+              {stat.label === "Available Credits" && hasNoCredits && (
+                <Link href="/credits" className="mt-2 block text-xs text-red-400 hover:text-red-300">
+                  Top up needed →
                 </Link>
-              </span>
-            ) : (
-              "Recognize Handwriting (1 credit)"
-            )}
-          </button>
-
-          {/* Credits Display */}
-          <div className="flex items-center justify-center gap-2 text-sm text-white/60">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 text-amber-300"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" />
-            </svg>
-            <span>{creditsQuery.data?.credits ?? 0} credits remaining</span>
-          </div>
-        </div>
-
-        {/* Right Column - Results */}
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-white">Results</h2>
-            {result && (
-              <button
-                onClick={handleCopyText}
-                className="flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:border-white/40"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
-                  <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
-                </svg>
-                Copy Text
-              </button>
-            )}
-          </div>
-
-          {error && (
-            <div className="rounded-2xl border border-red-400/40 bg-red-500/10 p-4 text-red-100 shadow-lg">
-              <p className="font-semibold">Error</p>
-              <p className="mt-1 text-sm">{error}</p>
-            </div>
-          )}
-
-          {result ? (
-            <div className="space-y-4">
-              {/* Recognized Text */}
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-5 shadow-lg shadow-black/30">
-                <h3 className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-white/70">
-                  Recognized Text
-                </h3>
-                <div className="max-h-64 overflow-y-auto rounded-xl bg-black/40 p-4">
-                  <pre className="whitespace-pre-wrap font-sans text-white">
-                    {result.text || "(No text recognized)"}
-                  </pre>
-                </div>
-              </div>
-
-              {/* Stats */}
-              <div className="grid grid-cols-3 gap-4 rounded-2xl border border-white/10 bg-white/5 p-4 shadow-lg shadow-black/25">
-                <div className="text-center">
-                  <p className="text-2xl font-semibold text-white">
-                    {result.numLines}
-                  </p>
-                  <p className="text-xs text-white/60">Lines</p>
-                </div>
-                <div className="text-center">
-                  <p
-                    className={`text-2xl font-semibold ${getConfidenceColor(result.avgConfidence)}`}
-                  >
-                    {(result.avgConfidence * 100).toFixed(0)}%
-                  </p>
-                  <p className="text-xs text-white/60">Confidence</p>
-                </div>
-                <div className="text-center">
-                  <p className="text-2xl font-semibold text-white">
-                    {result.processingTimeMs.toFixed(0)}ms
-                  </p>
-                  <p className="text-xs text-white/60">Processing</p>
-                </div>
-              </div>
-
-              {/* Line-by-line results */}
-              {result.lines.length > 0 && (
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-5 shadow-lg shadow-black/30">
-                  <h3 className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-white/70">
-                    Line-by-Line Results
-                  </h3>
-                  <div className="space-y-2">
-                    {result.lines.map((line) => (
-                      <div
-                        key={line.lineNumber}
-                        className="flex items-start gap-3 rounded-lg bg-black/30 p-3"
-                      >
-                        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/10 text-xs text-white/60">
-                          {line.lineNumber}
-                        </span>
-                        <div className="flex-1">
-                          <p className="text-sm text-white">{line.text}</p>
-                        </div>
-                        <span
-                          className={`text-xs ${getConfidenceColor(line.confidence)}`}
-                        >
-                          {(line.confidence * 100).toFixed(0)}%
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
               )}
-
-              {/* Credits remaining */}
-              <div className="text-center text-sm text-amber-200/80">
-                Credits remaining: {result.creditsRemaining}
-              </div>
-            </div>
-          ) : (
-            <div className="flex min-h-[400px] items-center justify-center rounded-2xl border-2 border-dashed border-white/15 bg-white/5">
-              <div className="text-center text-white/60">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="mx-auto h-12 w-12"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={1.5}
-                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                  />
-                </svg>
-                <p className="mt-3">
-                  Upload an image of handwritten text to see the results
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
+           </div>
+        ))}
       </div>
 
-      {/* Tips */}
-      <div className="rounded-2xl border border-white/10 bg-white/5 p-4 shadow-lg shadow-black/25">
-        <h3 className="mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-white/70">
-          Tips for Best Results
-        </h3>
-        <ul className="grid gap-2 text-xs text-white/70 md:grid-cols-2">
-          <li className="flex items-start gap-2">
-            <span className="text-cyan-300">•</span>
-            Use clear, high-contrast images
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="text-cyan-300">•</span>
-            Ensure good lighting with minimal shadows
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="text-cyan-300">•</span>
-            Keep the text horizontal and not skewed
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="text-cyan-300">•</span>
-            Works best with English handwriting
-          </li>
-        </ul>
+      <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr]">
+        
+        {/* Left Column: Upload & Settings */}
+        <div className="space-y-6">
+          
+          <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6">
+            <h3 className="mb-6 text-xs font-medium uppercase tracking-wider text-white/40">Source Image</h3>
+            <ImageUpload
+              onImageSelect={handleImageSelect}
+              isLoading={recognizeMutation.isPending}
+              currentImage={currentImage}
+            />
+          </div>
+
+          <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6">
+            <h3 className="mb-4 text-xs font-medium uppercase tracking-wider text-white/40">Processing Options</h3>
+            <div className="space-y-3">
+               <label className="flex cursor-pointer items-center justify-between rounded-xl border border-white/5 bg-white/[0.02] p-4 transition hover:bg-white/[0.05]">
+                 <div className="flex flex-col">
+                   <span className="text-sm font-medium text-white">Preprocessing</span>
+                   <span className="text-xs text-white/40">Enhance contrast & brightness</span>
+                 </div>
+                 <div className={`relative h-6 w-11 rounded-full transition-colors ${preprocess ? "bg-emerald-500" : "bg-white/10"}`}>
+                    <input 
+                      type="checkbox" 
+                      className="sr-only" 
+                      checked={preprocess} 
+                      onChange={(e) => setPreprocess(e.target.checked)} 
+                    />
+                    <span className={`absolute left-1 top-1 h-4 w-4 rounded-full bg-white transition-transform ${preprocess ? "translate-x-5" : ""}`} />
+                 </div>
+               </label>
+               
+               <label className="flex cursor-pointer items-center justify-between rounded-xl border border-white/5 bg-white/[0.02] p-4 transition hover:bg-white/[0.05]">
+                 <div className="flex flex-col">
+                   <span className="text-sm font-medium text-white">Line Segmentation</span>
+                   <span className="text-xs text-white/40">Process each line individually</span>
+                 </div>
+                 <div className={`relative h-6 w-11 rounded-full transition-colors ${segmentLines ? "bg-emerald-500" : "bg-white/10"}`}>
+                    <input 
+                      type="checkbox" 
+                      className="sr-only" 
+                      checked={segmentLines} 
+                      onChange={(e) => setSegmentLines(e.target.checked)} 
+                    />
+                    <span className={`absolute left-1 top-1 h-4 w-4 rounded-full bg-white transition-transform ${segmentLines ? "translate-x-5" : ""}`} />
+                 </div>
+               </label>
+            </div>
+          </div>
+
+          <button
+             onClick={handleRecognize}
+             disabled={!currentImage || recognizeMutation.isPending || !isBackendHealthy || hasNoCredits}
+             className="group w-full overflow-hidden rounded-full bg-white py-4 text-sm font-semibold text-black transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 disabled:hover:scale-100"
+           >
+             {recognizeMutation.isPending ? (
+               <span className="flex items-center justify-center gap-2">
+                 <span className="h-4 w-4 animate-spin rounded-full border-2 border-black/30 border-t-black" />
+                 Analyzing...
+               </span>
+             ) : hasNoCredits ? (
+               "No Credits"
+             ) : (
+               "Start Recognition"
+             )}
+           </button>
+           
+           {!isBackendHealthy && !healthQuery.isLoading && (
+              <p className="text-center text-xs text-red-400">Service unavailable. Please try again later.</p>
+           )}
+        </div>
+
+        {/* Right Column: Results */}
+        <div className="space-y-6">
+           <div className="flex items-center justify-between">
+              <h2 className="text-xs font-medium uppercase tracking-wider text-white/40">Output</h2>
+              {result && (
+                 <button 
+                   onClick={handleCopyText}
+                   className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-medium text-white transition hover:bg-white hover:text-black"
+                 >
+                   <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                   </svg>
+                   Copy
+                 </button>
+              )}
+           </div>
+
+           {error && (
+              <div className="rounded-xl border border-red-500/20 bg-red-500/5 p-4 text-sm text-red-400">
+                <span className="font-semibold">Error:</span> {error}
+              </div>
+           )}
+
+           {result ? (
+              <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                {/* Text Output */}
+                <div className="relative min-h-[200px] overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03]">
+                   <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-cyan-500 to-indigo-500" />
+                   <div className="p-8">
+                      <pre className="whitespace-pre-wrap font-mono text-sm leading-relaxed text-white/90">
+                        {result.text || <span className="text-white/30 italic">No text detected.</span>}
+                      </pre>
+                   </div>
+                </div>
+
+                {/* Metrics Grid */}
+                <div className="grid grid-cols-3 gap-4">
+                   <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-center">
+                      <div className="text-xs text-white/40">Lines</div>
+                      <div className="mt-1 text-xl font-semibold text-white">{result.numLines}</div>
+                   </div>
+                   <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-center">
+                      <div className="text-xs text-white/40">Confidence</div>
+                      <div className={`mt-1 text-xl font-semibold ${getConfidenceColor(result.avgConfidence)}`}>
+                        {(result.avgConfidence * 100).toFixed(0)}%
+                      </div>
+                   </div>
+                   <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-center">
+                      <div className="text-xs text-white/40">Time</div>
+                      <div className="mt-1 text-xl font-semibold text-white">{result.processingTimeMs.toFixed(0)}ms</div>
+                   </div>
+                </div>
+
+                {/* Line Breakdown */}
+                {result.lines.length > 0 && (
+                   <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6">
+                      <h3 className="mb-4 text-xs font-medium uppercase tracking-wider text-white/40">Line Analysis</h3>
+                      <div className="space-y-2">
+                        {result.lines.map((line) => (
+                           <div key={line.lineNumber} className="group flex items-center justify-between rounded-lg p-2 transition hover:bg-white/5">
+                              <div className="flex items-center gap-3">
+                                 <span className="flex h-5 w-5 items-center justify-center rounded bg-white/10 text-[10px] text-white/50 font-mono">
+                                   {line.lineNumber}
+                                 </span>
+                                 <span className="text-sm text-white/80">{line.text}</span>
+                              </div>
+                              <span className={`text-xs font-medium ${getConfidenceColor(line.confidence)}`}>
+                                {(line.confidence * 100).toFixed(0)}%
+                              </span>
+                           </div>
+                        ))}
+                      </div>
+                   </div>
+                )}
+              </div>
+           ) : (
+              <div className="flex h-full flex-col items-center justify-center rounded-3xl border border-dashed border-white/10 bg-white/[0.02] p-12 text-center text-white/30">
+                 <svg className="h-12 w-12 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                 </svg>
+                 <p className="mt-4 text-sm font-medium">No results generated yet</p>
+                 <p className="mt-1 text-xs">Upload an image and click start to see recognition data.</p>
+              </div>
+           )}
+        </div>
       </div>
     </div>
   );

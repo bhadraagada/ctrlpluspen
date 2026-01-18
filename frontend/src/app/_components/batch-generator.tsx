@@ -299,29 +299,29 @@ export function BatchGenerator({
   const isProcessing = batchMutation.isPending || isPolling;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 transition-all">
       <div
-        className="max-h-[90vh] w-full max-w-5xl overflow-auto rounded-2xl border border-white/10 bg-gray-900 shadow-2xl"
+        className="flex max-h-[90vh] w-full max-w-5xl flex-col overflow-hidden rounded-3xl border border-white/10 bg-[#05070d] shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-white/10 bg-gray-900/95 p-6 backdrop-blur">
+        <div className="shrink-0 flex items-center justify-between border-b border-white/5 bg-[#05070d]/80 px-8 py-6 backdrop-blur-xl">
           <div>
-            <h2 className="text-xl font-semibold text-white">
+            <h2 className="text-2xl font-medium tracking-tight text-white">
               Batch Generation
             </h2>
-            <p className="mt-1 text-sm text-white/60">
+            <p className="mt-1 text-sm text-white/50">
               Generate multiple variations at once (processed in background)
             </p>
           </div>
           <button
             onClick={onClose}
             disabled={isProcessing}
-            className="rounded-lg p-2 text-white/60 transition hover:bg-white/10 hover:text-white disabled:opacity-50"
+            className="rounded-full border border-white/5 bg-white/5 p-2 text-white/60 transition hover:bg-white/10 hover:text-white disabled:opacity-50"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
+              className="h-5 w-5"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -336,39 +336,41 @@ export function BatchGenerator({
           </button>
         </div>
 
-        <div className="p-6">
+        <div className="flex-1 overflow-y-auto min-h-0 p-8 pb-12">
           {/* Text Preview */}
-          <div className="mb-6 rounded-xl border border-white/10 bg-white/5 p-4">
-            <p className="text-xs uppercase tracking-wide text-white/50">
+          <div className="mb-8 rounded-2xl border border-white/10 bg-white/[0.03] p-6">
+            <p className="text-xs font-medium uppercase tracking-wider text-white/40">
               Text to generate
             </p>
-            <p className="mt-2 line-clamp-3 whitespace-pre-wrap text-white">{text}</p>
+            <p className="mt-3 line-clamp-3 whitespace-pre-wrap font-mono text-sm leading-relaxed text-white/80">{text}</p>
           </div>
 
           {/* Processing Status */}
           {isProcessing && jobStatus && (
-            <div className="mb-6 rounded-xl border border-cyan-400/30 bg-cyan-500/10 p-6">
-              <div className="flex items-center gap-4">
-                <div className="h-12 w-12 animate-spin rounded-full border-4 border-cyan-400/30 border-t-cyan-400" />
+            <div className="mb-8 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-6">
+              <div className="flex items-center gap-6">
+                <div className="relative flex h-16 w-16 items-center justify-center">
+                   <div className="absolute inset-0 animate-spin rounded-full border-4 border-emerald-500/20 border-t-emerald-500" />
+                </div>
                 <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-white">
+                  <h3 className="text-lg font-medium tracking-tight text-white">
                     Processing Batch Job
                   </h3>
-                  <p className="text-sm text-white/70">
+                  <p className="text-sm text-white/60">
                     {jobStatus.status === "PENDING"
                       ? "Waiting to start..."
                       : `Generating variants in background...`}
                   </p>
-                  <div className="mt-3">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-white/70">Progress</span>
-                      <span className="font-mono text-cyan-300">
+                  <div className="mt-4">
+                    <div className="flex items-center justify-between text-xs font-medium uppercase tracking-wider">
+                      <span className="text-white/40">Progress</span>
+                      <span className="font-mono text-emerald-400">
                         {jobStatus.completedCount} / {jobStatus.totalVariants}
                       </span>
                     </div>
-                    <div className="mt-2 h-3 overflow-hidden rounded-full bg-white/10">
+                    <div className="mt-2 h-2 overflow-hidden rounded-full bg-white/5">
                       <div
-                        className="h-full bg-gradient-to-r from-cyan-500 to-indigo-500 transition-all duration-500"
+                        className="h-full bg-emerald-500 transition-all duration-500"
                         style={{
                           width: `${(jobStatus.completedCount / jobStatus.totalVariants) * 100}%`,
                         }}
@@ -383,23 +385,25 @@ export function BatchGenerator({
           {/* Presets (hidden when processing) */}
           {!isProcessing && !results && (
             <>
-              <div className="mb-6">
-                <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-white/70">
+              <div className="mb-8">
+                <h3 className="mb-4 text-xs font-medium uppercase tracking-wider text-white/40 pb-3">
                   Quick Presets
                 </h3>
-                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                   {PRESETS.map((preset, idx) => (
                     <button
                       key={preset.name}
                       onClick={() => applyPreset(idx)}
-                      className={`rounded-xl border p-4 text-left transition ${
+                      className={`group relative overflow-hidden rounded-2xl border p-5 text-left transition-all ${
                         selectedPreset === idx
-                          ? "border-cyan-400 bg-cyan-500/20"
-                          : "border-white/10 bg-white/5 hover:border-white/20"
+                          ? "border-white bg-white text-black"
+                          : "border-white/10 bg-white/[0.03] hover:border-white/20 hover:bg-white/[0.05]"
                       }`}
                     >
-                      <p className="font-medium text-white">{preset.name}</p>
-                      <p className="mt-1 text-xs text-white/60">
+                      <p className={`font-medium ${selectedPreset === idx ? "text-black" : "text-white"}`}>
+                        {preset.name}
+                      </p>
+                      <p className={`mt-1 text-xs ${selectedPreset === idx ? "text-black/60" : "text-white/50"}`}>
                         {preset.description}
                       </p>
                     </button>
@@ -408,9 +412,9 @@ export function BatchGenerator({
               </div>
 
               {/* Manual Style Selection */}
-              <div className="mb-6">
-                <div className="mb-3 flex items-center justify-between">
-                  <h3 className="text-sm font-semibold uppercase tracking-wide text-white/70">
+              <div className="mb-8">
+                <div className="mb-4 flex items-center justify-between">
+                  <h3 className="text-xs font-medium uppercase tracking-wider text-white/40">
                     Select Styles
                   </h3>
                   {variants.length > 0 && (
@@ -422,47 +426,49 @@ export function BatchGenerator({
                     </button>
                   )}
                 </div>
-                <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {STYLES.map((style) => {
                     const isSelected = variants.some((v) => v.style === style.id);
                     return (
                       <button
                         key={style.id}
                         onClick={() => toggleStyle(style.id)}
-                        className={`flex items-center gap-3 rounded-lg border p-3 text-left transition ${
+                        className={`flex items-center gap-4 rounded-xl border p-4 text-left transition-all ${
                           isSelected
-                            ? "border-cyan-400 bg-cyan-500/20"
-                            : "border-white/10 bg-white/5 hover:border-white/20"
+                            ? "border-emerald-500/50 bg-emerald-500/10"
+                            : "border-white/10 bg-white/[0.03] hover:border-white/20 hover:bg-white/[0.05]"
                         }`}
                       >
                         <div
-                          className={`flex h-8 w-8 items-center justify-center rounded-lg text-sm font-bold ${
+                          className={`flex h-10 w-10 items-center justify-center rounded-lg text-sm font-bold transition-colors ${
                             isSelected
-                              ? "bg-cyan-500 text-white"
-                              : "bg-white/10 text-white/60"
+                              ? "bg-emerald-500 text-black"
+                              : "bg-white/5 text-white/40"
                           }`}
                         >
                           {style.id}
                         </div>
                         <div className="flex-1">
-                          <p className="text-sm font-medium text-white">
+                          <p className={`text-sm font-medium ${isSelected ? "text-white" : "text-white/80"}`}>
                             {style.name}
                           </p>
-                          <p className="text-xs text-white/50">{style.description}</p>
+                          <p className="text-xs text-white/40">{style.description}</p>
                         </div>
                         {isSelected && (
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5 text-cyan-400"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
+                          <div className="rounded-full bg-emerald-500 p-1 text-black">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-3 w-3"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                          </div>
                         )}
                       </button>
                     );
@@ -474,71 +480,72 @@ export function BatchGenerator({
 
           {/* Credits Info & Generate Button */}
           {!results && (
-            <div className="mb-6 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-white/10 bg-white/5 p-4">
-              <div className="flex items-center gap-4">
-                <div>
-                  <p className="text-sm text-white/60">Variants selected</p>
-                  <p className="text-2xl font-semibold text-white">
-                    {variants.length}
-                  </p>
+            <div className="flex flex-col gap-4 sticky -bottom-8 border-t border-white/10 bg-[#05070d]/95 pt-6 pb-2 backdrop-blur-xl">
+              <div className="flex flex-wrap items-center justify-between gap-6">
+                <div className="flex items-center gap-8">
+                  <div>
+                    <p className="text-xs text-white/40 uppercase tracking-wider">Variants</p>
+                    <p className="text-2xl font-semibold tracking-tight text-white">
+                      {variants.length}
+                    </p>
+                  </div>
+                  <div className="h-10 w-px bg-white/10" />
+                  <div>
+                    <p className="text-xs text-white/40 uppercase tracking-wider">Cost</p>
+                    <p
+                      className={`text-2xl font-semibold tracking-tight ${
+                        hasEnoughCredits ? "text-white" : "text-red-400"
+                      }`}
+                    >
+                      {creditsNeeded} <span className="text-sm font-normal text-white/40">credits</span>
+                    </p>
+                  </div>
+                  <div className="h-10 w-px bg-white/10" />
+                  <div>
+                    <p className="text-xs text-white/40 uppercase tracking-wider">Balance</p>
+                    <p className="text-2xl font-semibold tracking-tight text-emerald-400">
+                      {userCredits}
+                    </p>
+                  </div>
                 </div>
-                <div className="h-10 w-px bg-white/10" />
-                <div>
-                  <p className="text-sm text-white/60">Credits needed</p>
-                  <p
-                    className={`text-2xl font-semibold ${
-                      hasEnoughCredits ? "text-cyan-300" : "text-red-400"
-                    }`}
-                  >
-                    {creditsNeeded}
-                  </p>
-                </div>
-                <div className="h-10 w-px bg-white/10" />
-                <div>
-                  <p className="text-sm text-white/60">Your credits</p>
-                  <p className="text-2xl font-semibold text-amber-300">
-                    {userCredits}
-                  </p>
-                </div>
-              </div>
 
-              <button
-                onClick={handleGenerate}
-                disabled={
-                  variants.length === 0 ||
-                  !hasEnoughCredits ||
-                  isProcessing
-                }
-                className="rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-500 px-6 py-3 font-semibold text-white shadow-lg shadow-cyan-500/30 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                {isProcessing ? (
-                  <span className="flex items-center gap-2">
-                    <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                    Processing...
-                  </span>
-                ) : !hasEnoughCredits ? (
-                  "Not enough credits"
-                ) : (
-                  `Generate ${variants.length} Variants`
-                )}
-              </button>
+                <button
+                  onClick={handleGenerate}
+                  disabled={
+                    variants.length === 0 ||
+                    !hasEnoughCredits ||
+                    isProcessing
+                  }
+                  className="rounded-full bg-white px-8 py-4 text-sm font-semibold text-black transition-transform hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
+                >
+                  {isProcessing ? (
+                    <span className="flex items-center gap-2">
+                      <div className="h-4 w-4 animate-spin rounded-full border-2 border-black/30 border-t-black" />
+                      Processing...
+                    </span>
+                  ) : !hasEnoughCredits ? (
+                    "Insufficient Credits"
+                  ) : (
+                    `Generate ${variants.length} Variants`
+                  )}
+                </button>
+              </div>
             </div>
           )}
 
           {/* Results */}
           {results && (
             <div>
-              <div className="mb-4 flex items-center justify-between">
-                <h3 className="text-sm font-semibold uppercase tracking-wide text-white/70">
-                  Results ({results.filter((r) => r.success).length}/
-                  {results.length} successful)
+              <div className="mb-6 flex items-center justify-between">
+                <h3 className="text-xs font-medium uppercase tracking-wider text-white/40">
+                  Results ({results.filter((r) => r.success).length} successful)
                 </h3>
-                <div className="flex gap-2">
+                <div className="flex gap-3">
                   {results.filter((r) => r.success).length > 0 && (
                     <button
                       onClick={handleSaveAll}
                       disabled={isSavingAll}
-                      className="flex items-center gap-2 rounded-lg bg-green-500/20 px-4 py-2 text-sm font-semibold text-green-300 transition hover:bg-green-500/30 disabled:opacity-50"
+                      className="flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-5 py-2.5 text-sm font-medium text-emerald-400 transition hover:bg-emerald-500/20 disabled:opacity-50"
                     >
                       {isSavingAll ? (
                         <>
@@ -559,7 +566,7 @@ export function BatchGenerator({
                               clipRule="evenodd"
                             />
                           </svg>
-                          All Saved!
+                          Saved to Gallery
                         </>
                       ) : (
                         <>
@@ -571,63 +578,72 @@ export function BatchGenerator({
                           >
                             <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
                           </svg>
-                          Save All to Gallery
+                          Save All
                         </>
                       )}
                     </button>
                   )}
                   <button
                     onClick={clearVariants}
-                    className="rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-sm text-white hover:bg-white/20"
+                    className="rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-medium text-white hover:bg-white/10"
                   >
-                    New Batch
+                    Start New Batch
                   </button>
                 </div>
               </div>
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {results.map((result, idx) => (
                   <div
                     key={idx}
-                    className={`overflow-hidden rounded-xl border ${
+                    className={`overflow-hidden rounded-2xl border transition-all ${
                       result.success
-                        ? "border-white/10"
-                        : "border-red-500/30 bg-red-500/10"
+                        ? "border-white/10 hover:border-white/20"
+                        : "border-red-500/20 bg-red-500/5"
                     }`}
                   >
                     {result.success && result.svgRaw ? (
                       <>
-                        <div className="bg-white p-3">
+                        <div className="bg-white p-4">
                           <div
                             className="max-h-32 overflow-hidden"
                             dangerouslySetInnerHTML={{ __html: result.svgRaw }}
                           />
                         </div>
-                        <div className="bg-white/5 p-3">
+                        <div className="border-t border-white/5 bg-[#05070d] p-4">
                           <div className="flex items-center justify-between text-xs">
-                            <span className="text-white/70">
+                            <span className="font-medium text-white">
                               Style {result.style}
                             </span>
-                            <span className="text-white/50">
-                              Bias: {result.bias.toFixed(2)}
+                            <span className="text-white/40">
+                              Bias {result.bias.toFixed(2)}
                             </span>
                           </div>
-                          <div className="mt-1 flex items-center gap-2">
-                            <div
-                              className="h-4 w-4 rounded-full border border-white/20"
-                              style={{ backgroundColor: result.strokeColor }}
-                            />
-                            <span className="text-xs text-white/50">
-                              {result.strokeWidth}px
+                          <div className="mt-2 flex items-center gap-3">
+                            <div className="flex items-center gap-1.5">
+                                <div
+                                  className="h-3 w-3 rounded-full border border-white/20 shadow-sm"
+                                  style={{ backgroundColor: result.strokeColor }}
+                                />
+                                <span className="text-[10px] text-white/40 uppercase tracking-wide">Ink</span>
+                            </div>
+                            <div className="h-3 w-px bg-white/10" />
+                            <span className="text-[10px] text-white/40 uppercase tracking-wide">
+                              {result.strokeWidth}px Width
                             </span>
                           </div>
                         </div>
                       </>
                     ) : (
-                      <div className="p-4">
-                        <p className="text-sm font-medium text-red-300">
-                          Style {result.style} failed
+                      <div className="flex h-full flex-col justify-center p-6 text-center">
+                        <div className="mb-2 flex justify-center text-red-400">
+                           <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                           </svg>
+                        </div>
+                        <p className="text-sm font-medium text-white">
+                          Style {result.style} Failed
                         </p>
-                        <p className="mt-1 text-xs text-red-400/70">
+                        <p className="mt-1 text-xs text-white/40">
                           {result.error}
                         </p>
                       </div>
@@ -640,8 +656,8 @@ export function BatchGenerator({
 
           {/* Error */}
           {batchMutation.error && (
-            <div className="mt-4 rounded-xl border border-red-500/30 bg-red-500/10 p-4">
-              <p className="text-sm text-red-300">
+            <div className="mt-6 rounded-2xl border border-red-500/20 bg-red-500/5 p-4 text-center">
+              <p className="text-sm text-red-400">
                 {batchMutation.error.message}
               </p>
             </div>

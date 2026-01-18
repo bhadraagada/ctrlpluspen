@@ -127,11 +127,15 @@ model Payment {
     user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
     
     // Payment details
-    amount          Float         // Amount in dollars
+    amount          Float         // Amount in INR
     credits         Int           // Credits purchased
     status          PaymentStatus @default(PENDING)
     
-    // Payment provider details (for Stripe, etc.)
+    // Razorpay payment details
+    razorpayOrderId   String?     @unique
+    razorpayPaymentId String?     @unique
+    
+    // Legacy Stripe fields (can be removed if not needed)
     stripePaymentId String?       @unique
     stripeSessionId String?       @unique
     
@@ -154,7 +158,7 @@ model CreditPackage {
     id          String   @id @default(cuid())
     name        String
     credits     Int
-    price       Float    // Price in dollars
+    price       Float    // Price in INR
     description String?
     popular     Boolean  @default(false)
     active      Boolean  @default(true)
