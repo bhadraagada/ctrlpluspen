@@ -45,6 +45,9 @@ export function Navbar() {
           {[
             { href: "/synthesis", label: "Synthesis" },
             { href: "/recognize", label: "Recognition" },
+            { href: "/templates", label: "Templates" },
+            { href: "/bulk", label: "Bulk" },
+            { href: "/teams", label: "Teams" },
             { href: "/gallery", label: "Gallery" },
           ].map((item) => (
             <Link
@@ -112,7 +115,7 @@ export function Navbar() {
               </Link>
               <Link
                 href="/auth/signup"
-                className="rounded-full bg-white px-4 py-2 text-xs font-semibold text-black transition hover:bg-white/90"
+                className="rounded-full bg-white px-4 py-2 text-xs font-semibold !text-black transition hover:bg-white/90"
               >
                 Get Started
               </Link>

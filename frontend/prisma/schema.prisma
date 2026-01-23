@@ -61,6 +61,13 @@ model User {
     batchJobs        BatchJob[]
     payments         Payment[]
     
+    // New module relations
+    createdTemplates    Template[]         @relation("CreatedTemplates")
+    templateDocuments   TemplateDocument[]
+    bulkJobs            BulkJob[]
+    teamMemberships     TeamMember[]
+    teamGenerations     TeamGeneration[]   @relation("TeamGenerations")
+    
     createdAt     DateTime  @default(now())
     updatedAt     DateTime  @updatedAt
 }
@@ -266,4 +273,265 @@ enum BatchStatus {
     COMPLETED
     FAILED
     CANCELLED
+}
+
+// ============================================
+// TEMPLATE BUILDER MODULE
+// ============================================
+
+// Pre-designed templates for letters, notes, journals
+model Template {
+    id              String   @id @default(cuid())
+    
+    // Template metadata
+    name            String
+    description     String?
+    category        TemplateCategory
+    thumbnail       String?  // URL to preview image
+    
+    // Template configuration (JSON)
+    // Contains: pageSize, orientation, margins, textAreas, decorations, etc.
+    config          Json
+    
+    // Ownership
+    isSystem        Boolean  @default(false)  // Built-in templates
+    createdById     String?
+    createdBy       User?    @relation("CreatedTemplates", fields: [createdById], references: [id], onDelete: SetNull)
+    
+    // Usage tracking
+    usageCount      Int      @default(0)
+    
+    // User documents using this template
+    documents       TemplateDocument[]
+    
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @updatedAt
+    
+    @@index([category])
+    @@index([isSystem])
+    @@index([createdById])
+}
+
+enum TemplateCategory {
+    LETTER
+    NOTE
+    JOURNAL
+    INVITATION
+    CERTIFICATE
+    CUSTOM
+}
+
+// User-generated documents from templates
+model TemplateDocument {
+    id              String   @id @default(cuid())
+    userId          String
+    user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    
+    // Template used
+    templateId      String
+    template        Template @relation(fields: [templateId], references: [id], onDelete: Cascade)
+    
+    // Document name
+    name            String   @default("Untitled Document")
+    
+    // Content for each text area (JSON: { areaId: "text content" })
+    content         Json
+    
+    // Handwriting settings
+    style           Int      @default(9)
+    bias            Float    @default(0.75)
+    strokeColor     String   @default("#000000")
+    strokeWidth     Int      @default(2)
+    
+    // Generated output
+    status          GenerationStatus @default(PENDING)
+    outputUrl       String?  // Final PDF/PNG URL
+    outputKey       String?  @unique
+    
+    // Preview (rendered SVG)
+    previewSvg      String?  @db.Text
+    
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @updatedAt
+    
+    @@index([userId])
+    @@index([templateId])
+}
+
+// ============================================
+// BULK PROCESSING MODULE
+// ============================================
+
+// Bulk job for CSV processing
+model BulkJob {
+    id              String   @id @default(cuid())
+    userId          String
+    user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    
+    // Job metadata
+    name            String?
+    
+    // Source file
+    sourceFileName  String
+    sourceFileUrl   String?
+    sourceFileKey   String?  @unique
+    
+    // CSV configuration
+    textColumn      String   // Column name containing text
+    filenameColumn  String?  // Optional column for output filenames
+    totalRows       Int
+    
+    // Handwriting settings (applied to all)
+    style           Int      @default(9)
+    bias            Float    @default(0.75)
+    strokeColor     String   @default("#000000")
+    strokeWidth     Int      @default(2)
+    
+    // Progress tracking
+    status          BatchStatus @default(PENDING)
+    processedCount  Int      @default(0)
+    failedCount     Int      @default(0)
+    creditsUsed     Int      @default(0)
+    
+    // Output
+    outputZipUrl    String?
+    outputZipKey    String?  @unique
+    
+    // Error log
+    errorLog        Json?    // Array of { row, error }
+    
+    // Individual items
+    items           BulkJobItem[]
+    
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @updatedAt
+    
+    @@index([userId])
+    @@index([status])
+}
+
+model BulkJobItem {
+    id              String   @id @default(cuid())
+    bulkJobId       String
+    bulkJob         BulkJob  @relation(fields: [bulkJobId], references: [id], onDelete: Cascade)
+    
+    // Row data
+    rowIndex        Int
+    text            String   @db.Text
+    outputFilename  String?
+    
+    // Status
+    status          GenerationStatus @default(PENDING)
+    
+    // Generated output
+    svgContent      String?  @db.Text
+    outputUrl       String?
+    
+    // Error
+    errorMessage    String?
+    
+    createdAt       DateTime @default(now())
+    
+    @@index([bulkJobId])
+    @@index([status])
+}
+
+// ============================================
+// TEAMS / COLLABORATION MODULE
+// ============================================
+
+model Team {
+    id              String   @id @default(cuid())
+    
+    // Team info
+    name            String
+    slug            String   @unique  // URL-friendly identifier
+    description     String?
+    logo            String?
+    
+    // Billing
+    credits         Int      @default(0)
+    
+    // Members
+    members         TeamMember[]
+    invites         TeamInvite[]
+    
+    // Team resources
+    generations     TeamGeneration[]
+    
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @updatedAt
+    
+    @@index([slug])
+}
+
+model TeamMember {
+    id              String   @id @default(cuid())
+    teamId          String
+    team            Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+    userId          String
+    user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    
+    role            TeamRole @default(MEMBER)
+    
+    joinedAt        DateTime @default(now())
+    
+    @@unique([teamId, userId])
+    @@index([teamId])
+    @@index([userId])
+}
+
+enum TeamRole {
+    OWNER
+    ADMIN
+    MEMBER
+}
+
+model TeamInvite {
+    id              String   @id @default(cuid())
+    teamId          String
+    team            Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+    
+    email           String
+    role            TeamRole @default(MEMBER)
+    token           String   @unique @default(cuid())
+    
+    expiresAt       DateTime
+    acceptedAt      DateTime?
+    
+    createdAt       DateTime @default(now())
+    
+    @@index([teamId])
+    @@index([email])
+    @@index([token])
+}
+
+// Team-shared generations
+model TeamGeneration {
+    id              String   @id @default(cuid())
+    teamId          String
+    team            Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+    createdById     String
+    createdBy       User     @relation("TeamGenerations", fields: [createdById], references: [id], onDelete: Cascade)
+    
+    // Generation details (same as SavedGeneration)
+    text            String   @db.Text
+    style           Int
+    bias            Float
+    strokeColor     String   @default("#000000")
+    strokeWidth     Int      @default(2)
+    
+    // Output
+    svgContent      String?  @db.Text
+    fileUrl         String?
+    fileKey         String?  @unique
+    
+    // Metadata
+    linesCount      Int      @default(0)
+    charactersCount Int      @default(0)
+    
+    createdAt       DateTime @default(now())
+    
+    @@index([teamId])
+    @@index([createdById])
 }

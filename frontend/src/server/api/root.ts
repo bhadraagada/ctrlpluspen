@@ -2,6 +2,9 @@ import { postRouter } from "~/server/api/routers/post";
 import { creditsRouter } from "~/server/api/routers/credits";
 import { authRouter } from "~/server/api/routers/auth";
 import { synthesisRouter } from "~/server/api/routers/synthesis";
+import { templatesRouter } from "~/server/api/routers/templates";
+import { bulkRouter } from "~/server/api/routers/bulk";
+import { teamsRouter } from "~/server/api/routers/teams";
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 
 /**
@@ -14,6 +17,9 @@ export const appRouter = createTRPCRouter({
   credits: creditsRouter,
   auth: authRouter,
   synthesis: synthesisRouter,
+  templates: templatesRouter,
+  bulk: bulkRouter,
+  teams: teamsRouter,
 });
 
 // export type definition of API

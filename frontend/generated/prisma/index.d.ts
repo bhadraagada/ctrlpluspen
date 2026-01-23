@@ -63,6 +63,46 @@ export type SavedGeneration = $Result.DefaultSelection<Prisma.$SavedGenerationPa
  * 
  */
 export type BatchJob = $Result.DefaultSelection<Prisma.$BatchJobPayload>
+/**
+ * Model Template
+ * 
+ */
+export type Template = $Result.DefaultSelection<Prisma.$TemplatePayload>
+/**
+ * Model TemplateDocument
+ * 
+ */
+export type TemplateDocument = $Result.DefaultSelection<Prisma.$TemplateDocumentPayload>
+/**
+ * Model BulkJob
+ * 
+ */
+export type BulkJob = $Result.DefaultSelection<Prisma.$BulkJobPayload>
+/**
+ * Model BulkJobItem
+ * 
+ */
+export type BulkJobItem = $Result.DefaultSelection<Prisma.$BulkJobItemPayload>
+/**
+ * Model Team
+ * 
+ */
+export type Team = $Result.DefaultSelection<Prisma.$TeamPayload>
+/**
+ * Model TeamMember
+ * 
+ */
+export type TeamMember = $Result.DefaultSelection<Prisma.$TeamMemberPayload>
+/**
+ * Model TeamInvite
+ * 
+ */
+export type TeamInvite = $Result.DefaultSelection<Prisma.$TeamInvitePayload>
+/**
+ * Model TeamGeneration
+ * 
+ */
+export type TeamGeneration = $Result.DefaultSelection<Prisma.$TeamGenerationPayload>
 
 /**
  * Enums
@@ -98,6 +138,27 @@ export const BatchStatus: {
 
 export type BatchStatus = (typeof BatchStatus)[keyof typeof BatchStatus]
 
+
+export const TemplateCategory: {
+  LETTER: 'LETTER',
+  NOTE: 'NOTE',
+  JOURNAL: 'JOURNAL',
+  INVITATION: 'INVITATION',
+  CERTIFICATE: 'CERTIFICATE',
+  CUSTOM: 'CUSTOM'
+};
+
+export type TemplateCategory = (typeof TemplateCategory)[keyof typeof TemplateCategory]
+
+
+export const TeamRole: {
+  OWNER: 'OWNER',
+  ADMIN: 'ADMIN',
+  MEMBER: 'MEMBER'
+};
+
+export type TeamRole = (typeof TeamRole)[keyof typeof TeamRole]
+
 }
 
 export type PaymentStatus = $Enums.PaymentStatus
@@ -111,6 +172,14 @@ export const GenerationStatus: typeof $Enums.GenerationStatus
 export type BatchStatus = $Enums.BatchStatus
 
 export const BatchStatus: typeof $Enums.BatchStatus
+
+export type TemplateCategory = $Enums.TemplateCategory
+
+export const TemplateCategory: typeof $Enums.TemplateCategory
+
+export type TeamRole = $Enums.TeamRole
+
+export const TeamRole: typeof $Enums.TeamRole
 
 /**
  * ##  Prisma Client ʲˢ
@@ -329,6 +398,86 @@ export class PrismaClient<
     * ```
     */
   get batchJob(): Prisma.BatchJobDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.template`: Exposes CRUD operations for the **Template** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Templates
+    * const templates = await prisma.template.findMany()
+    * ```
+    */
+  get template(): Prisma.TemplateDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.templateDocument`: Exposes CRUD operations for the **TemplateDocument** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TemplateDocuments
+    * const templateDocuments = await prisma.templateDocument.findMany()
+    * ```
+    */
+  get templateDocument(): Prisma.TemplateDocumentDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.bulkJob`: Exposes CRUD operations for the **BulkJob** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more BulkJobs
+    * const bulkJobs = await prisma.bulkJob.findMany()
+    * ```
+    */
+  get bulkJob(): Prisma.BulkJobDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.bulkJobItem`: Exposes CRUD operations for the **BulkJobItem** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more BulkJobItems
+    * const bulkJobItems = await prisma.bulkJobItem.findMany()
+    * ```
+    */
+  get bulkJobItem(): Prisma.BulkJobItemDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.team`: Exposes CRUD operations for the **Team** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Teams
+    * const teams = await prisma.team.findMany()
+    * ```
+    */
+  get team(): Prisma.TeamDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.teamMember`: Exposes CRUD operations for the **TeamMember** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TeamMembers
+    * const teamMembers = await prisma.teamMember.findMany()
+    * ```
+    */
+  get teamMember(): Prisma.TeamMemberDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.teamInvite`: Exposes CRUD operations for the **TeamInvite** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TeamInvites
+    * const teamInvites = await prisma.teamInvite.findMany()
+    * ```
+    */
+  get teamInvite(): Prisma.TeamInviteDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.teamGeneration`: Exposes CRUD operations for the **TeamGeneration** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TeamGenerations
+    * const teamGenerations = await prisma.teamGeneration.findMany()
+    * ```
+    */
+  get teamGeneration(): Prisma.TeamGenerationDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -779,7 +928,15 @@ export namespace Prisma {
     Payment: 'Payment',
     CreditPackage: 'CreditPackage',
     SavedGeneration: 'SavedGeneration',
-    BatchJob: 'BatchJob'
+    BatchJob: 'BatchJob',
+    Template: 'Template',
+    TemplateDocument: 'TemplateDocument',
+    BulkJob: 'BulkJob',
+    BulkJobItem: 'BulkJobItem',
+    Team: 'Team',
+    TeamMember: 'TeamMember',
+    TeamInvite: 'TeamInvite',
+    TeamGeneration: 'TeamGeneration'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -798,7 +955,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "account" | "session" | "user" | "verificationToken" | "usage" | "synthesisUsage" | "payment" | "creditPackage" | "savedGeneration" | "batchJob"
+      modelProps: "account" | "session" | "user" | "verificationToken" | "usage" | "synthesisUsage" | "payment" | "creditPackage" | "savedGeneration" | "batchJob" | "template" | "templateDocument" | "bulkJob" | "bulkJobItem" | "team" | "teamMember" | "teamInvite" | "teamGeneration"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1542,6 +1699,598 @@ export namespace Prisma {
           }
         }
       }
+      Template: {
+        payload: Prisma.$TemplatePayload<ExtArgs>
+        fields: Prisma.TemplateFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TemplateFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemplatePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TemplateFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemplatePayload>
+          }
+          findFirst: {
+            args: Prisma.TemplateFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemplatePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TemplateFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemplatePayload>
+          }
+          findMany: {
+            args: Prisma.TemplateFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemplatePayload>[]
+          }
+          create: {
+            args: Prisma.TemplateCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemplatePayload>
+          }
+          createMany: {
+            args: Prisma.TemplateCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TemplateCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemplatePayload>[]
+          }
+          delete: {
+            args: Prisma.TemplateDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemplatePayload>
+          }
+          update: {
+            args: Prisma.TemplateUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemplatePayload>
+          }
+          deleteMany: {
+            args: Prisma.TemplateDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TemplateUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TemplateUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemplatePayload>[]
+          }
+          upsert: {
+            args: Prisma.TemplateUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemplatePayload>
+          }
+          aggregate: {
+            args: Prisma.TemplateAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTemplate>
+          }
+          groupBy: {
+            args: Prisma.TemplateGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TemplateGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TemplateCountArgs<ExtArgs>
+            result: $Utils.Optional<TemplateCountAggregateOutputType> | number
+          }
+        }
+      }
+      TemplateDocument: {
+        payload: Prisma.$TemplateDocumentPayload<ExtArgs>
+        fields: Prisma.TemplateDocumentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TemplateDocumentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemplateDocumentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TemplateDocumentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemplateDocumentPayload>
+          }
+          findFirst: {
+            args: Prisma.TemplateDocumentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemplateDocumentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TemplateDocumentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemplateDocumentPayload>
+          }
+          findMany: {
+            args: Prisma.TemplateDocumentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemplateDocumentPayload>[]
+          }
+          create: {
+            args: Prisma.TemplateDocumentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemplateDocumentPayload>
+          }
+          createMany: {
+            args: Prisma.TemplateDocumentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TemplateDocumentCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemplateDocumentPayload>[]
+          }
+          delete: {
+            args: Prisma.TemplateDocumentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemplateDocumentPayload>
+          }
+          update: {
+            args: Prisma.TemplateDocumentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemplateDocumentPayload>
+          }
+          deleteMany: {
+            args: Prisma.TemplateDocumentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TemplateDocumentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TemplateDocumentUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemplateDocumentPayload>[]
+          }
+          upsert: {
+            args: Prisma.TemplateDocumentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TemplateDocumentPayload>
+          }
+          aggregate: {
+            args: Prisma.TemplateDocumentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTemplateDocument>
+          }
+          groupBy: {
+            args: Prisma.TemplateDocumentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TemplateDocumentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TemplateDocumentCountArgs<ExtArgs>
+            result: $Utils.Optional<TemplateDocumentCountAggregateOutputType> | number
+          }
+        }
+      }
+      BulkJob: {
+        payload: Prisma.$BulkJobPayload<ExtArgs>
+        fields: Prisma.BulkJobFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.BulkJobFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BulkJobPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.BulkJobFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BulkJobPayload>
+          }
+          findFirst: {
+            args: Prisma.BulkJobFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BulkJobPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.BulkJobFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BulkJobPayload>
+          }
+          findMany: {
+            args: Prisma.BulkJobFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BulkJobPayload>[]
+          }
+          create: {
+            args: Prisma.BulkJobCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BulkJobPayload>
+          }
+          createMany: {
+            args: Prisma.BulkJobCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.BulkJobCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BulkJobPayload>[]
+          }
+          delete: {
+            args: Prisma.BulkJobDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BulkJobPayload>
+          }
+          update: {
+            args: Prisma.BulkJobUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BulkJobPayload>
+          }
+          deleteMany: {
+            args: Prisma.BulkJobDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.BulkJobUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.BulkJobUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BulkJobPayload>[]
+          }
+          upsert: {
+            args: Prisma.BulkJobUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BulkJobPayload>
+          }
+          aggregate: {
+            args: Prisma.BulkJobAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateBulkJob>
+          }
+          groupBy: {
+            args: Prisma.BulkJobGroupByArgs<ExtArgs>
+            result: $Utils.Optional<BulkJobGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.BulkJobCountArgs<ExtArgs>
+            result: $Utils.Optional<BulkJobCountAggregateOutputType> | number
+          }
+        }
+      }
+      BulkJobItem: {
+        payload: Prisma.$BulkJobItemPayload<ExtArgs>
+        fields: Prisma.BulkJobItemFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.BulkJobItemFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BulkJobItemPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.BulkJobItemFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BulkJobItemPayload>
+          }
+          findFirst: {
+            args: Prisma.BulkJobItemFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BulkJobItemPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.BulkJobItemFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BulkJobItemPayload>
+          }
+          findMany: {
+            args: Prisma.BulkJobItemFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BulkJobItemPayload>[]
+          }
+          create: {
+            args: Prisma.BulkJobItemCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BulkJobItemPayload>
+          }
+          createMany: {
+            args: Prisma.BulkJobItemCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.BulkJobItemCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BulkJobItemPayload>[]
+          }
+          delete: {
+            args: Prisma.BulkJobItemDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BulkJobItemPayload>
+          }
+          update: {
+            args: Prisma.BulkJobItemUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BulkJobItemPayload>
+          }
+          deleteMany: {
+            args: Prisma.BulkJobItemDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.BulkJobItemUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.BulkJobItemUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BulkJobItemPayload>[]
+          }
+          upsert: {
+            args: Prisma.BulkJobItemUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BulkJobItemPayload>
+          }
+          aggregate: {
+            args: Prisma.BulkJobItemAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateBulkJobItem>
+          }
+          groupBy: {
+            args: Prisma.BulkJobItemGroupByArgs<ExtArgs>
+            result: $Utils.Optional<BulkJobItemGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.BulkJobItemCountArgs<ExtArgs>
+            result: $Utils.Optional<BulkJobItemCountAggregateOutputType> | number
+          }
+        }
+      }
+      Team: {
+        payload: Prisma.$TeamPayload<ExtArgs>
+        fields: Prisma.TeamFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TeamFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TeamFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamPayload>
+          }
+          findFirst: {
+            args: Prisma.TeamFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TeamFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamPayload>
+          }
+          findMany: {
+            args: Prisma.TeamFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamPayload>[]
+          }
+          create: {
+            args: Prisma.TeamCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamPayload>
+          }
+          createMany: {
+            args: Prisma.TeamCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TeamCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamPayload>[]
+          }
+          delete: {
+            args: Prisma.TeamDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamPayload>
+          }
+          update: {
+            args: Prisma.TeamUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamPayload>
+          }
+          deleteMany: {
+            args: Prisma.TeamDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TeamUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TeamUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamPayload>[]
+          }
+          upsert: {
+            args: Prisma.TeamUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamPayload>
+          }
+          aggregate: {
+            args: Prisma.TeamAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTeam>
+          }
+          groupBy: {
+            args: Prisma.TeamGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TeamGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TeamCountArgs<ExtArgs>
+            result: $Utils.Optional<TeamCountAggregateOutputType> | number
+          }
+        }
+      }
+      TeamMember: {
+        payload: Prisma.$TeamMemberPayload<ExtArgs>
+        fields: Prisma.TeamMemberFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TeamMemberFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamMemberPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TeamMemberFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamMemberPayload>
+          }
+          findFirst: {
+            args: Prisma.TeamMemberFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamMemberPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TeamMemberFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamMemberPayload>
+          }
+          findMany: {
+            args: Prisma.TeamMemberFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamMemberPayload>[]
+          }
+          create: {
+            args: Prisma.TeamMemberCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamMemberPayload>
+          }
+          createMany: {
+            args: Prisma.TeamMemberCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TeamMemberCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamMemberPayload>[]
+          }
+          delete: {
+            args: Prisma.TeamMemberDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamMemberPayload>
+          }
+          update: {
+            args: Prisma.TeamMemberUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamMemberPayload>
+          }
+          deleteMany: {
+            args: Prisma.TeamMemberDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TeamMemberUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TeamMemberUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamMemberPayload>[]
+          }
+          upsert: {
+            args: Prisma.TeamMemberUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamMemberPayload>
+          }
+          aggregate: {
+            args: Prisma.TeamMemberAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTeamMember>
+          }
+          groupBy: {
+            args: Prisma.TeamMemberGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TeamMemberGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TeamMemberCountArgs<ExtArgs>
+            result: $Utils.Optional<TeamMemberCountAggregateOutputType> | number
+          }
+        }
+      }
+      TeamInvite: {
+        payload: Prisma.$TeamInvitePayload<ExtArgs>
+        fields: Prisma.TeamInviteFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TeamInviteFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamInvitePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TeamInviteFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamInvitePayload>
+          }
+          findFirst: {
+            args: Prisma.TeamInviteFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamInvitePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TeamInviteFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamInvitePayload>
+          }
+          findMany: {
+            args: Prisma.TeamInviteFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamInvitePayload>[]
+          }
+          create: {
+            args: Prisma.TeamInviteCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamInvitePayload>
+          }
+          createMany: {
+            args: Prisma.TeamInviteCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TeamInviteCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamInvitePayload>[]
+          }
+          delete: {
+            args: Prisma.TeamInviteDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamInvitePayload>
+          }
+          update: {
+            args: Prisma.TeamInviteUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamInvitePayload>
+          }
+          deleteMany: {
+            args: Prisma.TeamInviteDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TeamInviteUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TeamInviteUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamInvitePayload>[]
+          }
+          upsert: {
+            args: Prisma.TeamInviteUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamInvitePayload>
+          }
+          aggregate: {
+            args: Prisma.TeamInviteAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTeamInvite>
+          }
+          groupBy: {
+            args: Prisma.TeamInviteGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TeamInviteGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TeamInviteCountArgs<ExtArgs>
+            result: $Utils.Optional<TeamInviteCountAggregateOutputType> | number
+          }
+        }
+      }
+      TeamGeneration: {
+        payload: Prisma.$TeamGenerationPayload<ExtArgs>
+        fields: Prisma.TeamGenerationFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TeamGenerationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamGenerationPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TeamGenerationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamGenerationPayload>
+          }
+          findFirst: {
+            args: Prisma.TeamGenerationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamGenerationPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TeamGenerationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamGenerationPayload>
+          }
+          findMany: {
+            args: Prisma.TeamGenerationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamGenerationPayload>[]
+          }
+          create: {
+            args: Prisma.TeamGenerationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamGenerationPayload>
+          }
+          createMany: {
+            args: Prisma.TeamGenerationCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TeamGenerationCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamGenerationPayload>[]
+          }
+          delete: {
+            args: Prisma.TeamGenerationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamGenerationPayload>
+          }
+          update: {
+            args: Prisma.TeamGenerationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamGenerationPayload>
+          }
+          deleteMany: {
+            args: Prisma.TeamGenerationDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TeamGenerationUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TeamGenerationUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamGenerationPayload>[]
+          }
+          upsert: {
+            args: Prisma.TeamGenerationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TeamGenerationPayload>
+          }
+          aggregate: {
+            args: Prisma.TeamGenerationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTeamGeneration>
+          }
+          groupBy: {
+            args: Prisma.TeamGenerationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TeamGenerationGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TeamGenerationCountArgs<ExtArgs>
+            result: $Utils.Optional<TeamGenerationCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1648,6 +2397,14 @@ export namespace Prisma {
     creditPackage?: CreditPackageOmit
     savedGeneration?: SavedGenerationOmit
     batchJob?: BatchJobOmit
+    template?: TemplateOmit
+    templateDocument?: TemplateDocumentOmit
+    bulkJob?: BulkJobOmit
+    bulkJobItem?: BulkJobItemOmit
+    team?: TeamOmit
+    teamMember?: TeamMemberOmit
+    teamInvite?: TeamInviteOmit
+    teamGeneration?: TeamGenerationOmit
   }
 
   /* Types for Logging */
@@ -1735,6 +2492,11 @@ export namespace Prisma {
     savedGenerations: number
     batchJobs: number
     payments: number
+    createdTemplates: number
+    templateDocuments: number
+    bulkJobs: number
+    teamMemberships: number
+    teamGenerations: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1745,6 +2507,11 @@ export namespace Prisma {
     savedGenerations?: boolean | UserCountOutputTypeCountSavedGenerationsArgs
     batchJobs?: boolean | UserCountOutputTypeCountBatchJobsArgs
     payments?: boolean | UserCountOutputTypeCountPaymentsArgs
+    createdTemplates?: boolean | UserCountOutputTypeCountCreatedTemplatesArgs
+    templateDocuments?: boolean | UserCountOutputTypeCountTemplateDocumentsArgs
+    bulkJobs?: boolean | UserCountOutputTypeCountBulkJobsArgs
+    teamMemberships?: boolean | UserCountOutputTypeCountTeamMembershipsArgs
+    teamGenerations?: boolean | UserCountOutputTypeCountTeamGenerationsArgs
   }
 
   // Custom InputTypes
@@ -1807,6 +2574,41 @@ export namespace Prisma {
     where?: PaymentWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCreatedTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TemplateWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountTemplateDocumentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TemplateDocumentWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountBulkJobsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BulkJobWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountTeamMembershipsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TeamMemberWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountTeamGenerationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TeamGenerationWhereInput
+  }
+
 
   /**
    * Count Type BatchJobCountOutputType
@@ -1836,6 +2638,117 @@ export namespace Prisma {
    */
   export type BatchJobCountOutputTypeCountGenerationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SavedGenerationWhereInput
+  }
+
+
+  /**
+   * Count Type TemplateCountOutputType
+   */
+
+  export type TemplateCountOutputType = {
+    documents: number
+  }
+
+  export type TemplateCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    documents?: boolean | TemplateCountOutputTypeCountDocumentsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * TemplateCountOutputType without action
+   */
+  export type TemplateCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemplateCountOutputType
+     */
+    select?: TemplateCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * TemplateCountOutputType without action
+   */
+  export type TemplateCountOutputTypeCountDocumentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TemplateDocumentWhereInput
+  }
+
+
+  /**
+   * Count Type BulkJobCountOutputType
+   */
+
+  export type BulkJobCountOutputType = {
+    items: number
+  }
+
+  export type BulkJobCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    items?: boolean | BulkJobCountOutputTypeCountItemsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * BulkJobCountOutputType without action
+   */
+  export type BulkJobCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulkJobCountOutputType
+     */
+    select?: BulkJobCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * BulkJobCountOutputType without action
+   */
+  export type BulkJobCountOutputTypeCountItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BulkJobItemWhereInput
+  }
+
+
+  /**
+   * Count Type TeamCountOutputType
+   */
+
+  export type TeamCountOutputType = {
+    members: number
+    invites: number
+    generations: number
+  }
+
+  export type TeamCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    members?: boolean | TeamCountOutputTypeCountMembersArgs
+    invites?: boolean | TeamCountOutputTypeCountInvitesArgs
+    generations?: boolean | TeamCountOutputTypeCountGenerationsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * TeamCountOutputType without action
+   */
+  export type TeamCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamCountOutputType
+     */
+    select?: TeamCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * TeamCountOutputType without action
+   */
+  export type TeamCountOutputTypeCountMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TeamMemberWhereInput
+  }
+
+  /**
+   * TeamCountOutputType without action
+   */
+  export type TeamCountOutputTypeCountInvitesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TeamInviteWhereInput
+  }
+
+  /**
+   * TeamCountOutputType without action
+   */
+  export type TeamCountOutputTypeCountGenerationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TeamGenerationWhereInput
   }
 
 
@@ -4325,6 +5238,11 @@ export namespace Prisma {
     savedGenerations?: boolean | User$savedGenerationsArgs<ExtArgs>
     batchJobs?: boolean | User$batchJobsArgs<ExtArgs>
     payments?: boolean | User$paymentsArgs<ExtArgs>
+    createdTemplates?: boolean | User$createdTemplatesArgs<ExtArgs>
+    templateDocuments?: boolean | User$templateDocumentsArgs<ExtArgs>
+    bulkJobs?: boolean | User$bulkJobsArgs<ExtArgs>
+    teamMemberships?: boolean | User$teamMembershipsArgs<ExtArgs>
+    teamGenerations?: boolean | User$teamGenerationsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -4373,6 +5291,11 @@ export namespace Prisma {
     savedGenerations?: boolean | User$savedGenerationsArgs<ExtArgs>
     batchJobs?: boolean | User$batchJobsArgs<ExtArgs>
     payments?: boolean | User$paymentsArgs<ExtArgs>
+    createdTemplates?: boolean | User$createdTemplatesArgs<ExtArgs>
+    templateDocuments?: boolean | User$templateDocumentsArgs<ExtArgs>
+    bulkJobs?: boolean | User$bulkJobsArgs<ExtArgs>
+    teamMemberships?: boolean | User$teamMembershipsArgs<ExtArgs>
+    teamGenerations?: boolean | User$teamGenerationsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -4388,6 +5311,11 @@ export namespace Prisma {
       savedGenerations: Prisma.$SavedGenerationPayload<ExtArgs>[]
       batchJobs: Prisma.$BatchJobPayload<ExtArgs>[]
       payments: Prisma.$PaymentPayload<ExtArgs>[]
+      createdTemplates: Prisma.$TemplatePayload<ExtArgs>[]
+      templateDocuments: Prisma.$TemplateDocumentPayload<ExtArgs>[]
+      bulkJobs: Prisma.$BulkJobPayload<ExtArgs>[]
+      teamMemberships: Prisma.$TeamMemberPayload<ExtArgs>[]
+      teamGenerations: Prisma.$TeamGenerationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4800,6 +5728,11 @@ export namespace Prisma {
     savedGenerations<T extends User$savedGenerationsArgs<ExtArgs> = {}>(args?: Subset<T, User$savedGenerationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavedGenerationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     batchJobs<T extends User$batchJobsArgs<ExtArgs> = {}>(args?: Subset<T, User$batchJobsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BatchJobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     payments<T extends User$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, User$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    createdTemplates<T extends User$createdTemplatesArgs<ExtArgs> = {}>(args?: Subset<T, User$createdTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    templateDocuments<T extends User$templateDocumentsArgs<ExtArgs> = {}>(args?: Subset<T, User$templateDocumentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TemplateDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    bulkJobs<T extends User$bulkJobsArgs<ExtArgs> = {}>(args?: Subset<T, User$bulkJobsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BulkJobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    teamMemberships<T extends User$teamMembershipsArgs<ExtArgs> = {}>(args?: Subset<T, User$teamMembershipsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    teamGenerations<T extends User$teamGenerationsArgs<ExtArgs> = {}>(args?: Subset<T, User$teamGenerationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamGenerationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5391,6 +6324,126 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PaymentScalarFieldEnum | PaymentScalarFieldEnum[]
+  }
+
+  /**
+   * User.createdTemplates
+   */
+  export type User$createdTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Template
+     */
+    select?: TemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Template
+     */
+    omit?: TemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TemplateInclude<ExtArgs> | null
+    where?: TemplateWhereInput
+    orderBy?: TemplateOrderByWithRelationInput | TemplateOrderByWithRelationInput[]
+    cursor?: TemplateWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TemplateScalarFieldEnum | TemplateScalarFieldEnum[]
+  }
+
+  /**
+   * User.templateDocuments
+   */
+  export type User$templateDocumentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemplateDocument
+     */
+    select?: TemplateDocumentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemplateDocument
+     */
+    omit?: TemplateDocumentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TemplateDocumentInclude<ExtArgs> | null
+    where?: TemplateDocumentWhereInput
+    orderBy?: TemplateDocumentOrderByWithRelationInput | TemplateDocumentOrderByWithRelationInput[]
+    cursor?: TemplateDocumentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TemplateDocumentScalarFieldEnum | TemplateDocumentScalarFieldEnum[]
+  }
+
+  /**
+   * User.bulkJobs
+   */
+  export type User$bulkJobsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulkJob
+     */
+    select?: BulkJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulkJob
+     */
+    omit?: BulkJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulkJobInclude<ExtArgs> | null
+    where?: BulkJobWhereInput
+    orderBy?: BulkJobOrderByWithRelationInput | BulkJobOrderByWithRelationInput[]
+    cursor?: BulkJobWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BulkJobScalarFieldEnum | BulkJobScalarFieldEnum[]
+  }
+
+  /**
+   * User.teamMemberships
+   */
+  export type User$teamMembershipsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamMember
+     */
+    select?: TeamMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamMember
+     */
+    omit?: TeamMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamMemberInclude<ExtArgs> | null
+    where?: TeamMemberWhereInput
+    orderBy?: TeamMemberOrderByWithRelationInput | TeamMemberOrderByWithRelationInput[]
+    cursor?: TeamMemberWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TeamMemberScalarFieldEnum | TeamMemberScalarFieldEnum[]
+  }
+
+  /**
+   * User.teamGenerations
+   */
+  export type User$teamGenerationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamGeneration
+     */
+    select?: TeamGenerationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamGeneration
+     */
+    omit?: TeamGenerationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamGenerationInclude<ExtArgs> | null
+    where?: TeamGenerationWhereInput
+    orderBy?: TeamGenerationOrderByWithRelationInput | TeamGenerationOrderByWithRelationInput[]
+    cursor?: TeamGenerationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TeamGenerationScalarFieldEnum | TeamGenerationScalarFieldEnum[]
   }
 
   /**
@@ -8772,6 +9825,8 @@ export namespace Prisma {
     amount: number | null
     credits: number | null
     status: $Enums.PaymentStatus | null
+    razorpayOrderId: string | null
+    razorpayPaymentId: string | null
     stripePaymentId: string | null
     stripeSessionId: string | null
     createdAt: Date | null
@@ -8784,6 +9839,8 @@ export namespace Prisma {
     amount: number | null
     credits: number | null
     status: $Enums.PaymentStatus | null
+    razorpayOrderId: string | null
+    razorpayPaymentId: string | null
     stripePaymentId: string | null
     stripeSessionId: string | null
     createdAt: Date | null
@@ -8796,6 +9853,8 @@ export namespace Prisma {
     amount: number
     credits: number
     status: number
+    razorpayOrderId: number
+    razorpayPaymentId: number
     stripePaymentId: number
     stripeSessionId: number
     createdAt: number
@@ -8820,6 +9879,8 @@ export namespace Prisma {
     amount?: true
     credits?: true
     status?: true
+    razorpayOrderId?: true
+    razorpayPaymentId?: true
     stripePaymentId?: true
     stripeSessionId?: true
     createdAt?: true
@@ -8832,6 +9893,8 @@ export namespace Prisma {
     amount?: true
     credits?: true
     status?: true
+    razorpayOrderId?: true
+    razorpayPaymentId?: true
     stripePaymentId?: true
     stripeSessionId?: true
     createdAt?: true
@@ -8844,6 +9907,8 @@ export namespace Prisma {
     amount?: true
     credits?: true
     status?: true
+    razorpayOrderId?: true
+    razorpayPaymentId?: true
     stripePaymentId?: true
     stripeSessionId?: true
     createdAt?: true
@@ -8943,6 +10008,8 @@ export namespace Prisma {
     amount: number
     credits: number
     status: $Enums.PaymentStatus
+    razorpayOrderId: string | null
+    razorpayPaymentId: string | null
     stripePaymentId: string | null
     stripeSessionId: string | null
     createdAt: Date
@@ -8974,6 +10041,8 @@ export namespace Prisma {
     amount?: boolean
     credits?: boolean
     status?: boolean
+    razorpayOrderId?: boolean
+    razorpayPaymentId?: boolean
     stripePaymentId?: boolean
     stripeSessionId?: boolean
     createdAt?: boolean
@@ -8987,6 +10056,8 @@ export namespace Prisma {
     amount?: boolean
     credits?: boolean
     status?: boolean
+    razorpayOrderId?: boolean
+    razorpayPaymentId?: boolean
     stripePaymentId?: boolean
     stripeSessionId?: boolean
     createdAt?: boolean
@@ -9000,6 +10071,8 @@ export namespace Prisma {
     amount?: boolean
     credits?: boolean
     status?: boolean
+    razorpayOrderId?: boolean
+    razorpayPaymentId?: boolean
     stripePaymentId?: boolean
     stripeSessionId?: boolean
     createdAt?: boolean
@@ -9013,13 +10086,15 @@ export namespace Prisma {
     amount?: boolean
     credits?: boolean
     status?: boolean
+    razorpayOrderId?: boolean
+    razorpayPaymentId?: boolean
     stripePaymentId?: boolean
     stripeSessionId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type PaymentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "amount" | "credits" | "status" | "stripePaymentId" | "stripeSessionId" | "createdAt" | "updatedAt", ExtArgs["result"]["payment"]>
+  export type PaymentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "amount" | "credits" | "status" | "razorpayOrderId" | "razorpayPaymentId" | "stripePaymentId" | "stripeSessionId" | "createdAt" | "updatedAt", ExtArgs["result"]["payment"]>
   export type PaymentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -9041,6 +10116,8 @@ export namespace Prisma {
       amount: number
       credits: number
       status: $Enums.PaymentStatus
+      razorpayOrderId: string | null
+      razorpayPaymentId: string | null
       stripePaymentId: string | null
       stripeSessionId: string | null
       createdAt: Date
@@ -9474,6 +10551,8 @@ export namespace Prisma {
     readonly amount: FieldRef<"Payment", 'Float'>
     readonly credits: FieldRef<"Payment", 'Int'>
     readonly status: FieldRef<"Payment", 'PaymentStatus'>
+    readonly razorpayOrderId: FieldRef<"Payment", 'String'>
+    readonly razorpayPaymentId: FieldRef<"Payment", 'String'>
     readonly stripePaymentId: FieldRef<"Payment", 'String'>
     readonly stripeSessionId: FieldRef<"Payment", 'String'>
     readonly createdAt: FieldRef<"Payment", 'DateTime'>
@@ -13603,6 +14682,9570 @@ export namespace Prisma {
 
 
   /**
+   * Model Template
+   */
+
+  export type AggregateTemplate = {
+    _count: TemplateCountAggregateOutputType | null
+    _avg: TemplateAvgAggregateOutputType | null
+    _sum: TemplateSumAggregateOutputType | null
+    _min: TemplateMinAggregateOutputType | null
+    _max: TemplateMaxAggregateOutputType | null
+  }
+
+  export type TemplateAvgAggregateOutputType = {
+    usageCount: number | null
+  }
+
+  export type TemplateSumAggregateOutputType = {
+    usageCount: number | null
+  }
+
+  export type TemplateMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    category: $Enums.TemplateCategory | null
+    thumbnail: string | null
+    isSystem: boolean | null
+    createdById: string | null
+    usageCount: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TemplateMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    category: $Enums.TemplateCategory | null
+    thumbnail: string | null
+    isSystem: boolean | null
+    createdById: string | null
+    usageCount: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TemplateCountAggregateOutputType = {
+    id: number
+    name: number
+    description: number
+    category: number
+    thumbnail: number
+    config: number
+    isSystem: number
+    createdById: number
+    usageCount: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type TemplateAvgAggregateInputType = {
+    usageCount?: true
+  }
+
+  export type TemplateSumAggregateInputType = {
+    usageCount?: true
+  }
+
+  export type TemplateMinAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    category?: true
+    thumbnail?: true
+    isSystem?: true
+    createdById?: true
+    usageCount?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TemplateMaxAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    category?: true
+    thumbnail?: true
+    isSystem?: true
+    createdById?: true
+    usageCount?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TemplateCountAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    category?: true
+    thumbnail?: true
+    config?: true
+    isSystem?: true
+    createdById?: true
+    usageCount?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type TemplateAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Template to aggregate.
+     */
+    where?: TemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Templates to fetch.
+     */
+    orderBy?: TemplateOrderByWithRelationInput | TemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Templates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Templates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Templates
+    **/
+    _count?: true | TemplateCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TemplateAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TemplateSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TemplateMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TemplateMaxAggregateInputType
+  }
+
+  export type GetTemplateAggregateType<T extends TemplateAggregateArgs> = {
+        [P in keyof T & keyof AggregateTemplate]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTemplate[P]>
+      : GetScalarType<T[P], AggregateTemplate[P]>
+  }
+
+
+
+
+  export type TemplateGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TemplateWhereInput
+    orderBy?: TemplateOrderByWithAggregationInput | TemplateOrderByWithAggregationInput[]
+    by: TemplateScalarFieldEnum[] | TemplateScalarFieldEnum
+    having?: TemplateScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TemplateCountAggregateInputType | true
+    _avg?: TemplateAvgAggregateInputType
+    _sum?: TemplateSumAggregateInputType
+    _min?: TemplateMinAggregateInputType
+    _max?: TemplateMaxAggregateInputType
+  }
+
+  export type TemplateGroupByOutputType = {
+    id: string
+    name: string
+    description: string | null
+    category: $Enums.TemplateCategory
+    thumbnail: string | null
+    config: JsonValue
+    isSystem: boolean
+    createdById: string | null
+    usageCount: number
+    createdAt: Date
+    updatedAt: Date
+    _count: TemplateCountAggregateOutputType | null
+    _avg: TemplateAvgAggregateOutputType | null
+    _sum: TemplateSumAggregateOutputType | null
+    _min: TemplateMinAggregateOutputType | null
+    _max: TemplateMaxAggregateOutputType | null
+  }
+
+  type GetTemplateGroupByPayload<T extends TemplateGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TemplateGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TemplateGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TemplateGroupByOutputType[P]>
+            : GetScalarType<T[P], TemplateGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TemplateSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    category?: boolean
+    thumbnail?: boolean
+    config?: boolean
+    isSystem?: boolean
+    createdById?: boolean
+    usageCount?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    createdBy?: boolean | Template$createdByArgs<ExtArgs>
+    documents?: boolean | Template$documentsArgs<ExtArgs>
+    _count?: boolean | TemplateCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["template"]>
+
+  export type TemplateSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    category?: boolean
+    thumbnail?: boolean
+    config?: boolean
+    isSystem?: boolean
+    createdById?: boolean
+    usageCount?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    createdBy?: boolean | Template$createdByArgs<ExtArgs>
+  }, ExtArgs["result"]["template"]>
+
+  export type TemplateSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    category?: boolean
+    thumbnail?: boolean
+    config?: boolean
+    isSystem?: boolean
+    createdById?: boolean
+    usageCount?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    createdBy?: boolean | Template$createdByArgs<ExtArgs>
+  }, ExtArgs["result"]["template"]>
+
+  export type TemplateSelectScalar = {
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    category?: boolean
+    thumbnail?: boolean
+    config?: boolean
+    isSystem?: boolean
+    createdById?: boolean
+    usageCount?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type TemplateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "category" | "thumbnail" | "config" | "isSystem" | "createdById" | "usageCount" | "createdAt" | "updatedAt", ExtArgs["result"]["template"]>
+  export type TemplateInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdBy?: boolean | Template$createdByArgs<ExtArgs>
+    documents?: boolean | Template$documentsArgs<ExtArgs>
+    _count?: boolean | TemplateCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type TemplateIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdBy?: boolean | Template$createdByArgs<ExtArgs>
+  }
+  export type TemplateIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdBy?: boolean | Template$createdByArgs<ExtArgs>
+  }
+
+  export type $TemplatePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Template"
+    objects: {
+      createdBy: Prisma.$UserPayload<ExtArgs> | null
+      documents: Prisma.$TemplateDocumentPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      description: string | null
+      category: $Enums.TemplateCategory
+      thumbnail: string | null
+      config: Prisma.JsonValue
+      isSystem: boolean
+      createdById: string | null
+      usageCount: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["template"]>
+    composites: {}
+  }
+
+  type TemplateGetPayload<S extends boolean | null | undefined | TemplateDefaultArgs> = $Result.GetResult<Prisma.$TemplatePayload, S>
+
+  type TemplateCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TemplateFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TemplateCountAggregateInputType | true
+    }
+
+  export interface TemplateDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Template'], meta: { name: 'Template' } }
+    /**
+     * Find zero or one Template that matches the filter.
+     * @param {TemplateFindUniqueArgs} args - Arguments to find a Template
+     * @example
+     * // Get one Template
+     * const template = await prisma.template.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TemplateFindUniqueArgs>(args: SelectSubset<T, TemplateFindUniqueArgs<ExtArgs>>): Prisma__TemplateClient<$Result.GetResult<Prisma.$TemplatePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Template that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TemplateFindUniqueOrThrowArgs} args - Arguments to find a Template
+     * @example
+     * // Get one Template
+     * const template = await prisma.template.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TemplateFindUniqueOrThrowArgs>(args: SelectSubset<T, TemplateFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TemplateClient<$Result.GetResult<Prisma.$TemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Template that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TemplateFindFirstArgs} args - Arguments to find a Template
+     * @example
+     * // Get one Template
+     * const template = await prisma.template.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TemplateFindFirstArgs>(args?: SelectSubset<T, TemplateFindFirstArgs<ExtArgs>>): Prisma__TemplateClient<$Result.GetResult<Prisma.$TemplatePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Template that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TemplateFindFirstOrThrowArgs} args - Arguments to find a Template
+     * @example
+     * // Get one Template
+     * const template = await prisma.template.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TemplateFindFirstOrThrowArgs>(args?: SelectSubset<T, TemplateFindFirstOrThrowArgs<ExtArgs>>): Prisma__TemplateClient<$Result.GetResult<Prisma.$TemplatePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Templates that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TemplateFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Templates
+     * const templates = await prisma.template.findMany()
+     * 
+     * // Get first 10 Templates
+     * const templates = await prisma.template.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const templateWithIdOnly = await prisma.template.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TemplateFindManyArgs>(args?: SelectSubset<T, TemplateFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Template.
+     * @param {TemplateCreateArgs} args - Arguments to create a Template.
+     * @example
+     * // Create one Template
+     * const Template = await prisma.template.create({
+     *   data: {
+     *     // ... data to create a Template
+     *   }
+     * })
+     * 
+     */
+    create<T extends TemplateCreateArgs>(args: SelectSubset<T, TemplateCreateArgs<ExtArgs>>): Prisma__TemplateClient<$Result.GetResult<Prisma.$TemplatePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Templates.
+     * @param {TemplateCreateManyArgs} args - Arguments to create many Templates.
+     * @example
+     * // Create many Templates
+     * const template = await prisma.template.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TemplateCreateManyArgs>(args?: SelectSubset<T, TemplateCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Templates and returns the data saved in the database.
+     * @param {TemplateCreateManyAndReturnArgs} args - Arguments to create many Templates.
+     * @example
+     * // Create many Templates
+     * const template = await prisma.template.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Templates and only return the `id`
+     * const templateWithIdOnly = await prisma.template.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TemplateCreateManyAndReturnArgs>(args?: SelectSubset<T, TemplateCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TemplatePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Template.
+     * @param {TemplateDeleteArgs} args - Arguments to delete one Template.
+     * @example
+     * // Delete one Template
+     * const Template = await prisma.template.delete({
+     *   where: {
+     *     // ... filter to delete one Template
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TemplateDeleteArgs>(args: SelectSubset<T, TemplateDeleteArgs<ExtArgs>>): Prisma__TemplateClient<$Result.GetResult<Prisma.$TemplatePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Template.
+     * @param {TemplateUpdateArgs} args - Arguments to update one Template.
+     * @example
+     * // Update one Template
+     * const template = await prisma.template.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TemplateUpdateArgs>(args: SelectSubset<T, TemplateUpdateArgs<ExtArgs>>): Prisma__TemplateClient<$Result.GetResult<Prisma.$TemplatePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Templates.
+     * @param {TemplateDeleteManyArgs} args - Arguments to filter Templates to delete.
+     * @example
+     * // Delete a few Templates
+     * const { count } = await prisma.template.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TemplateDeleteManyArgs>(args?: SelectSubset<T, TemplateDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Templates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TemplateUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Templates
+     * const template = await prisma.template.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TemplateUpdateManyArgs>(args: SelectSubset<T, TemplateUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Templates and returns the data updated in the database.
+     * @param {TemplateUpdateManyAndReturnArgs} args - Arguments to update many Templates.
+     * @example
+     * // Update many Templates
+     * const template = await prisma.template.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Templates and only return the `id`
+     * const templateWithIdOnly = await prisma.template.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TemplateUpdateManyAndReturnArgs>(args: SelectSubset<T, TemplateUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TemplatePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Template.
+     * @param {TemplateUpsertArgs} args - Arguments to update or create a Template.
+     * @example
+     * // Update or create a Template
+     * const template = await prisma.template.upsert({
+     *   create: {
+     *     // ... data to create a Template
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Template we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TemplateUpsertArgs>(args: SelectSubset<T, TemplateUpsertArgs<ExtArgs>>): Prisma__TemplateClient<$Result.GetResult<Prisma.$TemplatePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Templates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TemplateCountArgs} args - Arguments to filter Templates to count.
+     * @example
+     * // Count the number of Templates
+     * const count = await prisma.template.count({
+     *   where: {
+     *     // ... the filter for the Templates we want to count
+     *   }
+     * })
+    **/
+    count<T extends TemplateCountArgs>(
+      args?: Subset<T, TemplateCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TemplateCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Template.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TemplateAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TemplateAggregateArgs>(args: Subset<T, TemplateAggregateArgs>): Prisma.PrismaPromise<GetTemplateAggregateType<T>>
+
+    /**
+     * Group by Template.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TemplateGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TemplateGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TemplateGroupByArgs['orderBy'] }
+        : { orderBy?: TemplateGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TemplateGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTemplateGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Template model
+   */
+  readonly fields: TemplateFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Template.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TemplateClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    createdBy<T extends Template$createdByArgs<ExtArgs> = {}>(args?: Subset<T, Template$createdByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    documents<T extends Template$documentsArgs<ExtArgs> = {}>(args?: Subset<T, Template$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TemplateDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Template model
+   */
+  interface TemplateFieldRefs {
+    readonly id: FieldRef<"Template", 'String'>
+    readonly name: FieldRef<"Template", 'String'>
+    readonly description: FieldRef<"Template", 'String'>
+    readonly category: FieldRef<"Template", 'TemplateCategory'>
+    readonly thumbnail: FieldRef<"Template", 'String'>
+    readonly config: FieldRef<"Template", 'Json'>
+    readonly isSystem: FieldRef<"Template", 'Boolean'>
+    readonly createdById: FieldRef<"Template", 'String'>
+    readonly usageCount: FieldRef<"Template", 'Int'>
+    readonly createdAt: FieldRef<"Template", 'DateTime'>
+    readonly updatedAt: FieldRef<"Template", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Template findUnique
+   */
+  export type TemplateFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Template
+     */
+    select?: TemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Template
+     */
+    omit?: TemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which Template to fetch.
+     */
+    where: TemplateWhereUniqueInput
+  }
+
+  /**
+   * Template findUniqueOrThrow
+   */
+  export type TemplateFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Template
+     */
+    select?: TemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Template
+     */
+    omit?: TemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which Template to fetch.
+     */
+    where: TemplateWhereUniqueInput
+  }
+
+  /**
+   * Template findFirst
+   */
+  export type TemplateFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Template
+     */
+    select?: TemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Template
+     */
+    omit?: TemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which Template to fetch.
+     */
+    where?: TemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Templates to fetch.
+     */
+    orderBy?: TemplateOrderByWithRelationInput | TemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Templates.
+     */
+    cursor?: TemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Templates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Templates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Templates.
+     */
+    distinct?: TemplateScalarFieldEnum | TemplateScalarFieldEnum[]
+  }
+
+  /**
+   * Template findFirstOrThrow
+   */
+  export type TemplateFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Template
+     */
+    select?: TemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Template
+     */
+    omit?: TemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which Template to fetch.
+     */
+    where?: TemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Templates to fetch.
+     */
+    orderBy?: TemplateOrderByWithRelationInput | TemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Templates.
+     */
+    cursor?: TemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Templates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Templates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Templates.
+     */
+    distinct?: TemplateScalarFieldEnum | TemplateScalarFieldEnum[]
+  }
+
+  /**
+   * Template findMany
+   */
+  export type TemplateFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Template
+     */
+    select?: TemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Template
+     */
+    omit?: TemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which Templates to fetch.
+     */
+    where?: TemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Templates to fetch.
+     */
+    orderBy?: TemplateOrderByWithRelationInput | TemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Templates.
+     */
+    cursor?: TemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Templates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Templates.
+     */
+    skip?: number
+    distinct?: TemplateScalarFieldEnum | TemplateScalarFieldEnum[]
+  }
+
+  /**
+   * Template create
+   */
+  export type TemplateCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Template
+     */
+    select?: TemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Template
+     */
+    omit?: TemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TemplateInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Template.
+     */
+    data: XOR<TemplateCreateInput, TemplateUncheckedCreateInput>
+  }
+
+  /**
+   * Template createMany
+   */
+  export type TemplateCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Templates.
+     */
+    data: TemplateCreateManyInput | TemplateCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Template createManyAndReturn
+   */
+  export type TemplateCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Template
+     */
+    select?: TemplateSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Template
+     */
+    omit?: TemplateOmit<ExtArgs> | null
+    /**
+     * The data used to create many Templates.
+     */
+    data: TemplateCreateManyInput | TemplateCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TemplateIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Template update
+   */
+  export type TemplateUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Template
+     */
+    select?: TemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Template
+     */
+    omit?: TemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TemplateInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Template.
+     */
+    data: XOR<TemplateUpdateInput, TemplateUncheckedUpdateInput>
+    /**
+     * Choose, which Template to update.
+     */
+    where: TemplateWhereUniqueInput
+  }
+
+  /**
+   * Template updateMany
+   */
+  export type TemplateUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Templates.
+     */
+    data: XOR<TemplateUpdateManyMutationInput, TemplateUncheckedUpdateManyInput>
+    /**
+     * Filter which Templates to update
+     */
+    where?: TemplateWhereInput
+    /**
+     * Limit how many Templates to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Template updateManyAndReturn
+   */
+  export type TemplateUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Template
+     */
+    select?: TemplateSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Template
+     */
+    omit?: TemplateOmit<ExtArgs> | null
+    /**
+     * The data used to update Templates.
+     */
+    data: XOR<TemplateUpdateManyMutationInput, TemplateUncheckedUpdateManyInput>
+    /**
+     * Filter which Templates to update
+     */
+    where?: TemplateWhereInput
+    /**
+     * Limit how many Templates to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TemplateIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Template upsert
+   */
+  export type TemplateUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Template
+     */
+    select?: TemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Template
+     */
+    omit?: TemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TemplateInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Template to update in case it exists.
+     */
+    where: TemplateWhereUniqueInput
+    /**
+     * In case the Template found by the `where` argument doesn't exist, create a new Template with this data.
+     */
+    create: XOR<TemplateCreateInput, TemplateUncheckedCreateInput>
+    /**
+     * In case the Template was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TemplateUpdateInput, TemplateUncheckedUpdateInput>
+  }
+
+  /**
+   * Template delete
+   */
+  export type TemplateDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Template
+     */
+    select?: TemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Template
+     */
+    omit?: TemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TemplateInclude<ExtArgs> | null
+    /**
+     * Filter which Template to delete.
+     */
+    where: TemplateWhereUniqueInput
+  }
+
+  /**
+   * Template deleteMany
+   */
+  export type TemplateDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Templates to delete
+     */
+    where?: TemplateWhereInput
+    /**
+     * Limit how many Templates to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Template.createdBy
+   */
+  export type Template$createdByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * Template.documents
+   */
+  export type Template$documentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemplateDocument
+     */
+    select?: TemplateDocumentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemplateDocument
+     */
+    omit?: TemplateDocumentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TemplateDocumentInclude<ExtArgs> | null
+    where?: TemplateDocumentWhereInput
+    orderBy?: TemplateDocumentOrderByWithRelationInput | TemplateDocumentOrderByWithRelationInput[]
+    cursor?: TemplateDocumentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TemplateDocumentScalarFieldEnum | TemplateDocumentScalarFieldEnum[]
+  }
+
+  /**
+   * Template without action
+   */
+  export type TemplateDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Template
+     */
+    select?: TemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Template
+     */
+    omit?: TemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TemplateInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model TemplateDocument
+   */
+
+  export type AggregateTemplateDocument = {
+    _count: TemplateDocumentCountAggregateOutputType | null
+    _avg: TemplateDocumentAvgAggregateOutputType | null
+    _sum: TemplateDocumentSumAggregateOutputType | null
+    _min: TemplateDocumentMinAggregateOutputType | null
+    _max: TemplateDocumentMaxAggregateOutputType | null
+  }
+
+  export type TemplateDocumentAvgAggregateOutputType = {
+    style: number | null
+    bias: number | null
+    strokeWidth: number | null
+  }
+
+  export type TemplateDocumentSumAggregateOutputType = {
+    style: number | null
+    bias: number | null
+    strokeWidth: number | null
+  }
+
+  export type TemplateDocumentMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    templateId: string | null
+    name: string | null
+    style: number | null
+    bias: number | null
+    strokeColor: string | null
+    strokeWidth: number | null
+    status: $Enums.GenerationStatus | null
+    outputUrl: string | null
+    outputKey: string | null
+    previewSvg: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TemplateDocumentMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    templateId: string | null
+    name: string | null
+    style: number | null
+    bias: number | null
+    strokeColor: string | null
+    strokeWidth: number | null
+    status: $Enums.GenerationStatus | null
+    outputUrl: string | null
+    outputKey: string | null
+    previewSvg: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TemplateDocumentCountAggregateOutputType = {
+    id: number
+    userId: number
+    templateId: number
+    name: number
+    content: number
+    style: number
+    bias: number
+    strokeColor: number
+    strokeWidth: number
+    status: number
+    outputUrl: number
+    outputKey: number
+    previewSvg: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type TemplateDocumentAvgAggregateInputType = {
+    style?: true
+    bias?: true
+    strokeWidth?: true
+  }
+
+  export type TemplateDocumentSumAggregateInputType = {
+    style?: true
+    bias?: true
+    strokeWidth?: true
+  }
+
+  export type TemplateDocumentMinAggregateInputType = {
+    id?: true
+    userId?: true
+    templateId?: true
+    name?: true
+    style?: true
+    bias?: true
+    strokeColor?: true
+    strokeWidth?: true
+    status?: true
+    outputUrl?: true
+    outputKey?: true
+    previewSvg?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TemplateDocumentMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    templateId?: true
+    name?: true
+    style?: true
+    bias?: true
+    strokeColor?: true
+    strokeWidth?: true
+    status?: true
+    outputUrl?: true
+    outputKey?: true
+    previewSvg?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TemplateDocumentCountAggregateInputType = {
+    id?: true
+    userId?: true
+    templateId?: true
+    name?: true
+    content?: true
+    style?: true
+    bias?: true
+    strokeColor?: true
+    strokeWidth?: true
+    status?: true
+    outputUrl?: true
+    outputKey?: true
+    previewSvg?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type TemplateDocumentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TemplateDocument to aggregate.
+     */
+    where?: TemplateDocumentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TemplateDocuments to fetch.
+     */
+    orderBy?: TemplateDocumentOrderByWithRelationInput | TemplateDocumentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TemplateDocumentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TemplateDocuments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TemplateDocuments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TemplateDocuments
+    **/
+    _count?: true | TemplateDocumentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TemplateDocumentAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TemplateDocumentSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TemplateDocumentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TemplateDocumentMaxAggregateInputType
+  }
+
+  export type GetTemplateDocumentAggregateType<T extends TemplateDocumentAggregateArgs> = {
+        [P in keyof T & keyof AggregateTemplateDocument]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTemplateDocument[P]>
+      : GetScalarType<T[P], AggregateTemplateDocument[P]>
+  }
+
+
+
+
+  export type TemplateDocumentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TemplateDocumentWhereInput
+    orderBy?: TemplateDocumentOrderByWithAggregationInput | TemplateDocumentOrderByWithAggregationInput[]
+    by: TemplateDocumentScalarFieldEnum[] | TemplateDocumentScalarFieldEnum
+    having?: TemplateDocumentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TemplateDocumentCountAggregateInputType | true
+    _avg?: TemplateDocumentAvgAggregateInputType
+    _sum?: TemplateDocumentSumAggregateInputType
+    _min?: TemplateDocumentMinAggregateInputType
+    _max?: TemplateDocumentMaxAggregateInputType
+  }
+
+  export type TemplateDocumentGroupByOutputType = {
+    id: string
+    userId: string
+    templateId: string
+    name: string
+    content: JsonValue
+    style: number
+    bias: number
+    strokeColor: string
+    strokeWidth: number
+    status: $Enums.GenerationStatus
+    outputUrl: string | null
+    outputKey: string | null
+    previewSvg: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: TemplateDocumentCountAggregateOutputType | null
+    _avg: TemplateDocumentAvgAggregateOutputType | null
+    _sum: TemplateDocumentSumAggregateOutputType | null
+    _min: TemplateDocumentMinAggregateOutputType | null
+    _max: TemplateDocumentMaxAggregateOutputType | null
+  }
+
+  type GetTemplateDocumentGroupByPayload<T extends TemplateDocumentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TemplateDocumentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TemplateDocumentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TemplateDocumentGroupByOutputType[P]>
+            : GetScalarType<T[P], TemplateDocumentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TemplateDocumentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    templateId?: boolean
+    name?: boolean
+    content?: boolean
+    style?: boolean
+    bias?: boolean
+    strokeColor?: boolean
+    strokeWidth?: boolean
+    status?: boolean
+    outputUrl?: boolean
+    outputKey?: boolean
+    previewSvg?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    template?: boolean | TemplateDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["templateDocument"]>
+
+  export type TemplateDocumentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    templateId?: boolean
+    name?: boolean
+    content?: boolean
+    style?: boolean
+    bias?: boolean
+    strokeColor?: boolean
+    strokeWidth?: boolean
+    status?: boolean
+    outputUrl?: boolean
+    outputKey?: boolean
+    previewSvg?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    template?: boolean | TemplateDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["templateDocument"]>
+
+  export type TemplateDocumentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    templateId?: boolean
+    name?: boolean
+    content?: boolean
+    style?: boolean
+    bias?: boolean
+    strokeColor?: boolean
+    strokeWidth?: boolean
+    status?: boolean
+    outputUrl?: boolean
+    outputKey?: boolean
+    previewSvg?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    template?: boolean | TemplateDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["templateDocument"]>
+
+  export type TemplateDocumentSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    templateId?: boolean
+    name?: boolean
+    content?: boolean
+    style?: boolean
+    bias?: boolean
+    strokeColor?: boolean
+    strokeWidth?: boolean
+    status?: boolean
+    outputUrl?: boolean
+    outputKey?: boolean
+    previewSvg?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type TemplateDocumentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "templateId" | "name" | "content" | "style" | "bias" | "strokeColor" | "strokeWidth" | "status" | "outputUrl" | "outputKey" | "previewSvg" | "createdAt" | "updatedAt", ExtArgs["result"]["templateDocument"]>
+  export type TemplateDocumentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    template?: boolean | TemplateDefaultArgs<ExtArgs>
+  }
+  export type TemplateDocumentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    template?: boolean | TemplateDefaultArgs<ExtArgs>
+  }
+  export type TemplateDocumentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    template?: boolean | TemplateDefaultArgs<ExtArgs>
+  }
+
+  export type $TemplateDocumentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TemplateDocument"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      template: Prisma.$TemplatePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      templateId: string
+      name: string
+      content: Prisma.JsonValue
+      style: number
+      bias: number
+      strokeColor: string
+      strokeWidth: number
+      status: $Enums.GenerationStatus
+      outputUrl: string | null
+      outputKey: string | null
+      previewSvg: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["templateDocument"]>
+    composites: {}
+  }
+
+  type TemplateDocumentGetPayload<S extends boolean | null | undefined | TemplateDocumentDefaultArgs> = $Result.GetResult<Prisma.$TemplateDocumentPayload, S>
+
+  type TemplateDocumentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TemplateDocumentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TemplateDocumentCountAggregateInputType | true
+    }
+
+  export interface TemplateDocumentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TemplateDocument'], meta: { name: 'TemplateDocument' } }
+    /**
+     * Find zero or one TemplateDocument that matches the filter.
+     * @param {TemplateDocumentFindUniqueArgs} args - Arguments to find a TemplateDocument
+     * @example
+     * // Get one TemplateDocument
+     * const templateDocument = await prisma.templateDocument.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TemplateDocumentFindUniqueArgs>(args: SelectSubset<T, TemplateDocumentFindUniqueArgs<ExtArgs>>): Prisma__TemplateDocumentClient<$Result.GetResult<Prisma.$TemplateDocumentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TemplateDocument that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TemplateDocumentFindUniqueOrThrowArgs} args - Arguments to find a TemplateDocument
+     * @example
+     * // Get one TemplateDocument
+     * const templateDocument = await prisma.templateDocument.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TemplateDocumentFindUniqueOrThrowArgs>(args: SelectSubset<T, TemplateDocumentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TemplateDocumentClient<$Result.GetResult<Prisma.$TemplateDocumentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TemplateDocument that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TemplateDocumentFindFirstArgs} args - Arguments to find a TemplateDocument
+     * @example
+     * // Get one TemplateDocument
+     * const templateDocument = await prisma.templateDocument.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TemplateDocumentFindFirstArgs>(args?: SelectSubset<T, TemplateDocumentFindFirstArgs<ExtArgs>>): Prisma__TemplateDocumentClient<$Result.GetResult<Prisma.$TemplateDocumentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TemplateDocument that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TemplateDocumentFindFirstOrThrowArgs} args - Arguments to find a TemplateDocument
+     * @example
+     * // Get one TemplateDocument
+     * const templateDocument = await prisma.templateDocument.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TemplateDocumentFindFirstOrThrowArgs>(args?: SelectSubset<T, TemplateDocumentFindFirstOrThrowArgs<ExtArgs>>): Prisma__TemplateDocumentClient<$Result.GetResult<Prisma.$TemplateDocumentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TemplateDocuments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TemplateDocumentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TemplateDocuments
+     * const templateDocuments = await prisma.templateDocument.findMany()
+     * 
+     * // Get first 10 TemplateDocuments
+     * const templateDocuments = await prisma.templateDocument.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const templateDocumentWithIdOnly = await prisma.templateDocument.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TemplateDocumentFindManyArgs>(args?: SelectSubset<T, TemplateDocumentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TemplateDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TemplateDocument.
+     * @param {TemplateDocumentCreateArgs} args - Arguments to create a TemplateDocument.
+     * @example
+     * // Create one TemplateDocument
+     * const TemplateDocument = await prisma.templateDocument.create({
+     *   data: {
+     *     // ... data to create a TemplateDocument
+     *   }
+     * })
+     * 
+     */
+    create<T extends TemplateDocumentCreateArgs>(args: SelectSubset<T, TemplateDocumentCreateArgs<ExtArgs>>): Prisma__TemplateDocumentClient<$Result.GetResult<Prisma.$TemplateDocumentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TemplateDocuments.
+     * @param {TemplateDocumentCreateManyArgs} args - Arguments to create many TemplateDocuments.
+     * @example
+     * // Create many TemplateDocuments
+     * const templateDocument = await prisma.templateDocument.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TemplateDocumentCreateManyArgs>(args?: SelectSubset<T, TemplateDocumentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TemplateDocuments and returns the data saved in the database.
+     * @param {TemplateDocumentCreateManyAndReturnArgs} args - Arguments to create many TemplateDocuments.
+     * @example
+     * // Create many TemplateDocuments
+     * const templateDocument = await prisma.templateDocument.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TemplateDocuments and only return the `id`
+     * const templateDocumentWithIdOnly = await prisma.templateDocument.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TemplateDocumentCreateManyAndReturnArgs>(args?: SelectSubset<T, TemplateDocumentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TemplateDocumentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a TemplateDocument.
+     * @param {TemplateDocumentDeleteArgs} args - Arguments to delete one TemplateDocument.
+     * @example
+     * // Delete one TemplateDocument
+     * const TemplateDocument = await prisma.templateDocument.delete({
+     *   where: {
+     *     // ... filter to delete one TemplateDocument
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TemplateDocumentDeleteArgs>(args: SelectSubset<T, TemplateDocumentDeleteArgs<ExtArgs>>): Prisma__TemplateDocumentClient<$Result.GetResult<Prisma.$TemplateDocumentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TemplateDocument.
+     * @param {TemplateDocumentUpdateArgs} args - Arguments to update one TemplateDocument.
+     * @example
+     * // Update one TemplateDocument
+     * const templateDocument = await prisma.templateDocument.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TemplateDocumentUpdateArgs>(args: SelectSubset<T, TemplateDocumentUpdateArgs<ExtArgs>>): Prisma__TemplateDocumentClient<$Result.GetResult<Prisma.$TemplateDocumentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TemplateDocuments.
+     * @param {TemplateDocumentDeleteManyArgs} args - Arguments to filter TemplateDocuments to delete.
+     * @example
+     * // Delete a few TemplateDocuments
+     * const { count } = await prisma.templateDocument.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TemplateDocumentDeleteManyArgs>(args?: SelectSubset<T, TemplateDocumentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TemplateDocuments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TemplateDocumentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TemplateDocuments
+     * const templateDocument = await prisma.templateDocument.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TemplateDocumentUpdateManyArgs>(args: SelectSubset<T, TemplateDocumentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TemplateDocuments and returns the data updated in the database.
+     * @param {TemplateDocumentUpdateManyAndReturnArgs} args - Arguments to update many TemplateDocuments.
+     * @example
+     * // Update many TemplateDocuments
+     * const templateDocument = await prisma.templateDocument.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more TemplateDocuments and only return the `id`
+     * const templateDocumentWithIdOnly = await prisma.templateDocument.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TemplateDocumentUpdateManyAndReturnArgs>(args: SelectSubset<T, TemplateDocumentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TemplateDocumentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one TemplateDocument.
+     * @param {TemplateDocumentUpsertArgs} args - Arguments to update or create a TemplateDocument.
+     * @example
+     * // Update or create a TemplateDocument
+     * const templateDocument = await prisma.templateDocument.upsert({
+     *   create: {
+     *     // ... data to create a TemplateDocument
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TemplateDocument we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TemplateDocumentUpsertArgs>(args: SelectSubset<T, TemplateDocumentUpsertArgs<ExtArgs>>): Prisma__TemplateDocumentClient<$Result.GetResult<Prisma.$TemplateDocumentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TemplateDocuments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TemplateDocumentCountArgs} args - Arguments to filter TemplateDocuments to count.
+     * @example
+     * // Count the number of TemplateDocuments
+     * const count = await prisma.templateDocument.count({
+     *   where: {
+     *     // ... the filter for the TemplateDocuments we want to count
+     *   }
+     * })
+    **/
+    count<T extends TemplateDocumentCountArgs>(
+      args?: Subset<T, TemplateDocumentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TemplateDocumentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TemplateDocument.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TemplateDocumentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TemplateDocumentAggregateArgs>(args: Subset<T, TemplateDocumentAggregateArgs>): Prisma.PrismaPromise<GetTemplateDocumentAggregateType<T>>
+
+    /**
+     * Group by TemplateDocument.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TemplateDocumentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TemplateDocumentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TemplateDocumentGroupByArgs['orderBy'] }
+        : { orderBy?: TemplateDocumentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TemplateDocumentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTemplateDocumentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TemplateDocument model
+   */
+  readonly fields: TemplateDocumentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TemplateDocument.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TemplateDocumentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    template<T extends TemplateDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TemplateDefaultArgs<ExtArgs>>): Prisma__TemplateClient<$Result.GetResult<Prisma.$TemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TemplateDocument model
+   */
+  interface TemplateDocumentFieldRefs {
+    readonly id: FieldRef<"TemplateDocument", 'String'>
+    readonly userId: FieldRef<"TemplateDocument", 'String'>
+    readonly templateId: FieldRef<"TemplateDocument", 'String'>
+    readonly name: FieldRef<"TemplateDocument", 'String'>
+    readonly content: FieldRef<"TemplateDocument", 'Json'>
+    readonly style: FieldRef<"TemplateDocument", 'Int'>
+    readonly bias: FieldRef<"TemplateDocument", 'Float'>
+    readonly strokeColor: FieldRef<"TemplateDocument", 'String'>
+    readonly strokeWidth: FieldRef<"TemplateDocument", 'Int'>
+    readonly status: FieldRef<"TemplateDocument", 'GenerationStatus'>
+    readonly outputUrl: FieldRef<"TemplateDocument", 'String'>
+    readonly outputKey: FieldRef<"TemplateDocument", 'String'>
+    readonly previewSvg: FieldRef<"TemplateDocument", 'String'>
+    readonly createdAt: FieldRef<"TemplateDocument", 'DateTime'>
+    readonly updatedAt: FieldRef<"TemplateDocument", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TemplateDocument findUnique
+   */
+  export type TemplateDocumentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemplateDocument
+     */
+    select?: TemplateDocumentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemplateDocument
+     */
+    omit?: TemplateDocumentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TemplateDocumentInclude<ExtArgs> | null
+    /**
+     * Filter, which TemplateDocument to fetch.
+     */
+    where: TemplateDocumentWhereUniqueInput
+  }
+
+  /**
+   * TemplateDocument findUniqueOrThrow
+   */
+  export type TemplateDocumentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemplateDocument
+     */
+    select?: TemplateDocumentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemplateDocument
+     */
+    omit?: TemplateDocumentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TemplateDocumentInclude<ExtArgs> | null
+    /**
+     * Filter, which TemplateDocument to fetch.
+     */
+    where: TemplateDocumentWhereUniqueInput
+  }
+
+  /**
+   * TemplateDocument findFirst
+   */
+  export type TemplateDocumentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemplateDocument
+     */
+    select?: TemplateDocumentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemplateDocument
+     */
+    omit?: TemplateDocumentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TemplateDocumentInclude<ExtArgs> | null
+    /**
+     * Filter, which TemplateDocument to fetch.
+     */
+    where?: TemplateDocumentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TemplateDocuments to fetch.
+     */
+    orderBy?: TemplateDocumentOrderByWithRelationInput | TemplateDocumentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TemplateDocuments.
+     */
+    cursor?: TemplateDocumentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TemplateDocuments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TemplateDocuments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TemplateDocuments.
+     */
+    distinct?: TemplateDocumentScalarFieldEnum | TemplateDocumentScalarFieldEnum[]
+  }
+
+  /**
+   * TemplateDocument findFirstOrThrow
+   */
+  export type TemplateDocumentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemplateDocument
+     */
+    select?: TemplateDocumentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemplateDocument
+     */
+    omit?: TemplateDocumentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TemplateDocumentInclude<ExtArgs> | null
+    /**
+     * Filter, which TemplateDocument to fetch.
+     */
+    where?: TemplateDocumentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TemplateDocuments to fetch.
+     */
+    orderBy?: TemplateDocumentOrderByWithRelationInput | TemplateDocumentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TemplateDocuments.
+     */
+    cursor?: TemplateDocumentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TemplateDocuments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TemplateDocuments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TemplateDocuments.
+     */
+    distinct?: TemplateDocumentScalarFieldEnum | TemplateDocumentScalarFieldEnum[]
+  }
+
+  /**
+   * TemplateDocument findMany
+   */
+  export type TemplateDocumentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemplateDocument
+     */
+    select?: TemplateDocumentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemplateDocument
+     */
+    omit?: TemplateDocumentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TemplateDocumentInclude<ExtArgs> | null
+    /**
+     * Filter, which TemplateDocuments to fetch.
+     */
+    where?: TemplateDocumentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TemplateDocuments to fetch.
+     */
+    orderBy?: TemplateDocumentOrderByWithRelationInput | TemplateDocumentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TemplateDocuments.
+     */
+    cursor?: TemplateDocumentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TemplateDocuments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TemplateDocuments.
+     */
+    skip?: number
+    distinct?: TemplateDocumentScalarFieldEnum | TemplateDocumentScalarFieldEnum[]
+  }
+
+  /**
+   * TemplateDocument create
+   */
+  export type TemplateDocumentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemplateDocument
+     */
+    select?: TemplateDocumentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemplateDocument
+     */
+    omit?: TemplateDocumentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TemplateDocumentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a TemplateDocument.
+     */
+    data: XOR<TemplateDocumentCreateInput, TemplateDocumentUncheckedCreateInput>
+  }
+
+  /**
+   * TemplateDocument createMany
+   */
+  export type TemplateDocumentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TemplateDocuments.
+     */
+    data: TemplateDocumentCreateManyInput | TemplateDocumentCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TemplateDocument createManyAndReturn
+   */
+  export type TemplateDocumentCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemplateDocument
+     */
+    select?: TemplateDocumentSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemplateDocument
+     */
+    omit?: TemplateDocumentOmit<ExtArgs> | null
+    /**
+     * The data used to create many TemplateDocuments.
+     */
+    data: TemplateDocumentCreateManyInput | TemplateDocumentCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TemplateDocumentIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TemplateDocument update
+   */
+  export type TemplateDocumentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemplateDocument
+     */
+    select?: TemplateDocumentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemplateDocument
+     */
+    omit?: TemplateDocumentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TemplateDocumentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a TemplateDocument.
+     */
+    data: XOR<TemplateDocumentUpdateInput, TemplateDocumentUncheckedUpdateInput>
+    /**
+     * Choose, which TemplateDocument to update.
+     */
+    where: TemplateDocumentWhereUniqueInput
+  }
+
+  /**
+   * TemplateDocument updateMany
+   */
+  export type TemplateDocumentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TemplateDocuments.
+     */
+    data: XOR<TemplateDocumentUpdateManyMutationInput, TemplateDocumentUncheckedUpdateManyInput>
+    /**
+     * Filter which TemplateDocuments to update
+     */
+    where?: TemplateDocumentWhereInput
+    /**
+     * Limit how many TemplateDocuments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TemplateDocument updateManyAndReturn
+   */
+  export type TemplateDocumentUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemplateDocument
+     */
+    select?: TemplateDocumentSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemplateDocument
+     */
+    omit?: TemplateDocumentOmit<ExtArgs> | null
+    /**
+     * The data used to update TemplateDocuments.
+     */
+    data: XOR<TemplateDocumentUpdateManyMutationInput, TemplateDocumentUncheckedUpdateManyInput>
+    /**
+     * Filter which TemplateDocuments to update
+     */
+    where?: TemplateDocumentWhereInput
+    /**
+     * Limit how many TemplateDocuments to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TemplateDocumentIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TemplateDocument upsert
+   */
+  export type TemplateDocumentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemplateDocument
+     */
+    select?: TemplateDocumentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemplateDocument
+     */
+    omit?: TemplateDocumentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TemplateDocumentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the TemplateDocument to update in case it exists.
+     */
+    where: TemplateDocumentWhereUniqueInput
+    /**
+     * In case the TemplateDocument found by the `where` argument doesn't exist, create a new TemplateDocument with this data.
+     */
+    create: XOR<TemplateDocumentCreateInput, TemplateDocumentUncheckedCreateInput>
+    /**
+     * In case the TemplateDocument was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TemplateDocumentUpdateInput, TemplateDocumentUncheckedUpdateInput>
+  }
+
+  /**
+   * TemplateDocument delete
+   */
+  export type TemplateDocumentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemplateDocument
+     */
+    select?: TemplateDocumentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemplateDocument
+     */
+    omit?: TemplateDocumentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TemplateDocumentInclude<ExtArgs> | null
+    /**
+     * Filter which TemplateDocument to delete.
+     */
+    where: TemplateDocumentWhereUniqueInput
+  }
+
+  /**
+   * TemplateDocument deleteMany
+   */
+  export type TemplateDocumentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TemplateDocuments to delete
+     */
+    where?: TemplateDocumentWhereInput
+    /**
+     * Limit how many TemplateDocuments to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TemplateDocument without action
+   */
+  export type TemplateDocumentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TemplateDocument
+     */
+    select?: TemplateDocumentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TemplateDocument
+     */
+    omit?: TemplateDocumentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TemplateDocumentInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model BulkJob
+   */
+
+  export type AggregateBulkJob = {
+    _count: BulkJobCountAggregateOutputType | null
+    _avg: BulkJobAvgAggregateOutputType | null
+    _sum: BulkJobSumAggregateOutputType | null
+    _min: BulkJobMinAggregateOutputType | null
+    _max: BulkJobMaxAggregateOutputType | null
+  }
+
+  export type BulkJobAvgAggregateOutputType = {
+    totalRows: number | null
+    style: number | null
+    bias: number | null
+    strokeWidth: number | null
+    processedCount: number | null
+    failedCount: number | null
+    creditsUsed: number | null
+  }
+
+  export type BulkJobSumAggregateOutputType = {
+    totalRows: number | null
+    style: number | null
+    bias: number | null
+    strokeWidth: number | null
+    processedCount: number | null
+    failedCount: number | null
+    creditsUsed: number | null
+  }
+
+  export type BulkJobMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    name: string | null
+    sourceFileName: string | null
+    sourceFileUrl: string | null
+    sourceFileKey: string | null
+    textColumn: string | null
+    filenameColumn: string | null
+    totalRows: number | null
+    style: number | null
+    bias: number | null
+    strokeColor: string | null
+    strokeWidth: number | null
+    status: $Enums.BatchStatus | null
+    processedCount: number | null
+    failedCount: number | null
+    creditsUsed: number | null
+    outputZipUrl: string | null
+    outputZipKey: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type BulkJobMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    name: string | null
+    sourceFileName: string | null
+    sourceFileUrl: string | null
+    sourceFileKey: string | null
+    textColumn: string | null
+    filenameColumn: string | null
+    totalRows: number | null
+    style: number | null
+    bias: number | null
+    strokeColor: string | null
+    strokeWidth: number | null
+    status: $Enums.BatchStatus | null
+    processedCount: number | null
+    failedCount: number | null
+    creditsUsed: number | null
+    outputZipUrl: string | null
+    outputZipKey: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type BulkJobCountAggregateOutputType = {
+    id: number
+    userId: number
+    name: number
+    sourceFileName: number
+    sourceFileUrl: number
+    sourceFileKey: number
+    textColumn: number
+    filenameColumn: number
+    totalRows: number
+    style: number
+    bias: number
+    strokeColor: number
+    strokeWidth: number
+    status: number
+    processedCount: number
+    failedCount: number
+    creditsUsed: number
+    outputZipUrl: number
+    outputZipKey: number
+    errorLog: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type BulkJobAvgAggregateInputType = {
+    totalRows?: true
+    style?: true
+    bias?: true
+    strokeWidth?: true
+    processedCount?: true
+    failedCount?: true
+    creditsUsed?: true
+  }
+
+  export type BulkJobSumAggregateInputType = {
+    totalRows?: true
+    style?: true
+    bias?: true
+    strokeWidth?: true
+    processedCount?: true
+    failedCount?: true
+    creditsUsed?: true
+  }
+
+  export type BulkJobMinAggregateInputType = {
+    id?: true
+    userId?: true
+    name?: true
+    sourceFileName?: true
+    sourceFileUrl?: true
+    sourceFileKey?: true
+    textColumn?: true
+    filenameColumn?: true
+    totalRows?: true
+    style?: true
+    bias?: true
+    strokeColor?: true
+    strokeWidth?: true
+    status?: true
+    processedCount?: true
+    failedCount?: true
+    creditsUsed?: true
+    outputZipUrl?: true
+    outputZipKey?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type BulkJobMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    name?: true
+    sourceFileName?: true
+    sourceFileUrl?: true
+    sourceFileKey?: true
+    textColumn?: true
+    filenameColumn?: true
+    totalRows?: true
+    style?: true
+    bias?: true
+    strokeColor?: true
+    strokeWidth?: true
+    status?: true
+    processedCount?: true
+    failedCount?: true
+    creditsUsed?: true
+    outputZipUrl?: true
+    outputZipKey?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type BulkJobCountAggregateInputType = {
+    id?: true
+    userId?: true
+    name?: true
+    sourceFileName?: true
+    sourceFileUrl?: true
+    sourceFileKey?: true
+    textColumn?: true
+    filenameColumn?: true
+    totalRows?: true
+    style?: true
+    bias?: true
+    strokeColor?: true
+    strokeWidth?: true
+    status?: true
+    processedCount?: true
+    failedCount?: true
+    creditsUsed?: true
+    outputZipUrl?: true
+    outputZipKey?: true
+    errorLog?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type BulkJobAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BulkJob to aggregate.
+     */
+    where?: BulkJobWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BulkJobs to fetch.
+     */
+    orderBy?: BulkJobOrderByWithRelationInput | BulkJobOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: BulkJobWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BulkJobs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BulkJobs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned BulkJobs
+    **/
+    _count?: true | BulkJobCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: BulkJobAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: BulkJobSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: BulkJobMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: BulkJobMaxAggregateInputType
+  }
+
+  export type GetBulkJobAggregateType<T extends BulkJobAggregateArgs> = {
+        [P in keyof T & keyof AggregateBulkJob]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateBulkJob[P]>
+      : GetScalarType<T[P], AggregateBulkJob[P]>
+  }
+
+
+
+
+  export type BulkJobGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BulkJobWhereInput
+    orderBy?: BulkJobOrderByWithAggregationInput | BulkJobOrderByWithAggregationInput[]
+    by: BulkJobScalarFieldEnum[] | BulkJobScalarFieldEnum
+    having?: BulkJobScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: BulkJobCountAggregateInputType | true
+    _avg?: BulkJobAvgAggregateInputType
+    _sum?: BulkJobSumAggregateInputType
+    _min?: BulkJobMinAggregateInputType
+    _max?: BulkJobMaxAggregateInputType
+  }
+
+  export type BulkJobGroupByOutputType = {
+    id: string
+    userId: string
+    name: string | null
+    sourceFileName: string
+    sourceFileUrl: string | null
+    sourceFileKey: string | null
+    textColumn: string
+    filenameColumn: string | null
+    totalRows: number
+    style: number
+    bias: number
+    strokeColor: string
+    strokeWidth: number
+    status: $Enums.BatchStatus
+    processedCount: number
+    failedCount: number
+    creditsUsed: number
+    outputZipUrl: string | null
+    outputZipKey: string | null
+    errorLog: JsonValue | null
+    createdAt: Date
+    updatedAt: Date
+    _count: BulkJobCountAggregateOutputType | null
+    _avg: BulkJobAvgAggregateOutputType | null
+    _sum: BulkJobSumAggregateOutputType | null
+    _min: BulkJobMinAggregateOutputType | null
+    _max: BulkJobMaxAggregateOutputType | null
+  }
+
+  type GetBulkJobGroupByPayload<T extends BulkJobGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<BulkJobGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof BulkJobGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], BulkJobGroupByOutputType[P]>
+            : GetScalarType<T[P], BulkJobGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type BulkJobSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    sourceFileName?: boolean
+    sourceFileUrl?: boolean
+    sourceFileKey?: boolean
+    textColumn?: boolean
+    filenameColumn?: boolean
+    totalRows?: boolean
+    style?: boolean
+    bias?: boolean
+    strokeColor?: boolean
+    strokeWidth?: boolean
+    status?: boolean
+    processedCount?: boolean
+    failedCount?: boolean
+    creditsUsed?: boolean
+    outputZipUrl?: boolean
+    outputZipKey?: boolean
+    errorLog?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    items?: boolean | BulkJob$itemsArgs<ExtArgs>
+    _count?: boolean | BulkJobCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["bulkJob"]>
+
+  export type BulkJobSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    sourceFileName?: boolean
+    sourceFileUrl?: boolean
+    sourceFileKey?: boolean
+    textColumn?: boolean
+    filenameColumn?: boolean
+    totalRows?: boolean
+    style?: boolean
+    bias?: boolean
+    strokeColor?: boolean
+    strokeWidth?: boolean
+    status?: boolean
+    processedCount?: boolean
+    failedCount?: boolean
+    creditsUsed?: boolean
+    outputZipUrl?: boolean
+    outputZipKey?: boolean
+    errorLog?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["bulkJob"]>
+
+  export type BulkJobSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    sourceFileName?: boolean
+    sourceFileUrl?: boolean
+    sourceFileKey?: boolean
+    textColumn?: boolean
+    filenameColumn?: boolean
+    totalRows?: boolean
+    style?: boolean
+    bias?: boolean
+    strokeColor?: boolean
+    strokeWidth?: boolean
+    status?: boolean
+    processedCount?: boolean
+    failedCount?: boolean
+    creditsUsed?: boolean
+    outputZipUrl?: boolean
+    outputZipKey?: boolean
+    errorLog?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["bulkJob"]>
+
+  export type BulkJobSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    sourceFileName?: boolean
+    sourceFileUrl?: boolean
+    sourceFileKey?: boolean
+    textColumn?: boolean
+    filenameColumn?: boolean
+    totalRows?: boolean
+    style?: boolean
+    bias?: boolean
+    strokeColor?: boolean
+    strokeWidth?: boolean
+    status?: boolean
+    processedCount?: boolean
+    failedCount?: boolean
+    creditsUsed?: boolean
+    outputZipUrl?: boolean
+    outputZipKey?: boolean
+    errorLog?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type BulkJobOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "sourceFileName" | "sourceFileUrl" | "sourceFileKey" | "textColumn" | "filenameColumn" | "totalRows" | "style" | "bias" | "strokeColor" | "strokeWidth" | "status" | "processedCount" | "failedCount" | "creditsUsed" | "outputZipUrl" | "outputZipKey" | "errorLog" | "createdAt" | "updatedAt", ExtArgs["result"]["bulkJob"]>
+  export type BulkJobInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    items?: boolean | BulkJob$itemsArgs<ExtArgs>
+    _count?: boolean | BulkJobCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type BulkJobIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type BulkJobIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $BulkJobPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "BulkJob"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      items: Prisma.$BulkJobItemPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      name: string | null
+      sourceFileName: string
+      sourceFileUrl: string | null
+      sourceFileKey: string | null
+      textColumn: string
+      filenameColumn: string | null
+      totalRows: number
+      style: number
+      bias: number
+      strokeColor: string
+      strokeWidth: number
+      status: $Enums.BatchStatus
+      processedCount: number
+      failedCount: number
+      creditsUsed: number
+      outputZipUrl: string | null
+      outputZipKey: string | null
+      errorLog: Prisma.JsonValue | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["bulkJob"]>
+    composites: {}
+  }
+
+  type BulkJobGetPayload<S extends boolean | null | undefined | BulkJobDefaultArgs> = $Result.GetResult<Prisma.$BulkJobPayload, S>
+
+  type BulkJobCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<BulkJobFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: BulkJobCountAggregateInputType | true
+    }
+
+  export interface BulkJobDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['BulkJob'], meta: { name: 'BulkJob' } }
+    /**
+     * Find zero or one BulkJob that matches the filter.
+     * @param {BulkJobFindUniqueArgs} args - Arguments to find a BulkJob
+     * @example
+     * // Get one BulkJob
+     * const bulkJob = await prisma.bulkJob.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends BulkJobFindUniqueArgs>(args: SelectSubset<T, BulkJobFindUniqueArgs<ExtArgs>>): Prisma__BulkJobClient<$Result.GetResult<Prisma.$BulkJobPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one BulkJob that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {BulkJobFindUniqueOrThrowArgs} args - Arguments to find a BulkJob
+     * @example
+     * // Get one BulkJob
+     * const bulkJob = await prisma.bulkJob.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends BulkJobFindUniqueOrThrowArgs>(args: SelectSubset<T, BulkJobFindUniqueOrThrowArgs<ExtArgs>>): Prisma__BulkJobClient<$Result.GetResult<Prisma.$BulkJobPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BulkJob that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BulkJobFindFirstArgs} args - Arguments to find a BulkJob
+     * @example
+     * // Get one BulkJob
+     * const bulkJob = await prisma.bulkJob.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends BulkJobFindFirstArgs>(args?: SelectSubset<T, BulkJobFindFirstArgs<ExtArgs>>): Prisma__BulkJobClient<$Result.GetResult<Prisma.$BulkJobPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BulkJob that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BulkJobFindFirstOrThrowArgs} args - Arguments to find a BulkJob
+     * @example
+     * // Get one BulkJob
+     * const bulkJob = await prisma.bulkJob.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends BulkJobFindFirstOrThrowArgs>(args?: SelectSubset<T, BulkJobFindFirstOrThrowArgs<ExtArgs>>): Prisma__BulkJobClient<$Result.GetResult<Prisma.$BulkJobPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more BulkJobs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BulkJobFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all BulkJobs
+     * const bulkJobs = await prisma.bulkJob.findMany()
+     * 
+     * // Get first 10 BulkJobs
+     * const bulkJobs = await prisma.bulkJob.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const bulkJobWithIdOnly = await prisma.bulkJob.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends BulkJobFindManyArgs>(args?: SelectSubset<T, BulkJobFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BulkJobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a BulkJob.
+     * @param {BulkJobCreateArgs} args - Arguments to create a BulkJob.
+     * @example
+     * // Create one BulkJob
+     * const BulkJob = await prisma.bulkJob.create({
+     *   data: {
+     *     // ... data to create a BulkJob
+     *   }
+     * })
+     * 
+     */
+    create<T extends BulkJobCreateArgs>(args: SelectSubset<T, BulkJobCreateArgs<ExtArgs>>): Prisma__BulkJobClient<$Result.GetResult<Prisma.$BulkJobPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many BulkJobs.
+     * @param {BulkJobCreateManyArgs} args - Arguments to create many BulkJobs.
+     * @example
+     * // Create many BulkJobs
+     * const bulkJob = await prisma.bulkJob.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends BulkJobCreateManyArgs>(args?: SelectSubset<T, BulkJobCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many BulkJobs and returns the data saved in the database.
+     * @param {BulkJobCreateManyAndReturnArgs} args - Arguments to create many BulkJobs.
+     * @example
+     * // Create many BulkJobs
+     * const bulkJob = await prisma.bulkJob.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many BulkJobs and only return the `id`
+     * const bulkJobWithIdOnly = await prisma.bulkJob.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends BulkJobCreateManyAndReturnArgs>(args?: SelectSubset<T, BulkJobCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BulkJobPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a BulkJob.
+     * @param {BulkJobDeleteArgs} args - Arguments to delete one BulkJob.
+     * @example
+     * // Delete one BulkJob
+     * const BulkJob = await prisma.bulkJob.delete({
+     *   where: {
+     *     // ... filter to delete one BulkJob
+     *   }
+     * })
+     * 
+     */
+    delete<T extends BulkJobDeleteArgs>(args: SelectSubset<T, BulkJobDeleteArgs<ExtArgs>>): Prisma__BulkJobClient<$Result.GetResult<Prisma.$BulkJobPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one BulkJob.
+     * @param {BulkJobUpdateArgs} args - Arguments to update one BulkJob.
+     * @example
+     * // Update one BulkJob
+     * const bulkJob = await prisma.bulkJob.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends BulkJobUpdateArgs>(args: SelectSubset<T, BulkJobUpdateArgs<ExtArgs>>): Prisma__BulkJobClient<$Result.GetResult<Prisma.$BulkJobPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more BulkJobs.
+     * @param {BulkJobDeleteManyArgs} args - Arguments to filter BulkJobs to delete.
+     * @example
+     * // Delete a few BulkJobs
+     * const { count } = await prisma.bulkJob.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends BulkJobDeleteManyArgs>(args?: SelectSubset<T, BulkJobDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BulkJobs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BulkJobUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many BulkJobs
+     * const bulkJob = await prisma.bulkJob.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends BulkJobUpdateManyArgs>(args: SelectSubset<T, BulkJobUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BulkJobs and returns the data updated in the database.
+     * @param {BulkJobUpdateManyAndReturnArgs} args - Arguments to update many BulkJobs.
+     * @example
+     * // Update many BulkJobs
+     * const bulkJob = await prisma.bulkJob.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more BulkJobs and only return the `id`
+     * const bulkJobWithIdOnly = await prisma.bulkJob.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends BulkJobUpdateManyAndReturnArgs>(args: SelectSubset<T, BulkJobUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BulkJobPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one BulkJob.
+     * @param {BulkJobUpsertArgs} args - Arguments to update or create a BulkJob.
+     * @example
+     * // Update or create a BulkJob
+     * const bulkJob = await prisma.bulkJob.upsert({
+     *   create: {
+     *     // ... data to create a BulkJob
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the BulkJob we want to update
+     *   }
+     * })
+     */
+    upsert<T extends BulkJobUpsertArgs>(args: SelectSubset<T, BulkJobUpsertArgs<ExtArgs>>): Prisma__BulkJobClient<$Result.GetResult<Prisma.$BulkJobPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of BulkJobs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BulkJobCountArgs} args - Arguments to filter BulkJobs to count.
+     * @example
+     * // Count the number of BulkJobs
+     * const count = await prisma.bulkJob.count({
+     *   where: {
+     *     // ... the filter for the BulkJobs we want to count
+     *   }
+     * })
+    **/
+    count<T extends BulkJobCountArgs>(
+      args?: Subset<T, BulkJobCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], BulkJobCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a BulkJob.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BulkJobAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends BulkJobAggregateArgs>(args: Subset<T, BulkJobAggregateArgs>): Prisma.PrismaPromise<GetBulkJobAggregateType<T>>
+
+    /**
+     * Group by BulkJob.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BulkJobGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends BulkJobGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: BulkJobGroupByArgs['orderBy'] }
+        : { orderBy?: BulkJobGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, BulkJobGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetBulkJobGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the BulkJob model
+   */
+  readonly fields: BulkJobFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for BulkJob.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__BulkJobClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    items<T extends BulkJob$itemsArgs<ExtArgs> = {}>(args?: Subset<T, BulkJob$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BulkJobItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the BulkJob model
+   */
+  interface BulkJobFieldRefs {
+    readonly id: FieldRef<"BulkJob", 'String'>
+    readonly userId: FieldRef<"BulkJob", 'String'>
+    readonly name: FieldRef<"BulkJob", 'String'>
+    readonly sourceFileName: FieldRef<"BulkJob", 'String'>
+    readonly sourceFileUrl: FieldRef<"BulkJob", 'String'>
+    readonly sourceFileKey: FieldRef<"BulkJob", 'String'>
+    readonly textColumn: FieldRef<"BulkJob", 'String'>
+    readonly filenameColumn: FieldRef<"BulkJob", 'String'>
+    readonly totalRows: FieldRef<"BulkJob", 'Int'>
+    readonly style: FieldRef<"BulkJob", 'Int'>
+    readonly bias: FieldRef<"BulkJob", 'Float'>
+    readonly strokeColor: FieldRef<"BulkJob", 'String'>
+    readonly strokeWidth: FieldRef<"BulkJob", 'Int'>
+    readonly status: FieldRef<"BulkJob", 'BatchStatus'>
+    readonly processedCount: FieldRef<"BulkJob", 'Int'>
+    readonly failedCount: FieldRef<"BulkJob", 'Int'>
+    readonly creditsUsed: FieldRef<"BulkJob", 'Int'>
+    readonly outputZipUrl: FieldRef<"BulkJob", 'String'>
+    readonly outputZipKey: FieldRef<"BulkJob", 'String'>
+    readonly errorLog: FieldRef<"BulkJob", 'Json'>
+    readonly createdAt: FieldRef<"BulkJob", 'DateTime'>
+    readonly updatedAt: FieldRef<"BulkJob", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * BulkJob findUnique
+   */
+  export type BulkJobFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulkJob
+     */
+    select?: BulkJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulkJob
+     */
+    omit?: BulkJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulkJobInclude<ExtArgs> | null
+    /**
+     * Filter, which BulkJob to fetch.
+     */
+    where: BulkJobWhereUniqueInput
+  }
+
+  /**
+   * BulkJob findUniqueOrThrow
+   */
+  export type BulkJobFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulkJob
+     */
+    select?: BulkJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulkJob
+     */
+    omit?: BulkJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulkJobInclude<ExtArgs> | null
+    /**
+     * Filter, which BulkJob to fetch.
+     */
+    where: BulkJobWhereUniqueInput
+  }
+
+  /**
+   * BulkJob findFirst
+   */
+  export type BulkJobFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulkJob
+     */
+    select?: BulkJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulkJob
+     */
+    omit?: BulkJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulkJobInclude<ExtArgs> | null
+    /**
+     * Filter, which BulkJob to fetch.
+     */
+    where?: BulkJobWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BulkJobs to fetch.
+     */
+    orderBy?: BulkJobOrderByWithRelationInput | BulkJobOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for BulkJobs.
+     */
+    cursor?: BulkJobWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BulkJobs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BulkJobs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BulkJobs.
+     */
+    distinct?: BulkJobScalarFieldEnum | BulkJobScalarFieldEnum[]
+  }
+
+  /**
+   * BulkJob findFirstOrThrow
+   */
+  export type BulkJobFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulkJob
+     */
+    select?: BulkJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulkJob
+     */
+    omit?: BulkJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulkJobInclude<ExtArgs> | null
+    /**
+     * Filter, which BulkJob to fetch.
+     */
+    where?: BulkJobWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BulkJobs to fetch.
+     */
+    orderBy?: BulkJobOrderByWithRelationInput | BulkJobOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for BulkJobs.
+     */
+    cursor?: BulkJobWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BulkJobs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BulkJobs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BulkJobs.
+     */
+    distinct?: BulkJobScalarFieldEnum | BulkJobScalarFieldEnum[]
+  }
+
+  /**
+   * BulkJob findMany
+   */
+  export type BulkJobFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulkJob
+     */
+    select?: BulkJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulkJob
+     */
+    omit?: BulkJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulkJobInclude<ExtArgs> | null
+    /**
+     * Filter, which BulkJobs to fetch.
+     */
+    where?: BulkJobWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BulkJobs to fetch.
+     */
+    orderBy?: BulkJobOrderByWithRelationInput | BulkJobOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing BulkJobs.
+     */
+    cursor?: BulkJobWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BulkJobs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BulkJobs.
+     */
+    skip?: number
+    distinct?: BulkJobScalarFieldEnum | BulkJobScalarFieldEnum[]
+  }
+
+  /**
+   * BulkJob create
+   */
+  export type BulkJobCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulkJob
+     */
+    select?: BulkJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulkJob
+     */
+    omit?: BulkJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulkJobInclude<ExtArgs> | null
+    /**
+     * The data needed to create a BulkJob.
+     */
+    data: XOR<BulkJobCreateInput, BulkJobUncheckedCreateInput>
+  }
+
+  /**
+   * BulkJob createMany
+   */
+  export type BulkJobCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many BulkJobs.
+     */
+    data: BulkJobCreateManyInput | BulkJobCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * BulkJob createManyAndReturn
+   */
+  export type BulkJobCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulkJob
+     */
+    select?: BulkJobSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulkJob
+     */
+    omit?: BulkJobOmit<ExtArgs> | null
+    /**
+     * The data used to create many BulkJobs.
+     */
+    data: BulkJobCreateManyInput | BulkJobCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulkJobIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * BulkJob update
+   */
+  export type BulkJobUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulkJob
+     */
+    select?: BulkJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulkJob
+     */
+    omit?: BulkJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulkJobInclude<ExtArgs> | null
+    /**
+     * The data needed to update a BulkJob.
+     */
+    data: XOR<BulkJobUpdateInput, BulkJobUncheckedUpdateInput>
+    /**
+     * Choose, which BulkJob to update.
+     */
+    where: BulkJobWhereUniqueInput
+  }
+
+  /**
+   * BulkJob updateMany
+   */
+  export type BulkJobUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update BulkJobs.
+     */
+    data: XOR<BulkJobUpdateManyMutationInput, BulkJobUncheckedUpdateManyInput>
+    /**
+     * Filter which BulkJobs to update
+     */
+    where?: BulkJobWhereInput
+    /**
+     * Limit how many BulkJobs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * BulkJob updateManyAndReturn
+   */
+  export type BulkJobUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulkJob
+     */
+    select?: BulkJobSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulkJob
+     */
+    omit?: BulkJobOmit<ExtArgs> | null
+    /**
+     * The data used to update BulkJobs.
+     */
+    data: XOR<BulkJobUpdateManyMutationInput, BulkJobUncheckedUpdateManyInput>
+    /**
+     * Filter which BulkJobs to update
+     */
+    where?: BulkJobWhereInput
+    /**
+     * Limit how many BulkJobs to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulkJobIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * BulkJob upsert
+   */
+  export type BulkJobUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulkJob
+     */
+    select?: BulkJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulkJob
+     */
+    omit?: BulkJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulkJobInclude<ExtArgs> | null
+    /**
+     * The filter to search for the BulkJob to update in case it exists.
+     */
+    where: BulkJobWhereUniqueInput
+    /**
+     * In case the BulkJob found by the `where` argument doesn't exist, create a new BulkJob with this data.
+     */
+    create: XOR<BulkJobCreateInput, BulkJobUncheckedCreateInput>
+    /**
+     * In case the BulkJob was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<BulkJobUpdateInput, BulkJobUncheckedUpdateInput>
+  }
+
+  /**
+   * BulkJob delete
+   */
+  export type BulkJobDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulkJob
+     */
+    select?: BulkJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulkJob
+     */
+    omit?: BulkJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulkJobInclude<ExtArgs> | null
+    /**
+     * Filter which BulkJob to delete.
+     */
+    where: BulkJobWhereUniqueInput
+  }
+
+  /**
+   * BulkJob deleteMany
+   */
+  export type BulkJobDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BulkJobs to delete
+     */
+    where?: BulkJobWhereInput
+    /**
+     * Limit how many BulkJobs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * BulkJob.items
+   */
+  export type BulkJob$itemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulkJobItem
+     */
+    select?: BulkJobItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulkJobItem
+     */
+    omit?: BulkJobItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulkJobItemInclude<ExtArgs> | null
+    where?: BulkJobItemWhereInput
+    orderBy?: BulkJobItemOrderByWithRelationInput | BulkJobItemOrderByWithRelationInput[]
+    cursor?: BulkJobItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BulkJobItemScalarFieldEnum | BulkJobItemScalarFieldEnum[]
+  }
+
+  /**
+   * BulkJob without action
+   */
+  export type BulkJobDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulkJob
+     */
+    select?: BulkJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulkJob
+     */
+    omit?: BulkJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulkJobInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model BulkJobItem
+   */
+
+  export type AggregateBulkJobItem = {
+    _count: BulkJobItemCountAggregateOutputType | null
+    _avg: BulkJobItemAvgAggregateOutputType | null
+    _sum: BulkJobItemSumAggregateOutputType | null
+    _min: BulkJobItemMinAggregateOutputType | null
+    _max: BulkJobItemMaxAggregateOutputType | null
+  }
+
+  export type BulkJobItemAvgAggregateOutputType = {
+    rowIndex: number | null
+  }
+
+  export type BulkJobItemSumAggregateOutputType = {
+    rowIndex: number | null
+  }
+
+  export type BulkJobItemMinAggregateOutputType = {
+    id: string | null
+    bulkJobId: string | null
+    rowIndex: number | null
+    text: string | null
+    outputFilename: string | null
+    status: $Enums.GenerationStatus | null
+    svgContent: string | null
+    outputUrl: string | null
+    errorMessage: string | null
+    createdAt: Date | null
+  }
+
+  export type BulkJobItemMaxAggregateOutputType = {
+    id: string | null
+    bulkJobId: string | null
+    rowIndex: number | null
+    text: string | null
+    outputFilename: string | null
+    status: $Enums.GenerationStatus | null
+    svgContent: string | null
+    outputUrl: string | null
+    errorMessage: string | null
+    createdAt: Date | null
+  }
+
+  export type BulkJobItemCountAggregateOutputType = {
+    id: number
+    bulkJobId: number
+    rowIndex: number
+    text: number
+    outputFilename: number
+    status: number
+    svgContent: number
+    outputUrl: number
+    errorMessage: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type BulkJobItemAvgAggregateInputType = {
+    rowIndex?: true
+  }
+
+  export type BulkJobItemSumAggregateInputType = {
+    rowIndex?: true
+  }
+
+  export type BulkJobItemMinAggregateInputType = {
+    id?: true
+    bulkJobId?: true
+    rowIndex?: true
+    text?: true
+    outputFilename?: true
+    status?: true
+    svgContent?: true
+    outputUrl?: true
+    errorMessage?: true
+    createdAt?: true
+  }
+
+  export type BulkJobItemMaxAggregateInputType = {
+    id?: true
+    bulkJobId?: true
+    rowIndex?: true
+    text?: true
+    outputFilename?: true
+    status?: true
+    svgContent?: true
+    outputUrl?: true
+    errorMessage?: true
+    createdAt?: true
+  }
+
+  export type BulkJobItemCountAggregateInputType = {
+    id?: true
+    bulkJobId?: true
+    rowIndex?: true
+    text?: true
+    outputFilename?: true
+    status?: true
+    svgContent?: true
+    outputUrl?: true
+    errorMessage?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type BulkJobItemAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BulkJobItem to aggregate.
+     */
+    where?: BulkJobItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BulkJobItems to fetch.
+     */
+    orderBy?: BulkJobItemOrderByWithRelationInput | BulkJobItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: BulkJobItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BulkJobItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BulkJobItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned BulkJobItems
+    **/
+    _count?: true | BulkJobItemCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: BulkJobItemAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: BulkJobItemSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: BulkJobItemMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: BulkJobItemMaxAggregateInputType
+  }
+
+  export type GetBulkJobItemAggregateType<T extends BulkJobItemAggregateArgs> = {
+        [P in keyof T & keyof AggregateBulkJobItem]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateBulkJobItem[P]>
+      : GetScalarType<T[P], AggregateBulkJobItem[P]>
+  }
+
+
+
+
+  export type BulkJobItemGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BulkJobItemWhereInput
+    orderBy?: BulkJobItemOrderByWithAggregationInput | BulkJobItemOrderByWithAggregationInput[]
+    by: BulkJobItemScalarFieldEnum[] | BulkJobItemScalarFieldEnum
+    having?: BulkJobItemScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: BulkJobItemCountAggregateInputType | true
+    _avg?: BulkJobItemAvgAggregateInputType
+    _sum?: BulkJobItemSumAggregateInputType
+    _min?: BulkJobItemMinAggregateInputType
+    _max?: BulkJobItemMaxAggregateInputType
+  }
+
+  export type BulkJobItemGroupByOutputType = {
+    id: string
+    bulkJobId: string
+    rowIndex: number
+    text: string
+    outputFilename: string | null
+    status: $Enums.GenerationStatus
+    svgContent: string | null
+    outputUrl: string | null
+    errorMessage: string | null
+    createdAt: Date
+    _count: BulkJobItemCountAggregateOutputType | null
+    _avg: BulkJobItemAvgAggregateOutputType | null
+    _sum: BulkJobItemSumAggregateOutputType | null
+    _min: BulkJobItemMinAggregateOutputType | null
+    _max: BulkJobItemMaxAggregateOutputType | null
+  }
+
+  type GetBulkJobItemGroupByPayload<T extends BulkJobItemGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<BulkJobItemGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof BulkJobItemGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], BulkJobItemGroupByOutputType[P]>
+            : GetScalarType<T[P], BulkJobItemGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type BulkJobItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    bulkJobId?: boolean
+    rowIndex?: boolean
+    text?: boolean
+    outputFilename?: boolean
+    status?: boolean
+    svgContent?: boolean
+    outputUrl?: boolean
+    errorMessage?: boolean
+    createdAt?: boolean
+    bulkJob?: boolean | BulkJobDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["bulkJobItem"]>
+
+  export type BulkJobItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    bulkJobId?: boolean
+    rowIndex?: boolean
+    text?: boolean
+    outputFilename?: boolean
+    status?: boolean
+    svgContent?: boolean
+    outputUrl?: boolean
+    errorMessage?: boolean
+    createdAt?: boolean
+    bulkJob?: boolean | BulkJobDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["bulkJobItem"]>
+
+  export type BulkJobItemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    bulkJobId?: boolean
+    rowIndex?: boolean
+    text?: boolean
+    outputFilename?: boolean
+    status?: boolean
+    svgContent?: boolean
+    outputUrl?: boolean
+    errorMessage?: boolean
+    createdAt?: boolean
+    bulkJob?: boolean | BulkJobDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["bulkJobItem"]>
+
+  export type BulkJobItemSelectScalar = {
+    id?: boolean
+    bulkJobId?: boolean
+    rowIndex?: boolean
+    text?: boolean
+    outputFilename?: boolean
+    status?: boolean
+    svgContent?: boolean
+    outputUrl?: boolean
+    errorMessage?: boolean
+    createdAt?: boolean
+  }
+
+  export type BulkJobItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "bulkJobId" | "rowIndex" | "text" | "outputFilename" | "status" | "svgContent" | "outputUrl" | "errorMessage" | "createdAt", ExtArgs["result"]["bulkJobItem"]>
+  export type BulkJobItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    bulkJob?: boolean | BulkJobDefaultArgs<ExtArgs>
+  }
+  export type BulkJobItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    bulkJob?: boolean | BulkJobDefaultArgs<ExtArgs>
+  }
+  export type BulkJobItemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    bulkJob?: boolean | BulkJobDefaultArgs<ExtArgs>
+  }
+
+  export type $BulkJobItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "BulkJobItem"
+    objects: {
+      bulkJob: Prisma.$BulkJobPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      bulkJobId: string
+      rowIndex: number
+      text: string
+      outputFilename: string | null
+      status: $Enums.GenerationStatus
+      svgContent: string | null
+      outputUrl: string | null
+      errorMessage: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["bulkJobItem"]>
+    composites: {}
+  }
+
+  type BulkJobItemGetPayload<S extends boolean | null | undefined | BulkJobItemDefaultArgs> = $Result.GetResult<Prisma.$BulkJobItemPayload, S>
+
+  type BulkJobItemCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<BulkJobItemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: BulkJobItemCountAggregateInputType | true
+    }
+
+  export interface BulkJobItemDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['BulkJobItem'], meta: { name: 'BulkJobItem' } }
+    /**
+     * Find zero or one BulkJobItem that matches the filter.
+     * @param {BulkJobItemFindUniqueArgs} args - Arguments to find a BulkJobItem
+     * @example
+     * // Get one BulkJobItem
+     * const bulkJobItem = await prisma.bulkJobItem.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends BulkJobItemFindUniqueArgs>(args: SelectSubset<T, BulkJobItemFindUniqueArgs<ExtArgs>>): Prisma__BulkJobItemClient<$Result.GetResult<Prisma.$BulkJobItemPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one BulkJobItem that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {BulkJobItemFindUniqueOrThrowArgs} args - Arguments to find a BulkJobItem
+     * @example
+     * // Get one BulkJobItem
+     * const bulkJobItem = await prisma.bulkJobItem.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends BulkJobItemFindUniqueOrThrowArgs>(args: SelectSubset<T, BulkJobItemFindUniqueOrThrowArgs<ExtArgs>>): Prisma__BulkJobItemClient<$Result.GetResult<Prisma.$BulkJobItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BulkJobItem that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BulkJobItemFindFirstArgs} args - Arguments to find a BulkJobItem
+     * @example
+     * // Get one BulkJobItem
+     * const bulkJobItem = await prisma.bulkJobItem.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends BulkJobItemFindFirstArgs>(args?: SelectSubset<T, BulkJobItemFindFirstArgs<ExtArgs>>): Prisma__BulkJobItemClient<$Result.GetResult<Prisma.$BulkJobItemPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first BulkJobItem that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BulkJobItemFindFirstOrThrowArgs} args - Arguments to find a BulkJobItem
+     * @example
+     * // Get one BulkJobItem
+     * const bulkJobItem = await prisma.bulkJobItem.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends BulkJobItemFindFirstOrThrowArgs>(args?: SelectSubset<T, BulkJobItemFindFirstOrThrowArgs<ExtArgs>>): Prisma__BulkJobItemClient<$Result.GetResult<Prisma.$BulkJobItemPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more BulkJobItems that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BulkJobItemFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all BulkJobItems
+     * const bulkJobItems = await prisma.bulkJobItem.findMany()
+     * 
+     * // Get first 10 BulkJobItems
+     * const bulkJobItems = await prisma.bulkJobItem.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const bulkJobItemWithIdOnly = await prisma.bulkJobItem.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends BulkJobItemFindManyArgs>(args?: SelectSubset<T, BulkJobItemFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BulkJobItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a BulkJobItem.
+     * @param {BulkJobItemCreateArgs} args - Arguments to create a BulkJobItem.
+     * @example
+     * // Create one BulkJobItem
+     * const BulkJobItem = await prisma.bulkJobItem.create({
+     *   data: {
+     *     // ... data to create a BulkJobItem
+     *   }
+     * })
+     * 
+     */
+    create<T extends BulkJobItemCreateArgs>(args: SelectSubset<T, BulkJobItemCreateArgs<ExtArgs>>): Prisma__BulkJobItemClient<$Result.GetResult<Prisma.$BulkJobItemPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many BulkJobItems.
+     * @param {BulkJobItemCreateManyArgs} args - Arguments to create many BulkJobItems.
+     * @example
+     * // Create many BulkJobItems
+     * const bulkJobItem = await prisma.bulkJobItem.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends BulkJobItemCreateManyArgs>(args?: SelectSubset<T, BulkJobItemCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many BulkJobItems and returns the data saved in the database.
+     * @param {BulkJobItemCreateManyAndReturnArgs} args - Arguments to create many BulkJobItems.
+     * @example
+     * // Create many BulkJobItems
+     * const bulkJobItem = await prisma.bulkJobItem.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many BulkJobItems and only return the `id`
+     * const bulkJobItemWithIdOnly = await prisma.bulkJobItem.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends BulkJobItemCreateManyAndReturnArgs>(args?: SelectSubset<T, BulkJobItemCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BulkJobItemPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a BulkJobItem.
+     * @param {BulkJobItemDeleteArgs} args - Arguments to delete one BulkJobItem.
+     * @example
+     * // Delete one BulkJobItem
+     * const BulkJobItem = await prisma.bulkJobItem.delete({
+     *   where: {
+     *     // ... filter to delete one BulkJobItem
+     *   }
+     * })
+     * 
+     */
+    delete<T extends BulkJobItemDeleteArgs>(args: SelectSubset<T, BulkJobItemDeleteArgs<ExtArgs>>): Prisma__BulkJobItemClient<$Result.GetResult<Prisma.$BulkJobItemPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one BulkJobItem.
+     * @param {BulkJobItemUpdateArgs} args - Arguments to update one BulkJobItem.
+     * @example
+     * // Update one BulkJobItem
+     * const bulkJobItem = await prisma.bulkJobItem.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends BulkJobItemUpdateArgs>(args: SelectSubset<T, BulkJobItemUpdateArgs<ExtArgs>>): Prisma__BulkJobItemClient<$Result.GetResult<Prisma.$BulkJobItemPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more BulkJobItems.
+     * @param {BulkJobItemDeleteManyArgs} args - Arguments to filter BulkJobItems to delete.
+     * @example
+     * // Delete a few BulkJobItems
+     * const { count } = await prisma.bulkJobItem.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends BulkJobItemDeleteManyArgs>(args?: SelectSubset<T, BulkJobItemDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BulkJobItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BulkJobItemUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many BulkJobItems
+     * const bulkJobItem = await prisma.bulkJobItem.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends BulkJobItemUpdateManyArgs>(args: SelectSubset<T, BulkJobItemUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more BulkJobItems and returns the data updated in the database.
+     * @param {BulkJobItemUpdateManyAndReturnArgs} args - Arguments to update many BulkJobItems.
+     * @example
+     * // Update many BulkJobItems
+     * const bulkJobItem = await prisma.bulkJobItem.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more BulkJobItems and only return the `id`
+     * const bulkJobItemWithIdOnly = await prisma.bulkJobItem.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends BulkJobItemUpdateManyAndReturnArgs>(args: SelectSubset<T, BulkJobItemUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BulkJobItemPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one BulkJobItem.
+     * @param {BulkJobItemUpsertArgs} args - Arguments to update or create a BulkJobItem.
+     * @example
+     * // Update or create a BulkJobItem
+     * const bulkJobItem = await prisma.bulkJobItem.upsert({
+     *   create: {
+     *     // ... data to create a BulkJobItem
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the BulkJobItem we want to update
+     *   }
+     * })
+     */
+    upsert<T extends BulkJobItemUpsertArgs>(args: SelectSubset<T, BulkJobItemUpsertArgs<ExtArgs>>): Prisma__BulkJobItemClient<$Result.GetResult<Prisma.$BulkJobItemPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of BulkJobItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BulkJobItemCountArgs} args - Arguments to filter BulkJobItems to count.
+     * @example
+     * // Count the number of BulkJobItems
+     * const count = await prisma.bulkJobItem.count({
+     *   where: {
+     *     // ... the filter for the BulkJobItems we want to count
+     *   }
+     * })
+    **/
+    count<T extends BulkJobItemCountArgs>(
+      args?: Subset<T, BulkJobItemCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], BulkJobItemCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a BulkJobItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BulkJobItemAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends BulkJobItemAggregateArgs>(args: Subset<T, BulkJobItemAggregateArgs>): Prisma.PrismaPromise<GetBulkJobItemAggregateType<T>>
+
+    /**
+     * Group by BulkJobItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BulkJobItemGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends BulkJobItemGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: BulkJobItemGroupByArgs['orderBy'] }
+        : { orderBy?: BulkJobItemGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, BulkJobItemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetBulkJobItemGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the BulkJobItem model
+   */
+  readonly fields: BulkJobItemFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for BulkJobItem.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__BulkJobItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    bulkJob<T extends BulkJobDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BulkJobDefaultArgs<ExtArgs>>): Prisma__BulkJobClient<$Result.GetResult<Prisma.$BulkJobPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the BulkJobItem model
+   */
+  interface BulkJobItemFieldRefs {
+    readonly id: FieldRef<"BulkJobItem", 'String'>
+    readonly bulkJobId: FieldRef<"BulkJobItem", 'String'>
+    readonly rowIndex: FieldRef<"BulkJobItem", 'Int'>
+    readonly text: FieldRef<"BulkJobItem", 'String'>
+    readonly outputFilename: FieldRef<"BulkJobItem", 'String'>
+    readonly status: FieldRef<"BulkJobItem", 'GenerationStatus'>
+    readonly svgContent: FieldRef<"BulkJobItem", 'String'>
+    readonly outputUrl: FieldRef<"BulkJobItem", 'String'>
+    readonly errorMessage: FieldRef<"BulkJobItem", 'String'>
+    readonly createdAt: FieldRef<"BulkJobItem", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * BulkJobItem findUnique
+   */
+  export type BulkJobItemFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulkJobItem
+     */
+    select?: BulkJobItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulkJobItem
+     */
+    omit?: BulkJobItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulkJobItemInclude<ExtArgs> | null
+    /**
+     * Filter, which BulkJobItem to fetch.
+     */
+    where: BulkJobItemWhereUniqueInput
+  }
+
+  /**
+   * BulkJobItem findUniqueOrThrow
+   */
+  export type BulkJobItemFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulkJobItem
+     */
+    select?: BulkJobItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulkJobItem
+     */
+    omit?: BulkJobItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulkJobItemInclude<ExtArgs> | null
+    /**
+     * Filter, which BulkJobItem to fetch.
+     */
+    where: BulkJobItemWhereUniqueInput
+  }
+
+  /**
+   * BulkJobItem findFirst
+   */
+  export type BulkJobItemFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulkJobItem
+     */
+    select?: BulkJobItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulkJobItem
+     */
+    omit?: BulkJobItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulkJobItemInclude<ExtArgs> | null
+    /**
+     * Filter, which BulkJobItem to fetch.
+     */
+    where?: BulkJobItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BulkJobItems to fetch.
+     */
+    orderBy?: BulkJobItemOrderByWithRelationInput | BulkJobItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for BulkJobItems.
+     */
+    cursor?: BulkJobItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BulkJobItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BulkJobItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BulkJobItems.
+     */
+    distinct?: BulkJobItemScalarFieldEnum | BulkJobItemScalarFieldEnum[]
+  }
+
+  /**
+   * BulkJobItem findFirstOrThrow
+   */
+  export type BulkJobItemFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulkJobItem
+     */
+    select?: BulkJobItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulkJobItem
+     */
+    omit?: BulkJobItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulkJobItemInclude<ExtArgs> | null
+    /**
+     * Filter, which BulkJobItem to fetch.
+     */
+    where?: BulkJobItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BulkJobItems to fetch.
+     */
+    orderBy?: BulkJobItemOrderByWithRelationInput | BulkJobItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for BulkJobItems.
+     */
+    cursor?: BulkJobItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BulkJobItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BulkJobItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of BulkJobItems.
+     */
+    distinct?: BulkJobItemScalarFieldEnum | BulkJobItemScalarFieldEnum[]
+  }
+
+  /**
+   * BulkJobItem findMany
+   */
+  export type BulkJobItemFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulkJobItem
+     */
+    select?: BulkJobItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulkJobItem
+     */
+    omit?: BulkJobItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulkJobItemInclude<ExtArgs> | null
+    /**
+     * Filter, which BulkJobItems to fetch.
+     */
+    where?: BulkJobItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of BulkJobItems to fetch.
+     */
+    orderBy?: BulkJobItemOrderByWithRelationInput | BulkJobItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing BulkJobItems.
+     */
+    cursor?: BulkJobItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` BulkJobItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` BulkJobItems.
+     */
+    skip?: number
+    distinct?: BulkJobItemScalarFieldEnum | BulkJobItemScalarFieldEnum[]
+  }
+
+  /**
+   * BulkJobItem create
+   */
+  export type BulkJobItemCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulkJobItem
+     */
+    select?: BulkJobItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulkJobItem
+     */
+    omit?: BulkJobItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulkJobItemInclude<ExtArgs> | null
+    /**
+     * The data needed to create a BulkJobItem.
+     */
+    data: XOR<BulkJobItemCreateInput, BulkJobItemUncheckedCreateInput>
+  }
+
+  /**
+   * BulkJobItem createMany
+   */
+  export type BulkJobItemCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many BulkJobItems.
+     */
+    data: BulkJobItemCreateManyInput | BulkJobItemCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * BulkJobItem createManyAndReturn
+   */
+  export type BulkJobItemCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulkJobItem
+     */
+    select?: BulkJobItemSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulkJobItem
+     */
+    omit?: BulkJobItemOmit<ExtArgs> | null
+    /**
+     * The data used to create many BulkJobItems.
+     */
+    data: BulkJobItemCreateManyInput | BulkJobItemCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulkJobItemIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * BulkJobItem update
+   */
+  export type BulkJobItemUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulkJobItem
+     */
+    select?: BulkJobItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulkJobItem
+     */
+    omit?: BulkJobItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulkJobItemInclude<ExtArgs> | null
+    /**
+     * The data needed to update a BulkJobItem.
+     */
+    data: XOR<BulkJobItemUpdateInput, BulkJobItemUncheckedUpdateInput>
+    /**
+     * Choose, which BulkJobItem to update.
+     */
+    where: BulkJobItemWhereUniqueInput
+  }
+
+  /**
+   * BulkJobItem updateMany
+   */
+  export type BulkJobItemUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update BulkJobItems.
+     */
+    data: XOR<BulkJobItemUpdateManyMutationInput, BulkJobItemUncheckedUpdateManyInput>
+    /**
+     * Filter which BulkJobItems to update
+     */
+    where?: BulkJobItemWhereInput
+    /**
+     * Limit how many BulkJobItems to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * BulkJobItem updateManyAndReturn
+   */
+  export type BulkJobItemUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulkJobItem
+     */
+    select?: BulkJobItemSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulkJobItem
+     */
+    omit?: BulkJobItemOmit<ExtArgs> | null
+    /**
+     * The data used to update BulkJobItems.
+     */
+    data: XOR<BulkJobItemUpdateManyMutationInput, BulkJobItemUncheckedUpdateManyInput>
+    /**
+     * Filter which BulkJobItems to update
+     */
+    where?: BulkJobItemWhereInput
+    /**
+     * Limit how many BulkJobItems to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulkJobItemIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * BulkJobItem upsert
+   */
+  export type BulkJobItemUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulkJobItem
+     */
+    select?: BulkJobItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulkJobItem
+     */
+    omit?: BulkJobItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulkJobItemInclude<ExtArgs> | null
+    /**
+     * The filter to search for the BulkJobItem to update in case it exists.
+     */
+    where: BulkJobItemWhereUniqueInput
+    /**
+     * In case the BulkJobItem found by the `where` argument doesn't exist, create a new BulkJobItem with this data.
+     */
+    create: XOR<BulkJobItemCreateInput, BulkJobItemUncheckedCreateInput>
+    /**
+     * In case the BulkJobItem was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<BulkJobItemUpdateInput, BulkJobItemUncheckedUpdateInput>
+  }
+
+  /**
+   * BulkJobItem delete
+   */
+  export type BulkJobItemDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulkJobItem
+     */
+    select?: BulkJobItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulkJobItem
+     */
+    omit?: BulkJobItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulkJobItemInclude<ExtArgs> | null
+    /**
+     * Filter which BulkJobItem to delete.
+     */
+    where: BulkJobItemWhereUniqueInput
+  }
+
+  /**
+   * BulkJobItem deleteMany
+   */
+  export type BulkJobItemDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which BulkJobItems to delete
+     */
+    where?: BulkJobItemWhereInput
+    /**
+     * Limit how many BulkJobItems to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * BulkJobItem without action
+   */
+  export type BulkJobItemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BulkJobItem
+     */
+    select?: BulkJobItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BulkJobItem
+     */
+    omit?: BulkJobItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BulkJobItemInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Team
+   */
+
+  export type AggregateTeam = {
+    _count: TeamCountAggregateOutputType | null
+    _avg: TeamAvgAggregateOutputType | null
+    _sum: TeamSumAggregateOutputType | null
+    _min: TeamMinAggregateOutputType | null
+    _max: TeamMaxAggregateOutputType | null
+  }
+
+  export type TeamAvgAggregateOutputType = {
+    credits: number | null
+  }
+
+  export type TeamSumAggregateOutputType = {
+    credits: number | null
+  }
+
+  export type TeamMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    slug: string | null
+    description: string | null
+    logo: string | null
+    credits: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TeamMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    slug: string | null
+    description: string | null
+    logo: string | null
+    credits: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TeamCountAggregateOutputType = {
+    id: number
+    name: number
+    slug: number
+    description: number
+    logo: number
+    credits: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type TeamAvgAggregateInputType = {
+    credits?: true
+  }
+
+  export type TeamSumAggregateInputType = {
+    credits?: true
+  }
+
+  export type TeamMinAggregateInputType = {
+    id?: true
+    name?: true
+    slug?: true
+    description?: true
+    logo?: true
+    credits?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TeamMaxAggregateInputType = {
+    id?: true
+    name?: true
+    slug?: true
+    description?: true
+    logo?: true
+    credits?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TeamCountAggregateInputType = {
+    id?: true
+    name?: true
+    slug?: true
+    description?: true
+    logo?: true
+    credits?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type TeamAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Team to aggregate.
+     */
+    where?: TeamWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Teams to fetch.
+     */
+    orderBy?: TeamOrderByWithRelationInput | TeamOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TeamWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Teams from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Teams.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Teams
+    **/
+    _count?: true | TeamCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TeamAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TeamSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TeamMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TeamMaxAggregateInputType
+  }
+
+  export type GetTeamAggregateType<T extends TeamAggregateArgs> = {
+        [P in keyof T & keyof AggregateTeam]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTeam[P]>
+      : GetScalarType<T[P], AggregateTeam[P]>
+  }
+
+
+
+
+  export type TeamGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TeamWhereInput
+    orderBy?: TeamOrderByWithAggregationInput | TeamOrderByWithAggregationInput[]
+    by: TeamScalarFieldEnum[] | TeamScalarFieldEnum
+    having?: TeamScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TeamCountAggregateInputType | true
+    _avg?: TeamAvgAggregateInputType
+    _sum?: TeamSumAggregateInputType
+    _min?: TeamMinAggregateInputType
+    _max?: TeamMaxAggregateInputType
+  }
+
+  export type TeamGroupByOutputType = {
+    id: string
+    name: string
+    slug: string
+    description: string | null
+    logo: string | null
+    credits: number
+    createdAt: Date
+    updatedAt: Date
+    _count: TeamCountAggregateOutputType | null
+    _avg: TeamAvgAggregateOutputType | null
+    _sum: TeamSumAggregateOutputType | null
+    _min: TeamMinAggregateOutputType | null
+    _max: TeamMaxAggregateOutputType | null
+  }
+
+  type GetTeamGroupByPayload<T extends TeamGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TeamGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TeamGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TeamGroupByOutputType[P]>
+            : GetScalarType<T[P], TeamGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TeamSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    slug?: boolean
+    description?: boolean
+    logo?: boolean
+    credits?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    members?: boolean | Team$membersArgs<ExtArgs>
+    invites?: boolean | Team$invitesArgs<ExtArgs>
+    generations?: boolean | Team$generationsArgs<ExtArgs>
+    _count?: boolean | TeamCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["team"]>
+
+  export type TeamSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    slug?: boolean
+    description?: boolean
+    logo?: boolean
+    credits?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["team"]>
+
+  export type TeamSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    slug?: boolean
+    description?: boolean
+    logo?: boolean
+    credits?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["team"]>
+
+  export type TeamSelectScalar = {
+    id?: boolean
+    name?: boolean
+    slug?: boolean
+    description?: boolean
+    logo?: boolean
+    credits?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type TeamOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "description" | "logo" | "credits" | "createdAt" | "updatedAt", ExtArgs["result"]["team"]>
+  export type TeamInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    members?: boolean | Team$membersArgs<ExtArgs>
+    invites?: boolean | Team$invitesArgs<ExtArgs>
+    generations?: boolean | Team$generationsArgs<ExtArgs>
+    _count?: boolean | TeamCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type TeamIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type TeamIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $TeamPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Team"
+    objects: {
+      members: Prisma.$TeamMemberPayload<ExtArgs>[]
+      invites: Prisma.$TeamInvitePayload<ExtArgs>[]
+      generations: Prisma.$TeamGenerationPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      slug: string
+      description: string | null
+      logo: string | null
+      credits: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["team"]>
+    composites: {}
+  }
+
+  type TeamGetPayload<S extends boolean | null | undefined | TeamDefaultArgs> = $Result.GetResult<Prisma.$TeamPayload, S>
+
+  type TeamCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TeamFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TeamCountAggregateInputType | true
+    }
+
+  export interface TeamDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Team'], meta: { name: 'Team' } }
+    /**
+     * Find zero or one Team that matches the filter.
+     * @param {TeamFindUniqueArgs} args - Arguments to find a Team
+     * @example
+     * // Get one Team
+     * const team = await prisma.team.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TeamFindUniqueArgs>(args: SelectSubset<T, TeamFindUniqueArgs<ExtArgs>>): Prisma__TeamClient<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Team that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TeamFindUniqueOrThrowArgs} args - Arguments to find a Team
+     * @example
+     * // Get one Team
+     * const team = await prisma.team.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TeamFindUniqueOrThrowArgs>(args: SelectSubset<T, TeamFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TeamClient<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Team that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamFindFirstArgs} args - Arguments to find a Team
+     * @example
+     * // Get one Team
+     * const team = await prisma.team.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TeamFindFirstArgs>(args?: SelectSubset<T, TeamFindFirstArgs<ExtArgs>>): Prisma__TeamClient<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Team that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamFindFirstOrThrowArgs} args - Arguments to find a Team
+     * @example
+     * // Get one Team
+     * const team = await prisma.team.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TeamFindFirstOrThrowArgs>(args?: SelectSubset<T, TeamFindFirstOrThrowArgs<ExtArgs>>): Prisma__TeamClient<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Teams that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Teams
+     * const teams = await prisma.team.findMany()
+     * 
+     * // Get first 10 Teams
+     * const teams = await prisma.team.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const teamWithIdOnly = await prisma.team.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TeamFindManyArgs>(args?: SelectSubset<T, TeamFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Team.
+     * @param {TeamCreateArgs} args - Arguments to create a Team.
+     * @example
+     * // Create one Team
+     * const Team = await prisma.team.create({
+     *   data: {
+     *     // ... data to create a Team
+     *   }
+     * })
+     * 
+     */
+    create<T extends TeamCreateArgs>(args: SelectSubset<T, TeamCreateArgs<ExtArgs>>): Prisma__TeamClient<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Teams.
+     * @param {TeamCreateManyArgs} args - Arguments to create many Teams.
+     * @example
+     * // Create many Teams
+     * const team = await prisma.team.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TeamCreateManyArgs>(args?: SelectSubset<T, TeamCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Teams and returns the data saved in the database.
+     * @param {TeamCreateManyAndReturnArgs} args - Arguments to create many Teams.
+     * @example
+     * // Create many Teams
+     * const team = await prisma.team.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Teams and only return the `id`
+     * const teamWithIdOnly = await prisma.team.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TeamCreateManyAndReturnArgs>(args?: SelectSubset<T, TeamCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Team.
+     * @param {TeamDeleteArgs} args - Arguments to delete one Team.
+     * @example
+     * // Delete one Team
+     * const Team = await prisma.team.delete({
+     *   where: {
+     *     // ... filter to delete one Team
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TeamDeleteArgs>(args: SelectSubset<T, TeamDeleteArgs<ExtArgs>>): Prisma__TeamClient<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Team.
+     * @param {TeamUpdateArgs} args - Arguments to update one Team.
+     * @example
+     * // Update one Team
+     * const team = await prisma.team.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TeamUpdateArgs>(args: SelectSubset<T, TeamUpdateArgs<ExtArgs>>): Prisma__TeamClient<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Teams.
+     * @param {TeamDeleteManyArgs} args - Arguments to filter Teams to delete.
+     * @example
+     * // Delete a few Teams
+     * const { count } = await prisma.team.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TeamDeleteManyArgs>(args?: SelectSubset<T, TeamDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Teams.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Teams
+     * const team = await prisma.team.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TeamUpdateManyArgs>(args: SelectSubset<T, TeamUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Teams and returns the data updated in the database.
+     * @param {TeamUpdateManyAndReturnArgs} args - Arguments to update many Teams.
+     * @example
+     * // Update many Teams
+     * const team = await prisma.team.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Teams and only return the `id`
+     * const teamWithIdOnly = await prisma.team.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TeamUpdateManyAndReturnArgs>(args: SelectSubset<T, TeamUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Team.
+     * @param {TeamUpsertArgs} args - Arguments to update or create a Team.
+     * @example
+     * // Update or create a Team
+     * const team = await prisma.team.upsert({
+     *   create: {
+     *     // ... data to create a Team
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Team we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TeamUpsertArgs>(args: SelectSubset<T, TeamUpsertArgs<ExtArgs>>): Prisma__TeamClient<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Teams.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamCountArgs} args - Arguments to filter Teams to count.
+     * @example
+     * // Count the number of Teams
+     * const count = await prisma.team.count({
+     *   where: {
+     *     // ... the filter for the Teams we want to count
+     *   }
+     * })
+    **/
+    count<T extends TeamCountArgs>(
+      args?: Subset<T, TeamCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TeamCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Team.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TeamAggregateArgs>(args: Subset<T, TeamAggregateArgs>): Prisma.PrismaPromise<GetTeamAggregateType<T>>
+
+    /**
+     * Group by Team.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TeamGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TeamGroupByArgs['orderBy'] }
+        : { orderBy?: TeamGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TeamGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTeamGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Team model
+   */
+  readonly fields: TeamFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Team.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TeamClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    members<T extends Team$membersArgs<ExtArgs> = {}>(args?: Subset<T, Team$membersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    invites<T extends Team$invitesArgs<ExtArgs> = {}>(args?: Subset<T, Team$invitesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamInvitePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    generations<T extends Team$generationsArgs<ExtArgs> = {}>(args?: Subset<T, Team$generationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamGenerationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Team model
+   */
+  interface TeamFieldRefs {
+    readonly id: FieldRef<"Team", 'String'>
+    readonly name: FieldRef<"Team", 'String'>
+    readonly slug: FieldRef<"Team", 'String'>
+    readonly description: FieldRef<"Team", 'String'>
+    readonly logo: FieldRef<"Team", 'String'>
+    readonly credits: FieldRef<"Team", 'Int'>
+    readonly createdAt: FieldRef<"Team", 'DateTime'>
+    readonly updatedAt: FieldRef<"Team", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Team findUnique
+   */
+  export type TeamFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Team
+     */
+    select?: TeamSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Team
+     */
+    omit?: TeamOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamInclude<ExtArgs> | null
+    /**
+     * Filter, which Team to fetch.
+     */
+    where: TeamWhereUniqueInput
+  }
+
+  /**
+   * Team findUniqueOrThrow
+   */
+  export type TeamFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Team
+     */
+    select?: TeamSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Team
+     */
+    omit?: TeamOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamInclude<ExtArgs> | null
+    /**
+     * Filter, which Team to fetch.
+     */
+    where: TeamWhereUniqueInput
+  }
+
+  /**
+   * Team findFirst
+   */
+  export type TeamFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Team
+     */
+    select?: TeamSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Team
+     */
+    omit?: TeamOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamInclude<ExtArgs> | null
+    /**
+     * Filter, which Team to fetch.
+     */
+    where?: TeamWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Teams to fetch.
+     */
+    orderBy?: TeamOrderByWithRelationInput | TeamOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Teams.
+     */
+    cursor?: TeamWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Teams from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Teams.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Teams.
+     */
+    distinct?: TeamScalarFieldEnum | TeamScalarFieldEnum[]
+  }
+
+  /**
+   * Team findFirstOrThrow
+   */
+  export type TeamFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Team
+     */
+    select?: TeamSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Team
+     */
+    omit?: TeamOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamInclude<ExtArgs> | null
+    /**
+     * Filter, which Team to fetch.
+     */
+    where?: TeamWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Teams to fetch.
+     */
+    orderBy?: TeamOrderByWithRelationInput | TeamOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Teams.
+     */
+    cursor?: TeamWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Teams from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Teams.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Teams.
+     */
+    distinct?: TeamScalarFieldEnum | TeamScalarFieldEnum[]
+  }
+
+  /**
+   * Team findMany
+   */
+  export type TeamFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Team
+     */
+    select?: TeamSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Team
+     */
+    omit?: TeamOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamInclude<ExtArgs> | null
+    /**
+     * Filter, which Teams to fetch.
+     */
+    where?: TeamWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Teams to fetch.
+     */
+    orderBy?: TeamOrderByWithRelationInput | TeamOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Teams.
+     */
+    cursor?: TeamWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Teams from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Teams.
+     */
+    skip?: number
+    distinct?: TeamScalarFieldEnum | TeamScalarFieldEnum[]
+  }
+
+  /**
+   * Team create
+   */
+  export type TeamCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Team
+     */
+    select?: TeamSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Team
+     */
+    omit?: TeamOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Team.
+     */
+    data: XOR<TeamCreateInput, TeamUncheckedCreateInput>
+  }
+
+  /**
+   * Team createMany
+   */
+  export type TeamCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Teams.
+     */
+    data: TeamCreateManyInput | TeamCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Team createManyAndReturn
+   */
+  export type TeamCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Team
+     */
+    select?: TeamSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Team
+     */
+    omit?: TeamOmit<ExtArgs> | null
+    /**
+     * The data used to create many Teams.
+     */
+    data: TeamCreateManyInput | TeamCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Team update
+   */
+  export type TeamUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Team
+     */
+    select?: TeamSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Team
+     */
+    omit?: TeamOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Team.
+     */
+    data: XOR<TeamUpdateInput, TeamUncheckedUpdateInput>
+    /**
+     * Choose, which Team to update.
+     */
+    where: TeamWhereUniqueInput
+  }
+
+  /**
+   * Team updateMany
+   */
+  export type TeamUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Teams.
+     */
+    data: XOR<TeamUpdateManyMutationInput, TeamUncheckedUpdateManyInput>
+    /**
+     * Filter which Teams to update
+     */
+    where?: TeamWhereInput
+    /**
+     * Limit how many Teams to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Team updateManyAndReturn
+   */
+  export type TeamUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Team
+     */
+    select?: TeamSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Team
+     */
+    omit?: TeamOmit<ExtArgs> | null
+    /**
+     * The data used to update Teams.
+     */
+    data: XOR<TeamUpdateManyMutationInput, TeamUncheckedUpdateManyInput>
+    /**
+     * Filter which Teams to update
+     */
+    where?: TeamWhereInput
+    /**
+     * Limit how many Teams to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Team upsert
+   */
+  export type TeamUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Team
+     */
+    select?: TeamSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Team
+     */
+    omit?: TeamOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Team to update in case it exists.
+     */
+    where: TeamWhereUniqueInput
+    /**
+     * In case the Team found by the `where` argument doesn't exist, create a new Team with this data.
+     */
+    create: XOR<TeamCreateInput, TeamUncheckedCreateInput>
+    /**
+     * In case the Team was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TeamUpdateInput, TeamUncheckedUpdateInput>
+  }
+
+  /**
+   * Team delete
+   */
+  export type TeamDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Team
+     */
+    select?: TeamSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Team
+     */
+    omit?: TeamOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamInclude<ExtArgs> | null
+    /**
+     * Filter which Team to delete.
+     */
+    where: TeamWhereUniqueInput
+  }
+
+  /**
+   * Team deleteMany
+   */
+  export type TeamDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Teams to delete
+     */
+    where?: TeamWhereInput
+    /**
+     * Limit how many Teams to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Team.members
+   */
+  export type Team$membersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamMember
+     */
+    select?: TeamMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamMember
+     */
+    omit?: TeamMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamMemberInclude<ExtArgs> | null
+    where?: TeamMemberWhereInput
+    orderBy?: TeamMemberOrderByWithRelationInput | TeamMemberOrderByWithRelationInput[]
+    cursor?: TeamMemberWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TeamMemberScalarFieldEnum | TeamMemberScalarFieldEnum[]
+  }
+
+  /**
+   * Team.invites
+   */
+  export type Team$invitesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamInvite
+     */
+    select?: TeamInviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamInvite
+     */
+    omit?: TeamInviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamInviteInclude<ExtArgs> | null
+    where?: TeamInviteWhereInput
+    orderBy?: TeamInviteOrderByWithRelationInput | TeamInviteOrderByWithRelationInput[]
+    cursor?: TeamInviteWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TeamInviteScalarFieldEnum | TeamInviteScalarFieldEnum[]
+  }
+
+  /**
+   * Team.generations
+   */
+  export type Team$generationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamGeneration
+     */
+    select?: TeamGenerationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamGeneration
+     */
+    omit?: TeamGenerationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamGenerationInclude<ExtArgs> | null
+    where?: TeamGenerationWhereInput
+    orderBy?: TeamGenerationOrderByWithRelationInput | TeamGenerationOrderByWithRelationInput[]
+    cursor?: TeamGenerationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TeamGenerationScalarFieldEnum | TeamGenerationScalarFieldEnum[]
+  }
+
+  /**
+   * Team without action
+   */
+  export type TeamDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Team
+     */
+    select?: TeamSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Team
+     */
+    omit?: TeamOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model TeamMember
+   */
+
+  export type AggregateTeamMember = {
+    _count: TeamMemberCountAggregateOutputType | null
+    _min: TeamMemberMinAggregateOutputType | null
+    _max: TeamMemberMaxAggregateOutputType | null
+  }
+
+  export type TeamMemberMinAggregateOutputType = {
+    id: string | null
+    teamId: string | null
+    userId: string | null
+    role: $Enums.TeamRole | null
+    joinedAt: Date | null
+  }
+
+  export type TeamMemberMaxAggregateOutputType = {
+    id: string | null
+    teamId: string | null
+    userId: string | null
+    role: $Enums.TeamRole | null
+    joinedAt: Date | null
+  }
+
+  export type TeamMemberCountAggregateOutputType = {
+    id: number
+    teamId: number
+    userId: number
+    role: number
+    joinedAt: number
+    _all: number
+  }
+
+
+  export type TeamMemberMinAggregateInputType = {
+    id?: true
+    teamId?: true
+    userId?: true
+    role?: true
+    joinedAt?: true
+  }
+
+  export type TeamMemberMaxAggregateInputType = {
+    id?: true
+    teamId?: true
+    userId?: true
+    role?: true
+    joinedAt?: true
+  }
+
+  export type TeamMemberCountAggregateInputType = {
+    id?: true
+    teamId?: true
+    userId?: true
+    role?: true
+    joinedAt?: true
+    _all?: true
+  }
+
+  export type TeamMemberAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TeamMember to aggregate.
+     */
+    where?: TeamMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TeamMembers to fetch.
+     */
+    orderBy?: TeamMemberOrderByWithRelationInput | TeamMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TeamMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TeamMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TeamMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TeamMembers
+    **/
+    _count?: true | TeamMemberCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TeamMemberMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TeamMemberMaxAggregateInputType
+  }
+
+  export type GetTeamMemberAggregateType<T extends TeamMemberAggregateArgs> = {
+        [P in keyof T & keyof AggregateTeamMember]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTeamMember[P]>
+      : GetScalarType<T[P], AggregateTeamMember[P]>
+  }
+
+
+
+
+  export type TeamMemberGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TeamMemberWhereInput
+    orderBy?: TeamMemberOrderByWithAggregationInput | TeamMemberOrderByWithAggregationInput[]
+    by: TeamMemberScalarFieldEnum[] | TeamMemberScalarFieldEnum
+    having?: TeamMemberScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TeamMemberCountAggregateInputType | true
+    _min?: TeamMemberMinAggregateInputType
+    _max?: TeamMemberMaxAggregateInputType
+  }
+
+  export type TeamMemberGroupByOutputType = {
+    id: string
+    teamId: string
+    userId: string
+    role: $Enums.TeamRole
+    joinedAt: Date
+    _count: TeamMemberCountAggregateOutputType | null
+    _min: TeamMemberMinAggregateOutputType | null
+    _max: TeamMemberMaxAggregateOutputType | null
+  }
+
+  type GetTeamMemberGroupByPayload<T extends TeamMemberGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TeamMemberGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TeamMemberGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TeamMemberGroupByOutputType[P]>
+            : GetScalarType<T[P], TeamMemberGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TeamMemberSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    teamId?: boolean
+    userId?: boolean
+    role?: boolean
+    joinedAt?: boolean
+    team?: boolean | TeamDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["teamMember"]>
+
+  export type TeamMemberSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    teamId?: boolean
+    userId?: boolean
+    role?: boolean
+    joinedAt?: boolean
+    team?: boolean | TeamDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["teamMember"]>
+
+  export type TeamMemberSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    teamId?: boolean
+    userId?: boolean
+    role?: boolean
+    joinedAt?: boolean
+    team?: boolean | TeamDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["teamMember"]>
+
+  export type TeamMemberSelectScalar = {
+    id?: boolean
+    teamId?: boolean
+    userId?: boolean
+    role?: boolean
+    joinedAt?: boolean
+  }
+
+  export type TeamMemberOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "teamId" | "userId" | "role" | "joinedAt", ExtArgs["result"]["teamMember"]>
+  export type TeamMemberInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    team?: boolean | TeamDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type TeamMemberIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    team?: boolean | TeamDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type TeamMemberIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    team?: boolean | TeamDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $TeamMemberPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TeamMember"
+    objects: {
+      team: Prisma.$TeamPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      teamId: string
+      userId: string
+      role: $Enums.TeamRole
+      joinedAt: Date
+    }, ExtArgs["result"]["teamMember"]>
+    composites: {}
+  }
+
+  type TeamMemberGetPayload<S extends boolean | null | undefined | TeamMemberDefaultArgs> = $Result.GetResult<Prisma.$TeamMemberPayload, S>
+
+  type TeamMemberCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TeamMemberFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TeamMemberCountAggregateInputType | true
+    }
+
+  export interface TeamMemberDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TeamMember'], meta: { name: 'TeamMember' } }
+    /**
+     * Find zero or one TeamMember that matches the filter.
+     * @param {TeamMemberFindUniqueArgs} args - Arguments to find a TeamMember
+     * @example
+     * // Get one TeamMember
+     * const teamMember = await prisma.teamMember.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TeamMemberFindUniqueArgs>(args: SelectSubset<T, TeamMemberFindUniqueArgs<ExtArgs>>): Prisma__TeamMemberClient<$Result.GetResult<Prisma.$TeamMemberPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TeamMember that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TeamMemberFindUniqueOrThrowArgs} args - Arguments to find a TeamMember
+     * @example
+     * // Get one TeamMember
+     * const teamMember = await prisma.teamMember.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TeamMemberFindUniqueOrThrowArgs>(args: SelectSubset<T, TeamMemberFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TeamMemberClient<$Result.GetResult<Prisma.$TeamMemberPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TeamMember that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamMemberFindFirstArgs} args - Arguments to find a TeamMember
+     * @example
+     * // Get one TeamMember
+     * const teamMember = await prisma.teamMember.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TeamMemberFindFirstArgs>(args?: SelectSubset<T, TeamMemberFindFirstArgs<ExtArgs>>): Prisma__TeamMemberClient<$Result.GetResult<Prisma.$TeamMemberPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TeamMember that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamMemberFindFirstOrThrowArgs} args - Arguments to find a TeamMember
+     * @example
+     * // Get one TeamMember
+     * const teamMember = await prisma.teamMember.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TeamMemberFindFirstOrThrowArgs>(args?: SelectSubset<T, TeamMemberFindFirstOrThrowArgs<ExtArgs>>): Prisma__TeamMemberClient<$Result.GetResult<Prisma.$TeamMemberPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TeamMembers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamMemberFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TeamMembers
+     * const teamMembers = await prisma.teamMember.findMany()
+     * 
+     * // Get first 10 TeamMembers
+     * const teamMembers = await prisma.teamMember.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const teamMemberWithIdOnly = await prisma.teamMember.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TeamMemberFindManyArgs>(args?: SelectSubset<T, TeamMemberFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TeamMember.
+     * @param {TeamMemberCreateArgs} args - Arguments to create a TeamMember.
+     * @example
+     * // Create one TeamMember
+     * const TeamMember = await prisma.teamMember.create({
+     *   data: {
+     *     // ... data to create a TeamMember
+     *   }
+     * })
+     * 
+     */
+    create<T extends TeamMemberCreateArgs>(args: SelectSubset<T, TeamMemberCreateArgs<ExtArgs>>): Prisma__TeamMemberClient<$Result.GetResult<Prisma.$TeamMemberPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TeamMembers.
+     * @param {TeamMemberCreateManyArgs} args - Arguments to create many TeamMembers.
+     * @example
+     * // Create many TeamMembers
+     * const teamMember = await prisma.teamMember.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TeamMemberCreateManyArgs>(args?: SelectSubset<T, TeamMemberCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TeamMembers and returns the data saved in the database.
+     * @param {TeamMemberCreateManyAndReturnArgs} args - Arguments to create many TeamMembers.
+     * @example
+     * // Create many TeamMembers
+     * const teamMember = await prisma.teamMember.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TeamMembers and only return the `id`
+     * const teamMemberWithIdOnly = await prisma.teamMember.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TeamMemberCreateManyAndReturnArgs>(args?: SelectSubset<T, TeamMemberCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamMemberPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a TeamMember.
+     * @param {TeamMemberDeleteArgs} args - Arguments to delete one TeamMember.
+     * @example
+     * // Delete one TeamMember
+     * const TeamMember = await prisma.teamMember.delete({
+     *   where: {
+     *     // ... filter to delete one TeamMember
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TeamMemberDeleteArgs>(args: SelectSubset<T, TeamMemberDeleteArgs<ExtArgs>>): Prisma__TeamMemberClient<$Result.GetResult<Prisma.$TeamMemberPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TeamMember.
+     * @param {TeamMemberUpdateArgs} args - Arguments to update one TeamMember.
+     * @example
+     * // Update one TeamMember
+     * const teamMember = await prisma.teamMember.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TeamMemberUpdateArgs>(args: SelectSubset<T, TeamMemberUpdateArgs<ExtArgs>>): Prisma__TeamMemberClient<$Result.GetResult<Prisma.$TeamMemberPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TeamMembers.
+     * @param {TeamMemberDeleteManyArgs} args - Arguments to filter TeamMembers to delete.
+     * @example
+     * // Delete a few TeamMembers
+     * const { count } = await prisma.teamMember.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TeamMemberDeleteManyArgs>(args?: SelectSubset<T, TeamMemberDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TeamMembers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamMemberUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TeamMembers
+     * const teamMember = await prisma.teamMember.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TeamMemberUpdateManyArgs>(args: SelectSubset<T, TeamMemberUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TeamMembers and returns the data updated in the database.
+     * @param {TeamMemberUpdateManyAndReturnArgs} args - Arguments to update many TeamMembers.
+     * @example
+     * // Update many TeamMembers
+     * const teamMember = await prisma.teamMember.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more TeamMembers and only return the `id`
+     * const teamMemberWithIdOnly = await prisma.teamMember.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TeamMemberUpdateManyAndReturnArgs>(args: SelectSubset<T, TeamMemberUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamMemberPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one TeamMember.
+     * @param {TeamMemberUpsertArgs} args - Arguments to update or create a TeamMember.
+     * @example
+     * // Update or create a TeamMember
+     * const teamMember = await prisma.teamMember.upsert({
+     *   create: {
+     *     // ... data to create a TeamMember
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TeamMember we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TeamMemberUpsertArgs>(args: SelectSubset<T, TeamMemberUpsertArgs<ExtArgs>>): Prisma__TeamMemberClient<$Result.GetResult<Prisma.$TeamMemberPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TeamMembers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamMemberCountArgs} args - Arguments to filter TeamMembers to count.
+     * @example
+     * // Count the number of TeamMembers
+     * const count = await prisma.teamMember.count({
+     *   where: {
+     *     // ... the filter for the TeamMembers we want to count
+     *   }
+     * })
+    **/
+    count<T extends TeamMemberCountArgs>(
+      args?: Subset<T, TeamMemberCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TeamMemberCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TeamMember.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamMemberAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TeamMemberAggregateArgs>(args: Subset<T, TeamMemberAggregateArgs>): Prisma.PrismaPromise<GetTeamMemberAggregateType<T>>
+
+    /**
+     * Group by TeamMember.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamMemberGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TeamMemberGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TeamMemberGroupByArgs['orderBy'] }
+        : { orderBy?: TeamMemberGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TeamMemberGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTeamMemberGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TeamMember model
+   */
+  readonly fields: TeamMemberFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TeamMember.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TeamMemberClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    team<T extends TeamDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TeamDefaultArgs<ExtArgs>>): Prisma__TeamClient<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TeamMember model
+   */
+  interface TeamMemberFieldRefs {
+    readonly id: FieldRef<"TeamMember", 'String'>
+    readonly teamId: FieldRef<"TeamMember", 'String'>
+    readonly userId: FieldRef<"TeamMember", 'String'>
+    readonly role: FieldRef<"TeamMember", 'TeamRole'>
+    readonly joinedAt: FieldRef<"TeamMember", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TeamMember findUnique
+   */
+  export type TeamMemberFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamMember
+     */
+    select?: TeamMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamMember
+     */
+    omit?: TeamMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which TeamMember to fetch.
+     */
+    where: TeamMemberWhereUniqueInput
+  }
+
+  /**
+   * TeamMember findUniqueOrThrow
+   */
+  export type TeamMemberFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamMember
+     */
+    select?: TeamMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamMember
+     */
+    omit?: TeamMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which TeamMember to fetch.
+     */
+    where: TeamMemberWhereUniqueInput
+  }
+
+  /**
+   * TeamMember findFirst
+   */
+  export type TeamMemberFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamMember
+     */
+    select?: TeamMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamMember
+     */
+    omit?: TeamMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which TeamMember to fetch.
+     */
+    where?: TeamMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TeamMembers to fetch.
+     */
+    orderBy?: TeamMemberOrderByWithRelationInput | TeamMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TeamMembers.
+     */
+    cursor?: TeamMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TeamMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TeamMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TeamMembers.
+     */
+    distinct?: TeamMemberScalarFieldEnum | TeamMemberScalarFieldEnum[]
+  }
+
+  /**
+   * TeamMember findFirstOrThrow
+   */
+  export type TeamMemberFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamMember
+     */
+    select?: TeamMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamMember
+     */
+    omit?: TeamMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which TeamMember to fetch.
+     */
+    where?: TeamMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TeamMembers to fetch.
+     */
+    orderBy?: TeamMemberOrderByWithRelationInput | TeamMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TeamMembers.
+     */
+    cursor?: TeamMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TeamMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TeamMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TeamMembers.
+     */
+    distinct?: TeamMemberScalarFieldEnum | TeamMemberScalarFieldEnum[]
+  }
+
+  /**
+   * TeamMember findMany
+   */
+  export type TeamMemberFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamMember
+     */
+    select?: TeamMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamMember
+     */
+    omit?: TeamMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamMemberInclude<ExtArgs> | null
+    /**
+     * Filter, which TeamMembers to fetch.
+     */
+    where?: TeamMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TeamMembers to fetch.
+     */
+    orderBy?: TeamMemberOrderByWithRelationInput | TeamMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TeamMembers.
+     */
+    cursor?: TeamMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TeamMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TeamMembers.
+     */
+    skip?: number
+    distinct?: TeamMemberScalarFieldEnum | TeamMemberScalarFieldEnum[]
+  }
+
+  /**
+   * TeamMember create
+   */
+  export type TeamMemberCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamMember
+     */
+    select?: TeamMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamMember
+     */
+    omit?: TeamMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamMemberInclude<ExtArgs> | null
+    /**
+     * The data needed to create a TeamMember.
+     */
+    data: XOR<TeamMemberCreateInput, TeamMemberUncheckedCreateInput>
+  }
+
+  /**
+   * TeamMember createMany
+   */
+  export type TeamMemberCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TeamMembers.
+     */
+    data: TeamMemberCreateManyInput | TeamMemberCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TeamMember createManyAndReturn
+   */
+  export type TeamMemberCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamMember
+     */
+    select?: TeamMemberSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamMember
+     */
+    omit?: TeamMemberOmit<ExtArgs> | null
+    /**
+     * The data used to create many TeamMembers.
+     */
+    data: TeamMemberCreateManyInput | TeamMemberCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamMemberIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TeamMember update
+   */
+  export type TeamMemberUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamMember
+     */
+    select?: TeamMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamMember
+     */
+    omit?: TeamMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamMemberInclude<ExtArgs> | null
+    /**
+     * The data needed to update a TeamMember.
+     */
+    data: XOR<TeamMemberUpdateInput, TeamMemberUncheckedUpdateInput>
+    /**
+     * Choose, which TeamMember to update.
+     */
+    where: TeamMemberWhereUniqueInput
+  }
+
+  /**
+   * TeamMember updateMany
+   */
+  export type TeamMemberUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TeamMembers.
+     */
+    data: XOR<TeamMemberUpdateManyMutationInput, TeamMemberUncheckedUpdateManyInput>
+    /**
+     * Filter which TeamMembers to update
+     */
+    where?: TeamMemberWhereInput
+    /**
+     * Limit how many TeamMembers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TeamMember updateManyAndReturn
+   */
+  export type TeamMemberUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamMember
+     */
+    select?: TeamMemberSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamMember
+     */
+    omit?: TeamMemberOmit<ExtArgs> | null
+    /**
+     * The data used to update TeamMembers.
+     */
+    data: XOR<TeamMemberUpdateManyMutationInput, TeamMemberUncheckedUpdateManyInput>
+    /**
+     * Filter which TeamMembers to update
+     */
+    where?: TeamMemberWhereInput
+    /**
+     * Limit how many TeamMembers to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamMemberIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TeamMember upsert
+   */
+  export type TeamMemberUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamMember
+     */
+    select?: TeamMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamMember
+     */
+    omit?: TeamMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamMemberInclude<ExtArgs> | null
+    /**
+     * The filter to search for the TeamMember to update in case it exists.
+     */
+    where: TeamMemberWhereUniqueInput
+    /**
+     * In case the TeamMember found by the `where` argument doesn't exist, create a new TeamMember with this data.
+     */
+    create: XOR<TeamMemberCreateInput, TeamMemberUncheckedCreateInput>
+    /**
+     * In case the TeamMember was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TeamMemberUpdateInput, TeamMemberUncheckedUpdateInput>
+  }
+
+  /**
+   * TeamMember delete
+   */
+  export type TeamMemberDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamMember
+     */
+    select?: TeamMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamMember
+     */
+    omit?: TeamMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamMemberInclude<ExtArgs> | null
+    /**
+     * Filter which TeamMember to delete.
+     */
+    where: TeamMemberWhereUniqueInput
+  }
+
+  /**
+   * TeamMember deleteMany
+   */
+  export type TeamMemberDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TeamMembers to delete
+     */
+    where?: TeamMemberWhereInput
+    /**
+     * Limit how many TeamMembers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TeamMember without action
+   */
+  export type TeamMemberDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamMember
+     */
+    select?: TeamMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamMember
+     */
+    omit?: TeamMemberOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamMemberInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model TeamInvite
+   */
+
+  export type AggregateTeamInvite = {
+    _count: TeamInviteCountAggregateOutputType | null
+    _min: TeamInviteMinAggregateOutputType | null
+    _max: TeamInviteMaxAggregateOutputType | null
+  }
+
+  export type TeamInviteMinAggregateOutputType = {
+    id: string | null
+    teamId: string | null
+    email: string | null
+    role: $Enums.TeamRole | null
+    token: string | null
+    expiresAt: Date | null
+    acceptedAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type TeamInviteMaxAggregateOutputType = {
+    id: string | null
+    teamId: string | null
+    email: string | null
+    role: $Enums.TeamRole | null
+    token: string | null
+    expiresAt: Date | null
+    acceptedAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type TeamInviteCountAggregateOutputType = {
+    id: number
+    teamId: number
+    email: number
+    role: number
+    token: number
+    expiresAt: number
+    acceptedAt: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type TeamInviteMinAggregateInputType = {
+    id?: true
+    teamId?: true
+    email?: true
+    role?: true
+    token?: true
+    expiresAt?: true
+    acceptedAt?: true
+    createdAt?: true
+  }
+
+  export type TeamInviteMaxAggregateInputType = {
+    id?: true
+    teamId?: true
+    email?: true
+    role?: true
+    token?: true
+    expiresAt?: true
+    acceptedAt?: true
+    createdAt?: true
+  }
+
+  export type TeamInviteCountAggregateInputType = {
+    id?: true
+    teamId?: true
+    email?: true
+    role?: true
+    token?: true
+    expiresAt?: true
+    acceptedAt?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type TeamInviteAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TeamInvite to aggregate.
+     */
+    where?: TeamInviteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TeamInvites to fetch.
+     */
+    orderBy?: TeamInviteOrderByWithRelationInput | TeamInviteOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TeamInviteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TeamInvites from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TeamInvites.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TeamInvites
+    **/
+    _count?: true | TeamInviteCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TeamInviteMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TeamInviteMaxAggregateInputType
+  }
+
+  export type GetTeamInviteAggregateType<T extends TeamInviteAggregateArgs> = {
+        [P in keyof T & keyof AggregateTeamInvite]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTeamInvite[P]>
+      : GetScalarType<T[P], AggregateTeamInvite[P]>
+  }
+
+
+
+
+  export type TeamInviteGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TeamInviteWhereInput
+    orderBy?: TeamInviteOrderByWithAggregationInput | TeamInviteOrderByWithAggregationInput[]
+    by: TeamInviteScalarFieldEnum[] | TeamInviteScalarFieldEnum
+    having?: TeamInviteScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TeamInviteCountAggregateInputType | true
+    _min?: TeamInviteMinAggregateInputType
+    _max?: TeamInviteMaxAggregateInputType
+  }
+
+  export type TeamInviteGroupByOutputType = {
+    id: string
+    teamId: string
+    email: string
+    role: $Enums.TeamRole
+    token: string
+    expiresAt: Date
+    acceptedAt: Date | null
+    createdAt: Date
+    _count: TeamInviteCountAggregateOutputType | null
+    _min: TeamInviteMinAggregateOutputType | null
+    _max: TeamInviteMaxAggregateOutputType | null
+  }
+
+  type GetTeamInviteGroupByPayload<T extends TeamInviteGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TeamInviteGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TeamInviteGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TeamInviteGroupByOutputType[P]>
+            : GetScalarType<T[P], TeamInviteGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TeamInviteSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    teamId?: boolean
+    email?: boolean
+    role?: boolean
+    token?: boolean
+    expiresAt?: boolean
+    acceptedAt?: boolean
+    createdAt?: boolean
+    team?: boolean | TeamDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["teamInvite"]>
+
+  export type TeamInviteSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    teamId?: boolean
+    email?: boolean
+    role?: boolean
+    token?: boolean
+    expiresAt?: boolean
+    acceptedAt?: boolean
+    createdAt?: boolean
+    team?: boolean | TeamDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["teamInvite"]>
+
+  export type TeamInviteSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    teamId?: boolean
+    email?: boolean
+    role?: boolean
+    token?: boolean
+    expiresAt?: boolean
+    acceptedAt?: boolean
+    createdAt?: boolean
+    team?: boolean | TeamDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["teamInvite"]>
+
+  export type TeamInviteSelectScalar = {
+    id?: boolean
+    teamId?: boolean
+    email?: boolean
+    role?: boolean
+    token?: boolean
+    expiresAt?: boolean
+    acceptedAt?: boolean
+    createdAt?: boolean
+  }
+
+  export type TeamInviteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "teamId" | "email" | "role" | "token" | "expiresAt" | "acceptedAt" | "createdAt", ExtArgs["result"]["teamInvite"]>
+  export type TeamInviteInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    team?: boolean | TeamDefaultArgs<ExtArgs>
+  }
+  export type TeamInviteIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    team?: boolean | TeamDefaultArgs<ExtArgs>
+  }
+  export type TeamInviteIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    team?: boolean | TeamDefaultArgs<ExtArgs>
+  }
+
+  export type $TeamInvitePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TeamInvite"
+    objects: {
+      team: Prisma.$TeamPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      teamId: string
+      email: string
+      role: $Enums.TeamRole
+      token: string
+      expiresAt: Date
+      acceptedAt: Date | null
+      createdAt: Date
+    }, ExtArgs["result"]["teamInvite"]>
+    composites: {}
+  }
+
+  type TeamInviteGetPayload<S extends boolean | null | undefined | TeamInviteDefaultArgs> = $Result.GetResult<Prisma.$TeamInvitePayload, S>
+
+  type TeamInviteCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TeamInviteFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TeamInviteCountAggregateInputType | true
+    }
+
+  export interface TeamInviteDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TeamInvite'], meta: { name: 'TeamInvite' } }
+    /**
+     * Find zero or one TeamInvite that matches the filter.
+     * @param {TeamInviteFindUniqueArgs} args - Arguments to find a TeamInvite
+     * @example
+     * // Get one TeamInvite
+     * const teamInvite = await prisma.teamInvite.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TeamInviteFindUniqueArgs>(args: SelectSubset<T, TeamInviteFindUniqueArgs<ExtArgs>>): Prisma__TeamInviteClient<$Result.GetResult<Prisma.$TeamInvitePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TeamInvite that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TeamInviteFindUniqueOrThrowArgs} args - Arguments to find a TeamInvite
+     * @example
+     * // Get one TeamInvite
+     * const teamInvite = await prisma.teamInvite.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TeamInviteFindUniqueOrThrowArgs>(args: SelectSubset<T, TeamInviteFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TeamInviteClient<$Result.GetResult<Prisma.$TeamInvitePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TeamInvite that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamInviteFindFirstArgs} args - Arguments to find a TeamInvite
+     * @example
+     * // Get one TeamInvite
+     * const teamInvite = await prisma.teamInvite.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TeamInviteFindFirstArgs>(args?: SelectSubset<T, TeamInviteFindFirstArgs<ExtArgs>>): Prisma__TeamInviteClient<$Result.GetResult<Prisma.$TeamInvitePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TeamInvite that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamInviteFindFirstOrThrowArgs} args - Arguments to find a TeamInvite
+     * @example
+     * // Get one TeamInvite
+     * const teamInvite = await prisma.teamInvite.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TeamInviteFindFirstOrThrowArgs>(args?: SelectSubset<T, TeamInviteFindFirstOrThrowArgs<ExtArgs>>): Prisma__TeamInviteClient<$Result.GetResult<Prisma.$TeamInvitePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TeamInvites that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamInviteFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TeamInvites
+     * const teamInvites = await prisma.teamInvite.findMany()
+     * 
+     * // Get first 10 TeamInvites
+     * const teamInvites = await prisma.teamInvite.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const teamInviteWithIdOnly = await prisma.teamInvite.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TeamInviteFindManyArgs>(args?: SelectSubset<T, TeamInviteFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamInvitePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TeamInvite.
+     * @param {TeamInviteCreateArgs} args - Arguments to create a TeamInvite.
+     * @example
+     * // Create one TeamInvite
+     * const TeamInvite = await prisma.teamInvite.create({
+     *   data: {
+     *     // ... data to create a TeamInvite
+     *   }
+     * })
+     * 
+     */
+    create<T extends TeamInviteCreateArgs>(args: SelectSubset<T, TeamInviteCreateArgs<ExtArgs>>): Prisma__TeamInviteClient<$Result.GetResult<Prisma.$TeamInvitePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TeamInvites.
+     * @param {TeamInviteCreateManyArgs} args - Arguments to create many TeamInvites.
+     * @example
+     * // Create many TeamInvites
+     * const teamInvite = await prisma.teamInvite.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TeamInviteCreateManyArgs>(args?: SelectSubset<T, TeamInviteCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TeamInvites and returns the data saved in the database.
+     * @param {TeamInviteCreateManyAndReturnArgs} args - Arguments to create many TeamInvites.
+     * @example
+     * // Create many TeamInvites
+     * const teamInvite = await prisma.teamInvite.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TeamInvites and only return the `id`
+     * const teamInviteWithIdOnly = await prisma.teamInvite.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TeamInviteCreateManyAndReturnArgs>(args?: SelectSubset<T, TeamInviteCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamInvitePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a TeamInvite.
+     * @param {TeamInviteDeleteArgs} args - Arguments to delete one TeamInvite.
+     * @example
+     * // Delete one TeamInvite
+     * const TeamInvite = await prisma.teamInvite.delete({
+     *   where: {
+     *     // ... filter to delete one TeamInvite
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TeamInviteDeleteArgs>(args: SelectSubset<T, TeamInviteDeleteArgs<ExtArgs>>): Prisma__TeamInviteClient<$Result.GetResult<Prisma.$TeamInvitePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TeamInvite.
+     * @param {TeamInviteUpdateArgs} args - Arguments to update one TeamInvite.
+     * @example
+     * // Update one TeamInvite
+     * const teamInvite = await prisma.teamInvite.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TeamInviteUpdateArgs>(args: SelectSubset<T, TeamInviteUpdateArgs<ExtArgs>>): Prisma__TeamInviteClient<$Result.GetResult<Prisma.$TeamInvitePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TeamInvites.
+     * @param {TeamInviteDeleteManyArgs} args - Arguments to filter TeamInvites to delete.
+     * @example
+     * // Delete a few TeamInvites
+     * const { count } = await prisma.teamInvite.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TeamInviteDeleteManyArgs>(args?: SelectSubset<T, TeamInviteDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TeamInvites.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamInviteUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TeamInvites
+     * const teamInvite = await prisma.teamInvite.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TeamInviteUpdateManyArgs>(args: SelectSubset<T, TeamInviteUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TeamInvites and returns the data updated in the database.
+     * @param {TeamInviteUpdateManyAndReturnArgs} args - Arguments to update many TeamInvites.
+     * @example
+     * // Update many TeamInvites
+     * const teamInvite = await prisma.teamInvite.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more TeamInvites and only return the `id`
+     * const teamInviteWithIdOnly = await prisma.teamInvite.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TeamInviteUpdateManyAndReturnArgs>(args: SelectSubset<T, TeamInviteUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamInvitePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one TeamInvite.
+     * @param {TeamInviteUpsertArgs} args - Arguments to update or create a TeamInvite.
+     * @example
+     * // Update or create a TeamInvite
+     * const teamInvite = await prisma.teamInvite.upsert({
+     *   create: {
+     *     // ... data to create a TeamInvite
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TeamInvite we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TeamInviteUpsertArgs>(args: SelectSubset<T, TeamInviteUpsertArgs<ExtArgs>>): Prisma__TeamInviteClient<$Result.GetResult<Prisma.$TeamInvitePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TeamInvites.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamInviteCountArgs} args - Arguments to filter TeamInvites to count.
+     * @example
+     * // Count the number of TeamInvites
+     * const count = await prisma.teamInvite.count({
+     *   where: {
+     *     // ... the filter for the TeamInvites we want to count
+     *   }
+     * })
+    **/
+    count<T extends TeamInviteCountArgs>(
+      args?: Subset<T, TeamInviteCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TeamInviteCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TeamInvite.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamInviteAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TeamInviteAggregateArgs>(args: Subset<T, TeamInviteAggregateArgs>): Prisma.PrismaPromise<GetTeamInviteAggregateType<T>>
+
+    /**
+     * Group by TeamInvite.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamInviteGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TeamInviteGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TeamInviteGroupByArgs['orderBy'] }
+        : { orderBy?: TeamInviteGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TeamInviteGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTeamInviteGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TeamInvite model
+   */
+  readonly fields: TeamInviteFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TeamInvite.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TeamInviteClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    team<T extends TeamDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TeamDefaultArgs<ExtArgs>>): Prisma__TeamClient<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TeamInvite model
+   */
+  interface TeamInviteFieldRefs {
+    readonly id: FieldRef<"TeamInvite", 'String'>
+    readonly teamId: FieldRef<"TeamInvite", 'String'>
+    readonly email: FieldRef<"TeamInvite", 'String'>
+    readonly role: FieldRef<"TeamInvite", 'TeamRole'>
+    readonly token: FieldRef<"TeamInvite", 'String'>
+    readonly expiresAt: FieldRef<"TeamInvite", 'DateTime'>
+    readonly acceptedAt: FieldRef<"TeamInvite", 'DateTime'>
+    readonly createdAt: FieldRef<"TeamInvite", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TeamInvite findUnique
+   */
+  export type TeamInviteFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamInvite
+     */
+    select?: TeamInviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamInvite
+     */
+    omit?: TeamInviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamInviteInclude<ExtArgs> | null
+    /**
+     * Filter, which TeamInvite to fetch.
+     */
+    where: TeamInviteWhereUniqueInput
+  }
+
+  /**
+   * TeamInvite findUniqueOrThrow
+   */
+  export type TeamInviteFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamInvite
+     */
+    select?: TeamInviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamInvite
+     */
+    omit?: TeamInviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamInviteInclude<ExtArgs> | null
+    /**
+     * Filter, which TeamInvite to fetch.
+     */
+    where: TeamInviteWhereUniqueInput
+  }
+
+  /**
+   * TeamInvite findFirst
+   */
+  export type TeamInviteFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamInvite
+     */
+    select?: TeamInviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamInvite
+     */
+    omit?: TeamInviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamInviteInclude<ExtArgs> | null
+    /**
+     * Filter, which TeamInvite to fetch.
+     */
+    where?: TeamInviteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TeamInvites to fetch.
+     */
+    orderBy?: TeamInviteOrderByWithRelationInput | TeamInviteOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TeamInvites.
+     */
+    cursor?: TeamInviteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TeamInvites from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TeamInvites.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TeamInvites.
+     */
+    distinct?: TeamInviteScalarFieldEnum | TeamInviteScalarFieldEnum[]
+  }
+
+  /**
+   * TeamInvite findFirstOrThrow
+   */
+  export type TeamInviteFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamInvite
+     */
+    select?: TeamInviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamInvite
+     */
+    omit?: TeamInviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamInviteInclude<ExtArgs> | null
+    /**
+     * Filter, which TeamInvite to fetch.
+     */
+    where?: TeamInviteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TeamInvites to fetch.
+     */
+    orderBy?: TeamInviteOrderByWithRelationInput | TeamInviteOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TeamInvites.
+     */
+    cursor?: TeamInviteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TeamInvites from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TeamInvites.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TeamInvites.
+     */
+    distinct?: TeamInviteScalarFieldEnum | TeamInviteScalarFieldEnum[]
+  }
+
+  /**
+   * TeamInvite findMany
+   */
+  export type TeamInviteFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamInvite
+     */
+    select?: TeamInviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamInvite
+     */
+    omit?: TeamInviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamInviteInclude<ExtArgs> | null
+    /**
+     * Filter, which TeamInvites to fetch.
+     */
+    where?: TeamInviteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TeamInvites to fetch.
+     */
+    orderBy?: TeamInviteOrderByWithRelationInput | TeamInviteOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TeamInvites.
+     */
+    cursor?: TeamInviteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TeamInvites from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TeamInvites.
+     */
+    skip?: number
+    distinct?: TeamInviteScalarFieldEnum | TeamInviteScalarFieldEnum[]
+  }
+
+  /**
+   * TeamInvite create
+   */
+  export type TeamInviteCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamInvite
+     */
+    select?: TeamInviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamInvite
+     */
+    omit?: TeamInviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamInviteInclude<ExtArgs> | null
+    /**
+     * The data needed to create a TeamInvite.
+     */
+    data: XOR<TeamInviteCreateInput, TeamInviteUncheckedCreateInput>
+  }
+
+  /**
+   * TeamInvite createMany
+   */
+  export type TeamInviteCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TeamInvites.
+     */
+    data: TeamInviteCreateManyInput | TeamInviteCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TeamInvite createManyAndReturn
+   */
+  export type TeamInviteCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamInvite
+     */
+    select?: TeamInviteSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamInvite
+     */
+    omit?: TeamInviteOmit<ExtArgs> | null
+    /**
+     * The data used to create many TeamInvites.
+     */
+    data: TeamInviteCreateManyInput | TeamInviteCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamInviteIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TeamInvite update
+   */
+  export type TeamInviteUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamInvite
+     */
+    select?: TeamInviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamInvite
+     */
+    omit?: TeamInviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamInviteInclude<ExtArgs> | null
+    /**
+     * The data needed to update a TeamInvite.
+     */
+    data: XOR<TeamInviteUpdateInput, TeamInviteUncheckedUpdateInput>
+    /**
+     * Choose, which TeamInvite to update.
+     */
+    where: TeamInviteWhereUniqueInput
+  }
+
+  /**
+   * TeamInvite updateMany
+   */
+  export type TeamInviteUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TeamInvites.
+     */
+    data: XOR<TeamInviteUpdateManyMutationInput, TeamInviteUncheckedUpdateManyInput>
+    /**
+     * Filter which TeamInvites to update
+     */
+    where?: TeamInviteWhereInput
+    /**
+     * Limit how many TeamInvites to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TeamInvite updateManyAndReturn
+   */
+  export type TeamInviteUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamInvite
+     */
+    select?: TeamInviteSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamInvite
+     */
+    omit?: TeamInviteOmit<ExtArgs> | null
+    /**
+     * The data used to update TeamInvites.
+     */
+    data: XOR<TeamInviteUpdateManyMutationInput, TeamInviteUncheckedUpdateManyInput>
+    /**
+     * Filter which TeamInvites to update
+     */
+    where?: TeamInviteWhereInput
+    /**
+     * Limit how many TeamInvites to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamInviteIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TeamInvite upsert
+   */
+  export type TeamInviteUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamInvite
+     */
+    select?: TeamInviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamInvite
+     */
+    omit?: TeamInviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamInviteInclude<ExtArgs> | null
+    /**
+     * The filter to search for the TeamInvite to update in case it exists.
+     */
+    where: TeamInviteWhereUniqueInput
+    /**
+     * In case the TeamInvite found by the `where` argument doesn't exist, create a new TeamInvite with this data.
+     */
+    create: XOR<TeamInviteCreateInput, TeamInviteUncheckedCreateInput>
+    /**
+     * In case the TeamInvite was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TeamInviteUpdateInput, TeamInviteUncheckedUpdateInput>
+  }
+
+  /**
+   * TeamInvite delete
+   */
+  export type TeamInviteDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamInvite
+     */
+    select?: TeamInviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamInvite
+     */
+    omit?: TeamInviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamInviteInclude<ExtArgs> | null
+    /**
+     * Filter which TeamInvite to delete.
+     */
+    where: TeamInviteWhereUniqueInput
+  }
+
+  /**
+   * TeamInvite deleteMany
+   */
+  export type TeamInviteDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TeamInvites to delete
+     */
+    where?: TeamInviteWhereInput
+    /**
+     * Limit how many TeamInvites to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TeamInvite without action
+   */
+  export type TeamInviteDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamInvite
+     */
+    select?: TeamInviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamInvite
+     */
+    omit?: TeamInviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamInviteInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model TeamGeneration
+   */
+
+  export type AggregateTeamGeneration = {
+    _count: TeamGenerationCountAggregateOutputType | null
+    _avg: TeamGenerationAvgAggregateOutputType | null
+    _sum: TeamGenerationSumAggregateOutputType | null
+    _min: TeamGenerationMinAggregateOutputType | null
+    _max: TeamGenerationMaxAggregateOutputType | null
+  }
+
+  export type TeamGenerationAvgAggregateOutputType = {
+    style: number | null
+    bias: number | null
+    strokeWidth: number | null
+    linesCount: number | null
+    charactersCount: number | null
+  }
+
+  export type TeamGenerationSumAggregateOutputType = {
+    style: number | null
+    bias: number | null
+    strokeWidth: number | null
+    linesCount: number | null
+    charactersCount: number | null
+  }
+
+  export type TeamGenerationMinAggregateOutputType = {
+    id: string | null
+    teamId: string | null
+    createdById: string | null
+    text: string | null
+    style: number | null
+    bias: number | null
+    strokeColor: string | null
+    strokeWidth: number | null
+    svgContent: string | null
+    fileUrl: string | null
+    fileKey: string | null
+    linesCount: number | null
+    charactersCount: number | null
+    createdAt: Date | null
+  }
+
+  export type TeamGenerationMaxAggregateOutputType = {
+    id: string | null
+    teamId: string | null
+    createdById: string | null
+    text: string | null
+    style: number | null
+    bias: number | null
+    strokeColor: string | null
+    strokeWidth: number | null
+    svgContent: string | null
+    fileUrl: string | null
+    fileKey: string | null
+    linesCount: number | null
+    charactersCount: number | null
+    createdAt: Date | null
+  }
+
+  export type TeamGenerationCountAggregateOutputType = {
+    id: number
+    teamId: number
+    createdById: number
+    text: number
+    style: number
+    bias: number
+    strokeColor: number
+    strokeWidth: number
+    svgContent: number
+    fileUrl: number
+    fileKey: number
+    linesCount: number
+    charactersCount: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type TeamGenerationAvgAggregateInputType = {
+    style?: true
+    bias?: true
+    strokeWidth?: true
+    linesCount?: true
+    charactersCount?: true
+  }
+
+  export type TeamGenerationSumAggregateInputType = {
+    style?: true
+    bias?: true
+    strokeWidth?: true
+    linesCount?: true
+    charactersCount?: true
+  }
+
+  export type TeamGenerationMinAggregateInputType = {
+    id?: true
+    teamId?: true
+    createdById?: true
+    text?: true
+    style?: true
+    bias?: true
+    strokeColor?: true
+    strokeWidth?: true
+    svgContent?: true
+    fileUrl?: true
+    fileKey?: true
+    linesCount?: true
+    charactersCount?: true
+    createdAt?: true
+  }
+
+  export type TeamGenerationMaxAggregateInputType = {
+    id?: true
+    teamId?: true
+    createdById?: true
+    text?: true
+    style?: true
+    bias?: true
+    strokeColor?: true
+    strokeWidth?: true
+    svgContent?: true
+    fileUrl?: true
+    fileKey?: true
+    linesCount?: true
+    charactersCount?: true
+    createdAt?: true
+  }
+
+  export type TeamGenerationCountAggregateInputType = {
+    id?: true
+    teamId?: true
+    createdById?: true
+    text?: true
+    style?: true
+    bias?: true
+    strokeColor?: true
+    strokeWidth?: true
+    svgContent?: true
+    fileUrl?: true
+    fileKey?: true
+    linesCount?: true
+    charactersCount?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type TeamGenerationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TeamGeneration to aggregate.
+     */
+    where?: TeamGenerationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TeamGenerations to fetch.
+     */
+    orderBy?: TeamGenerationOrderByWithRelationInput | TeamGenerationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TeamGenerationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TeamGenerations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TeamGenerations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TeamGenerations
+    **/
+    _count?: true | TeamGenerationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TeamGenerationAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TeamGenerationSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TeamGenerationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TeamGenerationMaxAggregateInputType
+  }
+
+  export type GetTeamGenerationAggregateType<T extends TeamGenerationAggregateArgs> = {
+        [P in keyof T & keyof AggregateTeamGeneration]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTeamGeneration[P]>
+      : GetScalarType<T[P], AggregateTeamGeneration[P]>
+  }
+
+
+
+
+  export type TeamGenerationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TeamGenerationWhereInput
+    orderBy?: TeamGenerationOrderByWithAggregationInput | TeamGenerationOrderByWithAggregationInput[]
+    by: TeamGenerationScalarFieldEnum[] | TeamGenerationScalarFieldEnum
+    having?: TeamGenerationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TeamGenerationCountAggregateInputType | true
+    _avg?: TeamGenerationAvgAggregateInputType
+    _sum?: TeamGenerationSumAggregateInputType
+    _min?: TeamGenerationMinAggregateInputType
+    _max?: TeamGenerationMaxAggregateInputType
+  }
+
+  export type TeamGenerationGroupByOutputType = {
+    id: string
+    teamId: string
+    createdById: string
+    text: string
+    style: number
+    bias: number
+    strokeColor: string
+    strokeWidth: number
+    svgContent: string | null
+    fileUrl: string | null
+    fileKey: string | null
+    linesCount: number
+    charactersCount: number
+    createdAt: Date
+    _count: TeamGenerationCountAggregateOutputType | null
+    _avg: TeamGenerationAvgAggregateOutputType | null
+    _sum: TeamGenerationSumAggregateOutputType | null
+    _min: TeamGenerationMinAggregateOutputType | null
+    _max: TeamGenerationMaxAggregateOutputType | null
+  }
+
+  type GetTeamGenerationGroupByPayload<T extends TeamGenerationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TeamGenerationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TeamGenerationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TeamGenerationGroupByOutputType[P]>
+            : GetScalarType<T[P], TeamGenerationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TeamGenerationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    teamId?: boolean
+    createdById?: boolean
+    text?: boolean
+    style?: boolean
+    bias?: boolean
+    strokeColor?: boolean
+    strokeWidth?: boolean
+    svgContent?: boolean
+    fileUrl?: boolean
+    fileKey?: boolean
+    linesCount?: boolean
+    charactersCount?: boolean
+    createdAt?: boolean
+    team?: boolean | TeamDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["teamGeneration"]>
+
+  export type TeamGenerationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    teamId?: boolean
+    createdById?: boolean
+    text?: boolean
+    style?: boolean
+    bias?: boolean
+    strokeColor?: boolean
+    strokeWidth?: boolean
+    svgContent?: boolean
+    fileUrl?: boolean
+    fileKey?: boolean
+    linesCount?: boolean
+    charactersCount?: boolean
+    createdAt?: boolean
+    team?: boolean | TeamDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["teamGeneration"]>
+
+  export type TeamGenerationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    teamId?: boolean
+    createdById?: boolean
+    text?: boolean
+    style?: boolean
+    bias?: boolean
+    strokeColor?: boolean
+    strokeWidth?: boolean
+    svgContent?: boolean
+    fileUrl?: boolean
+    fileKey?: boolean
+    linesCount?: boolean
+    charactersCount?: boolean
+    createdAt?: boolean
+    team?: boolean | TeamDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["teamGeneration"]>
+
+  export type TeamGenerationSelectScalar = {
+    id?: boolean
+    teamId?: boolean
+    createdById?: boolean
+    text?: boolean
+    style?: boolean
+    bias?: boolean
+    strokeColor?: boolean
+    strokeWidth?: boolean
+    svgContent?: boolean
+    fileUrl?: boolean
+    fileKey?: boolean
+    linesCount?: boolean
+    charactersCount?: boolean
+    createdAt?: boolean
+  }
+
+  export type TeamGenerationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "teamId" | "createdById" | "text" | "style" | "bias" | "strokeColor" | "strokeWidth" | "svgContent" | "fileUrl" | "fileKey" | "linesCount" | "charactersCount" | "createdAt", ExtArgs["result"]["teamGeneration"]>
+  export type TeamGenerationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    team?: boolean | TeamDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type TeamGenerationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    team?: boolean | TeamDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type TeamGenerationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    team?: boolean | TeamDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $TeamGenerationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TeamGeneration"
+    objects: {
+      team: Prisma.$TeamPayload<ExtArgs>
+      createdBy: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      teamId: string
+      createdById: string
+      text: string
+      style: number
+      bias: number
+      strokeColor: string
+      strokeWidth: number
+      svgContent: string | null
+      fileUrl: string | null
+      fileKey: string | null
+      linesCount: number
+      charactersCount: number
+      createdAt: Date
+    }, ExtArgs["result"]["teamGeneration"]>
+    composites: {}
+  }
+
+  type TeamGenerationGetPayload<S extends boolean | null | undefined | TeamGenerationDefaultArgs> = $Result.GetResult<Prisma.$TeamGenerationPayload, S>
+
+  type TeamGenerationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TeamGenerationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TeamGenerationCountAggregateInputType | true
+    }
+
+  export interface TeamGenerationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TeamGeneration'], meta: { name: 'TeamGeneration' } }
+    /**
+     * Find zero or one TeamGeneration that matches the filter.
+     * @param {TeamGenerationFindUniqueArgs} args - Arguments to find a TeamGeneration
+     * @example
+     * // Get one TeamGeneration
+     * const teamGeneration = await prisma.teamGeneration.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TeamGenerationFindUniqueArgs>(args: SelectSubset<T, TeamGenerationFindUniqueArgs<ExtArgs>>): Prisma__TeamGenerationClient<$Result.GetResult<Prisma.$TeamGenerationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TeamGeneration that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TeamGenerationFindUniqueOrThrowArgs} args - Arguments to find a TeamGeneration
+     * @example
+     * // Get one TeamGeneration
+     * const teamGeneration = await prisma.teamGeneration.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TeamGenerationFindUniqueOrThrowArgs>(args: SelectSubset<T, TeamGenerationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TeamGenerationClient<$Result.GetResult<Prisma.$TeamGenerationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TeamGeneration that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamGenerationFindFirstArgs} args - Arguments to find a TeamGeneration
+     * @example
+     * // Get one TeamGeneration
+     * const teamGeneration = await prisma.teamGeneration.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TeamGenerationFindFirstArgs>(args?: SelectSubset<T, TeamGenerationFindFirstArgs<ExtArgs>>): Prisma__TeamGenerationClient<$Result.GetResult<Prisma.$TeamGenerationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TeamGeneration that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamGenerationFindFirstOrThrowArgs} args - Arguments to find a TeamGeneration
+     * @example
+     * // Get one TeamGeneration
+     * const teamGeneration = await prisma.teamGeneration.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TeamGenerationFindFirstOrThrowArgs>(args?: SelectSubset<T, TeamGenerationFindFirstOrThrowArgs<ExtArgs>>): Prisma__TeamGenerationClient<$Result.GetResult<Prisma.$TeamGenerationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TeamGenerations that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamGenerationFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TeamGenerations
+     * const teamGenerations = await prisma.teamGeneration.findMany()
+     * 
+     * // Get first 10 TeamGenerations
+     * const teamGenerations = await prisma.teamGeneration.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const teamGenerationWithIdOnly = await prisma.teamGeneration.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TeamGenerationFindManyArgs>(args?: SelectSubset<T, TeamGenerationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamGenerationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TeamGeneration.
+     * @param {TeamGenerationCreateArgs} args - Arguments to create a TeamGeneration.
+     * @example
+     * // Create one TeamGeneration
+     * const TeamGeneration = await prisma.teamGeneration.create({
+     *   data: {
+     *     // ... data to create a TeamGeneration
+     *   }
+     * })
+     * 
+     */
+    create<T extends TeamGenerationCreateArgs>(args: SelectSubset<T, TeamGenerationCreateArgs<ExtArgs>>): Prisma__TeamGenerationClient<$Result.GetResult<Prisma.$TeamGenerationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TeamGenerations.
+     * @param {TeamGenerationCreateManyArgs} args - Arguments to create many TeamGenerations.
+     * @example
+     * // Create many TeamGenerations
+     * const teamGeneration = await prisma.teamGeneration.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TeamGenerationCreateManyArgs>(args?: SelectSubset<T, TeamGenerationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TeamGenerations and returns the data saved in the database.
+     * @param {TeamGenerationCreateManyAndReturnArgs} args - Arguments to create many TeamGenerations.
+     * @example
+     * // Create many TeamGenerations
+     * const teamGeneration = await prisma.teamGeneration.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TeamGenerations and only return the `id`
+     * const teamGenerationWithIdOnly = await prisma.teamGeneration.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TeamGenerationCreateManyAndReturnArgs>(args?: SelectSubset<T, TeamGenerationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamGenerationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a TeamGeneration.
+     * @param {TeamGenerationDeleteArgs} args - Arguments to delete one TeamGeneration.
+     * @example
+     * // Delete one TeamGeneration
+     * const TeamGeneration = await prisma.teamGeneration.delete({
+     *   where: {
+     *     // ... filter to delete one TeamGeneration
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TeamGenerationDeleteArgs>(args: SelectSubset<T, TeamGenerationDeleteArgs<ExtArgs>>): Prisma__TeamGenerationClient<$Result.GetResult<Prisma.$TeamGenerationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TeamGeneration.
+     * @param {TeamGenerationUpdateArgs} args - Arguments to update one TeamGeneration.
+     * @example
+     * // Update one TeamGeneration
+     * const teamGeneration = await prisma.teamGeneration.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TeamGenerationUpdateArgs>(args: SelectSubset<T, TeamGenerationUpdateArgs<ExtArgs>>): Prisma__TeamGenerationClient<$Result.GetResult<Prisma.$TeamGenerationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TeamGenerations.
+     * @param {TeamGenerationDeleteManyArgs} args - Arguments to filter TeamGenerations to delete.
+     * @example
+     * // Delete a few TeamGenerations
+     * const { count } = await prisma.teamGeneration.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TeamGenerationDeleteManyArgs>(args?: SelectSubset<T, TeamGenerationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TeamGenerations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamGenerationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TeamGenerations
+     * const teamGeneration = await prisma.teamGeneration.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TeamGenerationUpdateManyArgs>(args: SelectSubset<T, TeamGenerationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TeamGenerations and returns the data updated in the database.
+     * @param {TeamGenerationUpdateManyAndReturnArgs} args - Arguments to update many TeamGenerations.
+     * @example
+     * // Update many TeamGenerations
+     * const teamGeneration = await prisma.teamGeneration.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more TeamGenerations and only return the `id`
+     * const teamGenerationWithIdOnly = await prisma.teamGeneration.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TeamGenerationUpdateManyAndReturnArgs>(args: SelectSubset<T, TeamGenerationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TeamGenerationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one TeamGeneration.
+     * @param {TeamGenerationUpsertArgs} args - Arguments to update or create a TeamGeneration.
+     * @example
+     * // Update or create a TeamGeneration
+     * const teamGeneration = await prisma.teamGeneration.upsert({
+     *   create: {
+     *     // ... data to create a TeamGeneration
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TeamGeneration we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TeamGenerationUpsertArgs>(args: SelectSubset<T, TeamGenerationUpsertArgs<ExtArgs>>): Prisma__TeamGenerationClient<$Result.GetResult<Prisma.$TeamGenerationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TeamGenerations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamGenerationCountArgs} args - Arguments to filter TeamGenerations to count.
+     * @example
+     * // Count the number of TeamGenerations
+     * const count = await prisma.teamGeneration.count({
+     *   where: {
+     *     // ... the filter for the TeamGenerations we want to count
+     *   }
+     * })
+    **/
+    count<T extends TeamGenerationCountArgs>(
+      args?: Subset<T, TeamGenerationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TeamGenerationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TeamGeneration.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamGenerationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TeamGenerationAggregateArgs>(args: Subset<T, TeamGenerationAggregateArgs>): Prisma.PrismaPromise<GetTeamGenerationAggregateType<T>>
+
+    /**
+     * Group by TeamGeneration.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TeamGenerationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TeamGenerationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TeamGenerationGroupByArgs['orderBy'] }
+        : { orderBy?: TeamGenerationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TeamGenerationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTeamGenerationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TeamGeneration model
+   */
+  readonly fields: TeamGenerationFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TeamGeneration.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TeamGenerationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    team<T extends TeamDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TeamDefaultArgs<ExtArgs>>): Prisma__TeamClient<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    createdBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TeamGeneration model
+   */
+  interface TeamGenerationFieldRefs {
+    readonly id: FieldRef<"TeamGeneration", 'String'>
+    readonly teamId: FieldRef<"TeamGeneration", 'String'>
+    readonly createdById: FieldRef<"TeamGeneration", 'String'>
+    readonly text: FieldRef<"TeamGeneration", 'String'>
+    readonly style: FieldRef<"TeamGeneration", 'Int'>
+    readonly bias: FieldRef<"TeamGeneration", 'Float'>
+    readonly strokeColor: FieldRef<"TeamGeneration", 'String'>
+    readonly strokeWidth: FieldRef<"TeamGeneration", 'Int'>
+    readonly svgContent: FieldRef<"TeamGeneration", 'String'>
+    readonly fileUrl: FieldRef<"TeamGeneration", 'String'>
+    readonly fileKey: FieldRef<"TeamGeneration", 'String'>
+    readonly linesCount: FieldRef<"TeamGeneration", 'Int'>
+    readonly charactersCount: FieldRef<"TeamGeneration", 'Int'>
+    readonly createdAt: FieldRef<"TeamGeneration", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TeamGeneration findUnique
+   */
+  export type TeamGenerationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamGeneration
+     */
+    select?: TeamGenerationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamGeneration
+     */
+    omit?: TeamGenerationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamGenerationInclude<ExtArgs> | null
+    /**
+     * Filter, which TeamGeneration to fetch.
+     */
+    where: TeamGenerationWhereUniqueInput
+  }
+
+  /**
+   * TeamGeneration findUniqueOrThrow
+   */
+  export type TeamGenerationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamGeneration
+     */
+    select?: TeamGenerationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamGeneration
+     */
+    omit?: TeamGenerationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamGenerationInclude<ExtArgs> | null
+    /**
+     * Filter, which TeamGeneration to fetch.
+     */
+    where: TeamGenerationWhereUniqueInput
+  }
+
+  /**
+   * TeamGeneration findFirst
+   */
+  export type TeamGenerationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamGeneration
+     */
+    select?: TeamGenerationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamGeneration
+     */
+    omit?: TeamGenerationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamGenerationInclude<ExtArgs> | null
+    /**
+     * Filter, which TeamGeneration to fetch.
+     */
+    where?: TeamGenerationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TeamGenerations to fetch.
+     */
+    orderBy?: TeamGenerationOrderByWithRelationInput | TeamGenerationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TeamGenerations.
+     */
+    cursor?: TeamGenerationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TeamGenerations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TeamGenerations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TeamGenerations.
+     */
+    distinct?: TeamGenerationScalarFieldEnum | TeamGenerationScalarFieldEnum[]
+  }
+
+  /**
+   * TeamGeneration findFirstOrThrow
+   */
+  export type TeamGenerationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamGeneration
+     */
+    select?: TeamGenerationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamGeneration
+     */
+    omit?: TeamGenerationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamGenerationInclude<ExtArgs> | null
+    /**
+     * Filter, which TeamGeneration to fetch.
+     */
+    where?: TeamGenerationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TeamGenerations to fetch.
+     */
+    orderBy?: TeamGenerationOrderByWithRelationInput | TeamGenerationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TeamGenerations.
+     */
+    cursor?: TeamGenerationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TeamGenerations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TeamGenerations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TeamGenerations.
+     */
+    distinct?: TeamGenerationScalarFieldEnum | TeamGenerationScalarFieldEnum[]
+  }
+
+  /**
+   * TeamGeneration findMany
+   */
+  export type TeamGenerationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamGeneration
+     */
+    select?: TeamGenerationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamGeneration
+     */
+    omit?: TeamGenerationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamGenerationInclude<ExtArgs> | null
+    /**
+     * Filter, which TeamGenerations to fetch.
+     */
+    where?: TeamGenerationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TeamGenerations to fetch.
+     */
+    orderBy?: TeamGenerationOrderByWithRelationInput | TeamGenerationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TeamGenerations.
+     */
+    cursor?: TeamGenerationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TeamGenerations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TeamGenerations.
+     */
+    skip?: number
+    distinct?: TeamGenerationScalarFieldEnum | TeamGenerationScalarFieldEnum[]
+  }
+
+  /**
+   * TeamGeneration create
+   */
+  export type TeamGenerationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamGeneration
+     */
+    select?: TeamGenerationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamGeneration
+     */
+    omit?: TeamGenerationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamGenerationInclude<ExtArgs> | null
+    /**
+     * The data needed to create a TeamGeneration.
+     */
+    data: XOR<TeamGenerationCreateInput, TeamGenerationUncheckedCreateInput>
+  }
+
+  /**
+   * TeamGeneration createMany
+   */
+  export type TeamGenerationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TeamGenerations.
+     */
+    data: TeamGenerationCreateManyInput | TeamGenerationCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TeamGeneration createManyAndReturn
+   */
+  export type TeamGenerationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamGeneration
+     */
+    select?: TeamGenerationSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamGeneration
+     */
+    omit?: TeamGenerationOmit<ExtArgs> | null
+    /**
+     * The data used to create many TeamGenerations.
+     */
+    data: TeamGenerationCreateManyInput | TeamGenerationCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamGenerationIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TeamGeneration update
+   */
+  export type TeamGenerationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamGeneration
+     */
+    select?: TeamGenerationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamGeneration
+     */
+    omit?: TeamGenerationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamGenerationInclude<ExtArgs> | null
+    /**
+     * The data needed to update a TeamGeneration.
+     */
+    data: XOR<TeamGenerationUpdateInput, TeamGenerationUncheckedUpdateInput>
+    /**
+     * Choose, which TeamGeneration to update.
+     */
+    where: TeamGenerationWhereUniqueInput
+  }
+
+  /**
+   * TeamGeneration updateMany
+   */
+  export type TeamGenerationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TeamGenerations.
+     */
+    data: XOR<TeamGenerationUpdateManyMutationInput, TeamGenerationUncheckedUpdateManyInput>
+    /**
+     * Filter which TeamGenerations to update
+     */
+    where?: TeamGenerationWhereInput
+    /**
+     * Limit how many TeamGenerations to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TeamGeneration updateManyAndReturn
+   */
+  export type TeamGenerationUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamGeneration
+     */
+    select?: TeamGenerationSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamGeneration
+     */
+    omit?: TeamGenerationOmit<ExtArgs> | null
+    /**
+     * The data used to update TeamGenerations.
+     */
+    data: XOR<TeamGenerationUpdateManyMutationInput, TeamGenerationUncheckedUpdateManyInput>
+    /**
+     * Filter which TeamGenerations to update
+     */
+    where?: TeamGenerationWhereInput
+    /**
+     * Limit how many TeamGenerations to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamGenerationIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TeamGeneration upsert
+   */
+  export type TeamGenerationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamGeneration
+     */
+    select?: TeamGenerationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamGeneration
+     */
+    omit?: TeamGenerationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamGenerationInclude<ExtArgs> | null
+    /**
+     * The filter to search for the TeamGeneration to update in case it exists.
+     */
+    where: TeamGenerationWhereUniqueInput
+    /**
+     * In case the TeamGeneration found by the `where` argument doesn't exist, create a new TeamGeneration with this data.
+     */
+    create: XOR<TeamGenerationCreateInput, TeamGenerationUncheckedCreateInput>
+    /**
+     * In case the TeamGeneration was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TeamGenerationUpdateInput, TeamGenerationUncheckedUpdateInput>
+  }
+
+  /**
+   * TeamGeneration delete
+   */
+  export type TeamGenerationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamGeneration
+     */
+    select?: TeamGenerationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamGeneration
+     */
+    omit?: TeamGenerationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamGenerationInclude<ExtArgs> | null
+    /**
+     * Filter which TeamGeneration to delete.
+     */
+    where: TeamGenerationWhereUniqueInput
+  }
+
+  /**
+   * TeamGeneration deleteMany
+   */
+  export type TeamGenerationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TeamGenerations to delete
+     */
+    where?: TeamGenerationWhereInput
+    /**
+     * Limit how many TeamGenerations to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TeamGeneration without action
+   */
+  export type TeamGenerationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TeamGeneration
+     */
+    select?: TeamGenerationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TeamGeneration
+     */
+    omit?: TeamGenerationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TeamGenerationInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -13708,6 +24351,8 @@ export namespace Prisma {
     amount: 'amount',
     credits: 'credits',
     status: 'status',
+    razorpayOrderId: 'razorpayOrderId',
+    razorpayPaymentId: 'razorpayPaymentId',
     stripePaymentId: 'stripePaymentId',
     stripeSessionId: 'stripeSessionId',
     createdAt: 'createdAt',
@@ -13782,6 +24427,147 @@ export namespace Prisma {
   export type BatchJobScalarFieldEnum = (typeof BatchJobScalarFieldEnum)[keyof typeof BatchJobScalarFieldEnum]
 
 
+  export const TemplateScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    description: 'description',
+    category: 'category',
+    thumbnail: 'thumbnail',
+    config: 'config',
+    isSystem: 'isSystem',
+    createdById: 'createdById',
+    usageCount: 'usageCount',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type TemplateScalarFieldEnum = (typeof TemplateScalarFieldEnum)[keyof typeof TemplateScalarFieldEnum]
+
+
+  export const TemplateDocumentScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    templateId: 'templateId',
+    name: 'name',
+    content: 'content',
+    style: 'style',
+    bias: 'bias',
+    strokeColor: 'strokeColor',
+    strokeWidth: 'strokeWidth',
+    status: 'status',
+    outputUrl: 'outputUrl',
+    outputKey: 'outputKey',
+    previewSvg: 'previewSvg',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type TemplateDocumentScalarFieldEnum = (typeof TemplateDocumentScalarFieldEnum)[keyof typeof TemplateDocumentScalarFieldEnum]
+
+
+  export const BulkJobScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    name: 'name',
+    sourceFileName: 'sourceFileName',
+    sourceFileUrl: 'sourceFileUrl',
+    sourceFileKey: 'sourceFileKey',
+    textColumn: 'textColumn',
+    filenameColumn: 'filenameColumn',
+    totalRows: 'totalRows',
+    style: 'style',
+    bias: 'bias',
+    strokeColor: 'strokeColor',
+    strokeWidth: 'strokeWidth',
+    status: 'status',
+    processedCount: 'processedCount',
+    failedCount: 'failedCount',
+    creditsUsed: 'creditsUsed',
+    outputZipUrl: 'outputZipUrl',
+    outputZipKey: 'outputZipKey',
+    errorLog: 'errorLog',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type BulkJobScalarFieldEnum = (typeof BulkJobScalarFieldEnum)[keyof typeof BulkJobScalarFieldEnum]
+
+
+  export const BulkJobItemScalarFieldEnum: {
+    id: 'id',
+    bulkJobId: 'bulkJobId',
+    rowIndex: 'rowIndex',
+    text: 'text',
+    outputFilename: 'outputFilename',
+    status: 'status',
+    svgContent: 'svgContent',
+    outputUrl: 'outputUrl',
+    errorMessage: 'errorMessage',
+    createdAt: 'createdAt'
+  };
+
+  export type BulkJobItemScalarFieldEnum = (typeof BulkJobItemScalarFieldEnum)[keyof typeof BulkJobItemScalarFieldEnum]
+
+
+  export const TeamScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    slug: 'slug',
+    description: 'description',
+    logo: 'logo',
+    credits: 'credits',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type TeamScalarFieldEnum = (typeof TeamScalarFieldEnum)[keyof typeof TeamScalarFieldEnum]
+
+
+  export const TeamMemberScalarFieldEnum: {
+    id: 'id',
+    teamId: 'teamId',
+    userId: 'userId',
+    role: 'role',
+    joinedAt: 'joinedAt'
+  };
+
+  export type TeamMemberScalarFieldEnum = (typeof TeamMemberScalarFieldEnum)[keyof typeof TeamMemberScalarFieldEnum]
+
+
+  export const TeamInviteScalarFieldEnum: {
+    id: 'id',
+    teamId: 'teamId',
+    email: 'email',
+    role: 'role',
+    token: 'token',
+    expiresAt: 'expiresAt',
+    acceptedAt: 'acceptedAt',
+    createdAt: 'createdAt'
+  };
+
+  export type TeamInviteScalarFieldEnum = (typeof TeamInviteScalarFieldEnum)[keyof typeof TeamInviteScalarFieldEnum]
+
+
+  export const TeamGenerationScalarFieldEnum: {
+    id: 'id',
+    teamId: 'teamId',
+    createdById: 'createdById',
+    text: 'text',
+    style: 'style',
+    bias: 'bias',
+    strokeColor: 'strokeColor',
+    strokeWidth: 'strokeWidth',
+    svgContent: 'svgContent',
+    fileUrl: 'fileUrl',
+    fileKey: 'fileKey',
+    linesCount: 'linesCount',
+    charactersCount: 'charactersCount',
+    createdAt: 'createdAt'
+  };
+
+  export type TeamGenerationScalarFieldEnum = (typeof TeamGenerationScalarFieldEnum)[keyof typeof TeamGenerationScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -13796,6 +24582,13 @@ export namespace Prisma {
   };
 
   export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+  export const JsonNullValueInput: {
+    JsonNull: typeof JsonNull
+  };
+
+  export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
   export const QueryMode: {
@@ -13944,6 +24737,34 @@ export namespace Prisma {
    * Reference to a field of type 'QueryMode'
    */
   export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+  /**
+   * Reference to a field of type 'TemplateCategory'
+   */
+  export type EnumTemplateCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TemplateCategory'>
+    
+
+
+  /**
+   * Reference to a field of type 'TemplateCategory[]'
+   */
+  export type ListEnumTemplateCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TemplateCategory[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'TeamRole'
+   */
+  export type EnumTeamRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TeamRole'>
+    
+
+
+  /**
+   * Reference to a field of type 'TeamRole[]'
+   */
+  export type ListEnumTeamRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TeamRole[]'>
     
   /**
    * Deep Input Types
@@ -14118,6 +24939,11 @@ export namespace Prisma {
     savedGenerations?: SavedGenerationListRelationFilter
     batchJobs?: BatchJobListRelationFilter
     payments?: PaymentListRelationFilter
+    createdTemplates?: TemplateListRelationFilter
+    templateDocuments?: TemplateDocumentListRelationFilter
+    bulkJobs?: BulkJobListRelationFilter
+    teamMemberships?: TeamMemberListRelationFilter
+    teamGenerations?: TeamGenerationListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -14137,6 +24963,11 @@ export namespace Prisma {
     savedGenerations?: SavedGenerationOrderByRelationAggregateInput
     batchJobs?: BatchJobOrderByRelationAggregateInput
     payments?: PaymentOrderByRelationAggregateInput
+    createdTemplates?: TemplateOrderByRelationAggregateInput
+    templateDocuments?: TemplateDocumentOrderByRelationAggregateInput
+    bulkJobs?: BulkJobOrderByRelationAggregateInput
+    teamMemberships?: TeamMemberOrderByRelationAggregateInput
+    teamGenerations?: TeamGenerationOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -14159,6 +24990,11 @@ export namespace Prisma {
     savedGenerations?: SavedGenerationListRelationFilter
     batchJobs?: BatchJobListRelationFilter
     payments?: PaymentListRelationFilter
+    createdTemplates?: TemplateListRelationFilter
+    templateDocuments?: TemplateDocumentListRelationFilter
+    bulkJobs?: BulkJobListRelationFilter
+    teamMemberships?: TeamMemberListRelationFilter
+    teamGenerations?: TeamGenerationListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -14414,6 +25250,8 @@ export namespace Prisma {
     amount?: FloatFilter<"Payment"> | number
     credits?: IntFilter<"Payment"> | number
     status?: EnumPaymentStatusFilter<"Payment"> | $Enums.PaymentStatus
+    razorpayOrderId?: StringNullableFilter<"Payment"> | string | null
+    razorpayPaymentId?: StringNullableFilter<"Payment"> | string | null
     stripePaymentId?: StringNullableFilter<"Payment"> | string | null
     stripeSessionId?: StringNullableFilter<"Payment"> | string | null
     createdAt?: DateTimeFilter<"Payment"> | Date | string
@@ -14427,6 +25265,8 @@ export namespace Prisma {
     amount?: SortOrder
     credits?: SortOrder
     status?: SortOrder
+    razorpayOrderId?: SortOrderInput | SortOrder
+    razorpayPaymentId?: SortOrderInput | SortOrder
     stripePaymentId?: SortOrderInput | SortOrder
     stripeSessionId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -14436,6 +25276,8 @@ export namespace Prisma {
 
   export type PaymentWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    razorpayOrderId?: string
+    razorpayPaymentId?: string
     stripePaymentId?: string
     stripeSessionId?: string
     AND?: PaymentWhereInput | PaymentWhereInput[]
@@ -14448,7 +25290,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Payment"> | Date | string
     updatedAt?: DateTimeFilter<"Payment"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id" | "stripePaymentId" | "stripeSessionId">
+  }, "id" | "razorpayOrderId" | "razorpayPaymentId" | "stripePaymentId" | "stripeSessionId">
 
   export type PaymentOrderByWithAggregationInput = {
     id?: SortOrder
@@ -14456,6 +25298,8 @@ export namespace Prisma {
     amount?: SortOrder
     credits?: SortOrder
     status?: SortOrder
+    razorpayOrderId?: SortOrderInput | SortOrder
+    razorpayPaymentId?: SortOrderInput | SortOrder
     stripePaymentId?: SortOrderInput | SortOrder
     stripeSessionId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -14476,6 +25320,8 @@ export namespace Prisma {
     amount?: FloatWithAggregatesFilter<"Payment"> | number
     credits?: IntWithAggregatesFilter<"Payment"> | number
     status?: EnumPaymentStatusWithAggregatesFilter<"Payment"> | $Enums.PaymentStatus
+    razorpayOrderId?: StringNullableWithAggregatesFilter<"Payment"> | string | null
+    razorpayPaymentId?: StringNullableWithAggregatesFilter<"Payment"> | string | null
     stripePaymentId?: StringNullableWithAggregatesFilter<"Payment"> | string | null
     stripeSessionId?: StringNullableWithAggregatesFilter<"Payment"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Payment"> | Date | string
@@ -14816,6 +25662,745 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"BatchJob"> | Date | string
   }
 
+  export type TemplateWhereInput = {
+    AND?: TemplateWhereInput | TemplateWhereInput[]
+    OR?: TemplateWhereInput[]
+    NOT?: TemplateWhereInput | TemplateWhereInput[]
+    id?: StringFilter<"Template"> | string
+    name?: StringFilter<"Template"> | string
+    description?: StringNullableFilter<"Template"> | string | null
+    category?: EnumTemplateCategoryFilter<"Template"> | $Enums.TemplateCategory
+    thumbnail?: StringNullableFilter<"Template"> | string | null
+    config?: JsonFilter<"Template">
+    isSystem?: BoolFilter<"Template"> | boolean
+    createdById?: StringNullableFilter<"Template"> | string | null
+    usageCount?: IntFilter<"Template"> | number
+    createdAt?: DateTimeFilter<"Template"> | Date | string
+    updatedAt?: DateTimeFilter<"Template"> | Date | string
+    createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    documents?: TemplateDocumentListRelationFilter
+  }
+
+  export type TemplateOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    category?: SortOrder
+    thumbnail?: SortOrderInput | SortOrder
+    config?: SortOrder
+    isSystem?: SortOrder
+    createdById?: SortOrderInput | SortOrder
+    usageCount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    createdBy?: UserOrderByWithRelationInput
+    documents?: TemplateDocumentOrderByRelationAggregateInput
+  }
+
+  export type TemplateWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: TemplateWhereInput | TemplateWhereInput[]
+    OR?: TemplateWhereInput[]
+    NOT?: TemplateWhereInput | TemplateWhereInput[]
+    name?: StringFilter<"Template"> | string
+    description?: StringNullableFilter<"Template"> | string | null
+    category?: EnumTemplateCategoryFilter<"Template"> | $Enums.TemplateCategory
+    thumbnail?: StringNullableFilter<"Template"> | string | null
+    config?: JsonFilter<"Template">
+    isSystem?: BoolFilter<"Template"> | boolean
+    createdById?: StringNullableFilter<"Template"> | string | null
+    usageCount?: IntFilter<"Template"> | number
+    createdAt?: DateTimeFilter<"Template"> | Date | string
+    updatedAt?: DateTimeFilter<"Template"> | Date | string
+    createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    documents?: TemplateDocumentListRelationFilter
+  }, "id">
+
+  export type TemplateOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    category?: SortOrder
+    thumbnail?: SortOrderInput | SortOrder
+    config?: SortOrder
+    isSystem?: SortOrder
+    createdById?: SortOrderInput | SortOrder
+    usageCount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: TemplateCountOrderByAggregateInput
+    _avg?: TemplateAvgOrderByAggregateInput
+    _max?: TemplateMaxOrderByAggregateInput
+    _min?: TemplateMinOrderByAggregateInput
+    _sum?: TemplateSumOrderByAggregateInput
+  }
+
+  export type TemplateScalarWhereWithAggregatesInput = {
+    AND?: TemplateScalarWhereWithAggregatesInput | TemplateScalarWhereWithAggregatesInput[]
+    OR?: TemplateScalarWhereWithAggregatesInput[]
+    NOT?: TemplateScalarWhereWithAggregatesInput | TemplateScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Template"> | string
+    name?: StringWithAggregatesFilter<"Template"> | string
+    description?: StringNullableWithAggregatesFilter<"Template"> | string | null
+    category?: EnumTemplateCategoryWithAggregatesFilter<"Template"> | $Enums.TemplateCategory
+    thumbnail?: StringNullableWithAggregatesFilter<"Template"> | string | null
+    config?: JsonWithAggregatesFilter<"Template">
+    isSystem?: BoolWithAggregatesFilter<"Template"> | boolean
+    createdById?: StringNullableWithAggregatesFilter<"Template"> | string | null
+    usageCount?: IntWithAggregatesFilter<"Template"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"Template"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Template"> | Date | string
+  }
+
+  export type TemplateDocumentWhereInput = {
+    AND?: TemplateDocumentWhereInput | TemplateDocumentWhereInput[]
+    OR?: TemplateDocumentWhereInput[]
+    NOT?: TemplateDocumentWhereInput | TemplateDocumentWhereInput[]
+    id?: StringFilter<"TemplateDocument"> | string
+    userId?: StringFilter<"TemplateDocument"> | string
+    templateId?: StringFilter<"TemplateDocument"> | string
+    name?: StringFilter<"TemplateDocument"> | string
+    content?: JsonFilter<"TemplateDocument">
+    style?: IntFilter<"TemplateDocument"> | number
+    bias?: FloatFilter<"TemplateDocument"> | number
+    strokeColor?: StringFilter<"TemplateDocument"> | string
+    strokeWidth?: IntFilter<"TemplateDocument"> | number
+    status?: EnumGenerationStatusFilter<"TemplateDocument"> | $Enums.GenerationStatus
+    outputUrl?: StringNullableFilter<"TemplateDocument"> | string | null
+    outputKey?: StringNullableFilter<"TemplateDocument"> | string | null
+    previewSvg?: StringNullableFilter<"TemplateDocument"> | string | null
+    createdAt?: DateTimeFilter<"TemplateDocument"> | Date | string
+    updatedAt?: DateTimeFilter<"TemplateDocument"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    template?: XOR<TemplateScalarRelationFilter, TemplateWhereInput>
+  }
+
+  export type TemplateDocumentOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    templateId?: SortOrder
+    name?: SortOrder
+    content?: SortOrder
+    style?: SortOrder
+    bias?: SortOrder
+    strokeColor?: SortOrder
+    strokeWidth?: SortOrder
+    status?: SortOrder
+    outputUrl?: SortOrderInput | SortOrder
+    outputKey?: SortOrderInput | SortOrder
+    previewSvg?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    template?: TemplateOrderByWithRelationInput
+  }
+
+  export type TemplateDocumentWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    outputKey?: string
+    AND?: TemplateDocumentWhereInput | TemplateDocumentWhereInput[]
+    OR?: TemplateDocumentWhereInput[]
+    NOT?: TemplateDocumentWhereInput | TemplateDocumentWhereInput[]
+    userId?: StringFilter<"TemplateDocument"> | string
+    templateId?: StringFilter<"TemplateDocument"> | string
+    name?: StringFilter<"TemplateDocument"> | string
+    content?: JsonFilter<"TemplateDocument">
+    style?: IntFilter<"TemplateDocument"> | number
+    bias?: FloatFilter<"TemplateDocument"> | number
+    strokeColor?: StringFilter<"TemplateDocument"> | string
+    strokeWidth?: IntFilter<"TemplateDocument"> | number
+    status?: EnumGenerationStatusFilter<"TemplateDocument"> | $Enums.GenerationStatus
+    outputUrl?: StringNullableFilter<"TemplateDocument"> | string | null
+    previewSvg?: StringNullableFilter<"TemplateDocument"> | string | null
+    createdAt?: DateTimeFilter<"TemplateDocument"> | Date | string
+    updatedAt?: DateTimeFilter<"TemplateDocument"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    template?: XOR<TemplateScalarRelationFilter, TemplateWhereInput>
+  }, "id" | "outputKey">
+
+  export type TemplateDocumentOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    templateId?: SortOrder
+    name?: SortOrder
+    content?: SortOrder
+    style?: SortOrder
+    bias?: SortOrder
+    strokeColor?: SortOrder
+    strokeWidth?: SortOrder
+    status?: SortOrder
+    outputUrl?: SortOrderInput | SortOrder
+    outputKey?: SortOrderInput | SortOrder
+    previewSvg?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: TemplateDocumentCountOrderByAggregateInput
+    _avg?: TemplateDocumentAvgOrderByAggregateInput
+    _max?: TemplateDocumentMaxOrderByAggregateInput
+    _min?: TemplateDocumentMinOrderByAggregateInput
+    _sum?: TemplateDocumentSumOrderByAggregateInput
+  }
+
+  export type TemplateDocumentScalarWhereWithAggregatesInput = {
+    AND?: TemplateDocumentScalarWhereWithAggregatesInput | TemplateDocumentScalarWhereWithAggregatesInput[]
+    OR?: TemplateDocumentScalarWhereWithAggregatesInput[]
+    NOT?: TemplateDocumentScalarWhereWithAggregatesInput | TemplateDocumentScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"TemplateDocument"> | string
+    userId?: StringWithAggregatesFilter<"TemplateDocument"> | string
+    templateId?: StringWithAggregatesFilter<"TemplateDocument"> | string
+    name?: StringWithAggregatesFilter<"TemplateDocument"> | string
+    content?: JsonWithAggregatesFilter<"TemplateDocument">
+    style?: IntWithAggregatesFilter<"TemplateDocument"> | number
+    bias?: FloatWithAggregatesFilter<"TemplateDocument"> | number
+    strokeColor?: StringWithAggregatesFilter<"TemplateDocument"> | string
+    strokeWidth?: IntWithAggregatesFilter<"TemplateDocument"> | number
+    status?: EnumGenerationStatusWithAggregatesFilter<"TemplateDocument"> | $Enums.GenerationStatus
+    outputUrl?: StringNullableWithAggregatesFilter<"TemplateDocument"> | string | null
+    outputKey?: StringNullableWithAggregatesFilter<"TemplateDocument"> | string | null
+    previewSvg?: StringNullableWithAggregatesFilter<"TemplateDocument"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"TemplateDocument"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"TemplateDocument"> | Date | string
+  }
+
+  export type BulkJobWhereInput = {
+    AND?: BulkJobWhereInput | BulkJobWhereInput[]
+    OR?: BulkJobWhereInput[]
+    NOT?: BulkJobWhereInput | BulkJobWhereInput[]
+    id?: StringFilter<"BulkJob"> | string
+    userId?: StringFilter<"BulkJob"> | string
+    name?: StringNullableFilter<"BulkJob"> | string | null
+    sourceFileName?: StringFilter<"BulkJob"> | string
+    sourceFileUrl?: StringNullableFilter<"BulkJob"> | string | null
+    sourceFileKey?: StringNullableFilter<"BulkJob"> | string | null
+    textColumn?: StringFilter<"BulkJob"> | string
+    filenameColumn?: StringNullableFilter<"BulkJob"> | string | null
+    totalRows?: IntFilter<"BulkJob"> | number
+    style?: IntFilter<"BulkJob"> | number
+    bias?: FloatFilter<"BulkJob"> | number
+    strokeColor?: StringFilter<"BulkJob"> | string
+    strokeWidth?: IntFilter<"BulkJob"> | number
+    status?: EnumBatchStatusFilter<"BulkJob"> | $Enums.BatchStatus
+    processedCount?: IntFilter<"BulkJob"> | number
+    failedCount?: IntFilter<"BulkJob"> | number
+    creditsUsed?: IntFilter<"BulkJob"> | number
+    outputZipUrl?: StringNullableFilter<"BulkJob"> | string | null
+    outputZipKey?: StringNullableFilter<"BulkJob"> | string | null
+    errorLog?: JsonNullableFilter<"BulkJob">
+    createdAt?: DateTimeFilter<"BulkJob"> | Date | string
+    updatedAt?: DateTimeFilter<"BulkJob"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    items?: BulkJobItemListRelationFilter
+  }
+
+  export type BulkJobOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrderInput | SortOrder
+    sourceFileName?: SortOrder
+    sourceFileUrl?: SortOrderInput | SortOrder
+    sourceFileKey?: SortOrderInput | SortOrder
+    textColumn?: SortOrder
+    filenameColumn?: SortOrderInput | SortOrder
+    totalRows?: SortOrder
+    style?: SortOrder
+    bias?: SortOrder
+    strokeColor?: SortOrder
+    strokeWidth?: SortOrder
+    status?: SortOrder
+    processedCount?: SortOrder
+    failedCount?: SortOrder
+    creditsUsed?: SortOrder
+    outputZipUrl?: SortOrderInput | SortOrder
+    outputZipKey?: SortOrderInput | SortOrder
+    errorLog?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    items?: BulkJobItemOrderByRelationAggregateInput
+  }
+
+  export type BulkJobWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    sourceFileKey?: string
+    outputZipKey?: string
+    AND?: BulkJobWhereInput | BulkJobWhereInput[]
+    OR?: BulkJobWhereInput[]
+    NOT?: BulkJobWhereInput | BulkJobWhereInput[]
+    userId?: StringFilter<"BulkJob"> | string
+    name?: StringNullableFilter<"BulkJob"> | string | null
+    sourceFileName?: StringFilter<"BulkJob"> | string
+    sourceFileUrl?: StringNullableFilter<"BulkJob"> | string | null
+    textColumn?: StringFilter<"BulkJob"> | string
+    filenameColumn?: StringNullableFilter<"BulkJob"> | string | null
+    totalRows?: IntFilter<"BulkJob"> | number
+    style?: IntFilter<"BulkJob"> | number
+    bias?: FloatFilter<"BulkJob"> | number
+    strokeColor?: StringFilter<"BulkJob"> | string
+    strokeWidth?: IntFilter<"BulkJob"> | number
+    status?: EnumBatchStatusFilter<"BulkJob"> | $Enums.BatchStatus
+    processedCount?: IntFilter<"BulkJob"> | number
+    failedCount?: IntFilter<"BulkJob"> | number
+    creditsUsed?: IntFilter<"BulkJob"> | number
+    outputZipUrl?: StringNullableFilter<"BulkJob"> | string | null
+    errorLog?: JsonNullableFilter<"BulkJob">
+    createdAt?: DateTimeFilter<"BulkJob"> | Date | string
+    updatedAt?: DateTimeFilter<"BulkJob"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    items?: BulkJobItemListRelationFilter
+  }, "id" | "sourceFileKey" | "outputZipKey">
+
+  export type BulkJobOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrderInput | SortOrder
+    sourceFileName?: SortOrder
+    sourceFileUrl?: SortOrderInput | SortOrder
+    sourceFileKey?: SortOrderInput | SortOrder
+    textColumn?: SortOrder
+    filenameColumn?: SortOrderInput | SortOrder
+    totalRows?: SortOrder
+    style?: SortOrder
+    bias?: SortOrder
+    strokeColor?: SortOrder
+    strokeWidth?: SortOrder
+    status?: SortOrder
+    processedCount?: SortOrder
+    failedCount?: SortOrder
+    creditsUsed?: SortOrder
+    outputZipUrl?: SortOrderInput | SortOrder
+    outputZipKey?: SortOrderInput | SortOrder
+    errorLog?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: BulkJobCountOrderByAggregateInput
+    _avg?: BulkJobAvgOrderByAggregateInput
+    _max?: BulkJobMaxOrderByAggregateInput
+    _min?: BulkJobMinOrderByAggregateInput
+    _sum?: BulkJobSumOrderByAggregateInput
+  }
+
+  export type BulkJobScalarWhereWithAggregatesInput = {
+    AND?: BulkJobScalarWhereWithAggregatesInput | BulkJobScalarWhereWithAggregatesInput[]
+    OR?: BulkJobScalarWhereWithAggregatesInput[]
+    NOT?: BulkJobScalarWhereWithAggregatesInput | BulkJobScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"BulkJob"> | string
+    userId?: StringWithAggregatesFilter<"BulkJob"> | string
+    name?: StringNullableWithAggregatesFilter<"BulkJob"> | string | null
+    sourceFileName?: StringWithAggregatesFilter<"BulkJob"> | string
+    sourceFileUrl?: StringNullableWithAggregatesFilter<"BulkJob"> | string | null
+    sourceFileKey?: StringNullableWithAggregatesFilter<"BulkJob"> | string | null
+    textColumn?: StringWithAggregatesFilter<"BulkJob"> | string
+    filenameColumn?: StringNullableWithAggregatesFilter<"BulkJob"> | string | null
+    totalRows?: IntWithAggregatesFilter<"BulkJob"> | number
+    style?: IntWithAggregatesFilter<"BulkJob"> | number
+    bias?: FloatWithAggregatesFilter<"BulkJob"> | number
+    strokeColor?: StringWithAggregatesFilter<"BulkJob"> | string
+    strokeWidth?: IntWithAggregatesFilter<"BulkJob"> | number
+    status?: EnumBatchStatusWithAggregatesFilter<"BulkJob"> | $Enums.BatchStatus
+    processedCount?: IntWithAggregatesFilter<"BulkJob"> | number
+    failedCount?: IntWithAggregatesFilter<"BulkJob"> | number
+    creditsUsed?: IntWithAggregatesFilter<"BulkJob"> | number
+    outputZipUrl?: StringNullableWithAggregatesFilter<"BulkJob"> | string | null
+    outputZipKey?: StringNullableWithAggregatesFilter<"BulkJob"> | string | null
+    errorLog?: JsonNullableWithAggregatesFilter<"BulkJob">
+    createdAt?: DateTimeWithAggregatesFilter<"BulkJob"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"BulkJob"> | Date | string
+  }
+
+  export type BulkJobItemWhereInput = {
+    AND?: BulkJobItemWhereInput | BulkJobItemWhereInput[]
+    OR?: BulkJobItemWhereInput[]
+    NOT?: BulkJobItemWhereInput | BulkJobItemWhereInput[]
+    id?: StringFilter<"BulkJobItem"> | string
+    bulkJobId?: StringFilter<"BulkJobItem"> | string
+    rowIndex?: IntFilter<"BulkJobItem"> | number
+    text?: StringFilter<"BulkJobItem"> | string
+    outputFilename?: StringNullableFilter<"BulkJobItem"> | string | null
+    status?: EnumGenerationStatusFilter<"BulkJobItem"> | $Enums.GenerationStatus
+    svgContent?: StringNullableFilter<"BulkJobItem"> | string | null
+    outputUrl?: StringNullableFilter<"BulkJobItem"> | string | null
+    errorMessage?: StringNullableFilter<"BulkJobItem"> | string | null
+    createdAt?: DateTimeFilter<"BulkJobItem"> | Date | string
+    bulkJob?: XOR<BulkJobScalarRelationFilter, BulkJobWhereInput>
+  }
+
+  export type BulkJobItemOrderByWithRelationInput = {
+    id?: SortOrder
+    bulkJobId?: SortOrder
+    rowIndex?: SortOrder
+    text?: SortOrder
+    outputFilename?: SortOrderInput | SortOrder
+    status?: SortOrder
+    svgContent?: SortOrderInput | SortOrder
+    outputUrl?: SortOrderInput | SortOrder
+    errorMessage?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    bulkJob?: BulkJobOrderByWithRelationInput
+  }
+
+  export type BulkJobItemWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: BulkJobItemWhereInput | BulkJobItemWhereInput[]
+    OR?: BulkJobItemWhereInput[]
+    NOT?: BulkJobItemWhereInput | BulkJobItemWhereInput[]
+    bulkJobId?: StringFilter<"BulkJobItem"> | string
+    rowIndex?: IntFilter<"BulkJobItem"> | number
+    text?: StringFilter<"BulkJobItem"> | string
+    outputFilename?: StringNullableFilter<"BulkJobItem"> | string | null
+    status?: EnumGenerationStatusFilter<"BulkJobItem"> | $Enums.GenerationStatus
+    svgContent?: StringNullableFilter<"BulkJobItem"> | string | null
+    outputUrl?: StringNullableFilter<"BulkJobItem"> | string | null
+    errorMessage?: StringNullableFilter<"BulkJobItem"> | string | null
+    createdAt?: DateTimeFilter<"BulkJobItem"> | Date | string
+    bulkJob?: XOR<BulkJobScalarRelationFilter, BulkJobWhereInput>
+  }, "id">
+
+  export type BulkJobItemOrderByWithAggregationInput = {
+    id?: SortOrder
+    bulkJobId?: SortOrder
+    rowIndex?: SortOrder
+    text?: SortOrder
+    outputFilename?: SortOrderInput | SortOrder
+    status?: SortOrder
+    svgContent?: SortOrderInput | SortOrder
+    outputUrl?: SortOrderInput | SortOrder
+    errorMessage?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: BulkJobItemCountOrderByAggregateInput
+    _avg?: BulkJobItemAvgOrderByAggregateInput
+    _max?: BulkJobItemMaxOrderByAggregateInput
+    _min?: BulkJobItemMinOrderByAggregateInput
+    _sum?: BulkJobItemSumOrderByAggregateInput
+  }
+
+  export type BulkJobItemScalarWhereWithAggregatesInput = {
+    AND?: BulkJobItemScalarWhereWithAggregatesInput | BulkJobItemScalarWhereWithAggregatesInput[]
+    OR?: BulkJobItemScalarWhereWithAggregatesInput[]
+    NOT?: BulkJobItemScalarWhereWithAggregatesInput | BulkJobItemScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"BulkJobItem"> | string
+    bulkJobId?: StringWithAggregatesFilter<"BulkJobItem"> | string
+    rowIndex?: IntWithAggregatesFilter<"BulkJobItem"> | number
+    text?: StringWithAggregatesFilter<"BulkJobItem"> | string
+    outputFilename?: StringNullableWithAggregatesFilter<"BulkJobItem"> | string | null
+    status?: EnumGenerationStatusWithAggregatesFilter<"BulkJobItem"> | $Enums.GenerationStatus
+    svgContent?: StringNullableWithAggregatesFilter<"BulkJobItem"> | string | null
+    outputUrl?: StringNullableWithAggregatesFilter<"BulkJobItem"> | string | null
+    errorMessage?: StringNullableWithAggregatesFilter<"BulkJobItem"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"BulkJobItem"> | Date | string
+  }
+
+  export type TeamWhereInput = {
+    AND?: TeamWhereInput | TeamWhereInput[]
+    OR?: TeamWhereInput[]
+    NOT?: TeamWhereInput | TeamWhereInput[]
+    id?: StringFilter<"Team"> | string
+    name?: StringFilter<"Team"> | string
+    slug?: StringFilter<"Team"> | string
+    description?: StringNullableFilter<"Team"> | string | null
+    logo?: StringNullableFilter<"Team"> | string | null
+    credits?: IntFilter<"Team"> | number
+    createdAt?: DateTimeFilter<"Team"> | Date | string
+    updatedAt?: DateTimeFilter<"Team"> | Date | string
+    members?: TeamMemberListRelationFilter
+    invites?: TeamInviteListRelationFilter
+    generations?: TeamGenerationListRelationFilter
+  }
+
+  export type TeamOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    slug?: SortOrder
+    description?: SortOrderInput | SortOrder
+    logo?: SortOrderInput | SortOrder
+    credits?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    members?: TeamMemberOrderByRelationAggregateInput
+    invites?: TeamInviteOrderByRelationAggregateInput
+    generations?: TeamGenerationOrderByRelationAggregateInput
+  }
+
+  export type TeamWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    slug?: string
+    AND?: TeamWhereInput | TeamWhereInput[]
+    OR?: TeamWhereInput[]
+    NOT?: TeamWhereInput | TeamWhereInput[]
+    name?: StringFilter<"Team"> | string
+    description?: StringNullableFilter<"Team"> | string | null
+    logo?: StringNullableFilter<"Team"> | string | null
+    credits?: IntFilter<"Team"> | number
+    createdAt?: DateTimeFilter<"Team"> | Date | string
+    updatedAt?: DateTimeFilter<"Team"> | Date | string
+    members?: TeamMemberListRelationFilter
+    invites?: TeamInviteListRelationFilter
+    generations?: TeamGenerationListRelationFilter
+  }, "id" | "slug">
+
+  export type TeamOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    slug?: SortOrder
+    description?: SortOrderInput | SortOrder
+    logo?: SortOrderInput | SortOrder
+    credits?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: TeamCountOrderByAggregateInput
+    _avg?: TeamAvgOrderByAggregateInput
+    _max?: TeamMaxOrderByAggregateInput
+    _min?: TeamMinOrderByAggregateInput
+    _sum?: TeamSumOrderByAggregateInput
+  }
+
+  export type TeamScalarWhereWithAggregatesInput = {
+    AND?: TeamScalarWhereWithAggregatesInput | TeamScalarWhereWithAggregatesInput[]
+    OR?: TeamScalarWhereWithAggregatesInput[]
+    NOT?: TeamScalarWhereWithAggregatesInput | TeamScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Team"> | string
+    name?: StringWithAggregatesFilter<"Team"> | string
+    slug?: StringWithAggregatesFilter<"Team"> | string
+    description?: StringNullableWithAggregatesFilter<"Team"> | string | null
+    logo?: StringNullableWithAggregatesFilter<"Team"> | string | null
+    credits?: IntWithAggregatesFilter<"Team"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"Team"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Team"> | Date | string
+  }
+
+  export type TeamMemberWhereInput = {
+    AND?: TeamMemberWhereInput | TeamMemberWhereInput[]
+    OR?: TeamMemberWhereInput[]
+    NOT?: TeamMemberWhereInput | TeamMemberWhereInput[]
+    id?: StringFilter<"TeamMember"> | string
+    teamId?: StringFilter<"TeamMember"> | string
+    userId?: StringFilter<"TeamMember"> | string
+    role?: EnumTeamRoleFilter<"TeamMember"> | $Enums.TeamRole
+    joinedAt?: DateTimeFilter<"TeamMember"> | Date | string
+    team?: XOR<TeamScalarRelationFilter, TeamWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type TeamMemberOrderByWithRelationInput = {
+    id?: SortOrder
+    teamId?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    joinedAt?: SortOrder
+    team?: TeamOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type TeamMemberWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    teamId_userId?: TeamMemberTeamIdUserIdCompoundUniqueInput
+    AND?: TeamMemberWhereInput | TeamMemberWhereInput[]
+    OR?: TeamMemberWhereInput[]
+    NOT?: TeamMemberWhereInput | TeamMemberWhereInput[]
+    teamId?: StringFilter<"TeamMember"> | string
+    userId?: StringFilter<"TeamMember"> | string
+    role?: EnumTeamRoleFilter<"TeamMember"> | $Enums.TeamRole
+    joinedAt?: DateTimeFilter<"TeamMember"> | Date | string
+    team?: XOR<TeamScalarRelationFilter, TeamWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "teamId_userId">
+
+  export type TeamMemberOrderByWithAggregationInput = {
+    id?: SortOrder
+    teamId?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    joinedAt?: SortOrder
+    _count?: TeamMemberCountOrderByAggregateInput
+    _max?: TeamMemberMaxOrderByAggregateInput
+    _min?: TeamMemberMinOrderByAggregateInput
+  }
+
+  export type TeamMemberScalarWhereWithAggregatesInput = {
+    AND?: TeamMemberScalarWhereWithAggregatesInput | TeamMemberScalarWhereWithAggregatesInput[]
+    OR?: TeamMemberScalarWhereWithAggregatesInput[]
+    NOT?: TeamMemberScalarWhereWithAggregatesInput | TeamMemberScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"TeamMember"> | string
+    teamId?: StringWithAggregatesFilter<"TeamMember"> | string
+    userId?: StringWithAggregatesFilter<"TeamMember"> | string
+    role?: EnumTeamRoleWithAggregatesFilter<"TeamMember"> | $Enums.TeamRole
+    joinedAt?: DateTimeWithAggregatesFilter<"TeamMember"> | Date | string
+  }
+
+  export type TeamInviteWhereInput = {
+    AND?: TeamInviteWhereInput | TeamInviteWhereInput[]
+    OR?: TeamInviteWhereInput[]
+    NOT?: TeamInviteWhereInput | TeamInviteWhereInput[]
+    id?: StringFilter<"TeamInvite"> | string
+    teamId?: StringFilter<"TeamInvite"> | string
+    email?: StringFilter<"TeamInvite"> | string
+    role?: EnumTeamRoleFilter<"TeamInvite"> | $Enums.TeamRole
+    token?: StringFilter<"TeamInvite"> | string
+    expiresAt?: DateTimeFilter<"TeamInvite"> | Date | string
+    acceptedAt?: DateTimeNullableFilter<"TeamInvite"> | Date | string | null
+    createdAt?: DateTimeFilter<"TeamInvite"> | Date | string
+    team?: XOR<TeamScalarRelationFilter, TeamWhereInput>
+  }
+
+  export type TeamInviteOrderByWithRelationInput = {
+    id?: SortOrder
+    teamId?: SortOrder
+    email?: SortOrder
+    role?: SortOrder
+    token?: SortOrder
+    expiresAt?: SortOrder
+    acceptedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    team?: TeamOrderByWithRelationInput
+  }
+
+  export type TeamInviteWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    token?: string
+    AND?: TeamInviteWhereInput | TeamInviteWhereInput[]
+    OR?: TeamInviteWhereInput[]
+    NOT?: TeamInviteWhereInput | TeamInviteWhereInput[]
+    teamId?: StringFilter<"TeamInvite"> | string
+    email?: StringFilter<"TeamInvite"> | string
+    role?: EnumTeamRoleFilter<"TeamInvite"> | $Enums.TeamRole
+    expiresAt?: DateTimeFilter<"TeamInvite"> | Date | string
+    acceptedAt?: DateTimeNullableFilter<"TeamInvite"> | Date | string | null
+    createdAt?: DateTimeFilter<"TeamInvite"> | Date | string
+    team?: XOR<TeamScalarRelationFilter, TeamWhereInput>
+  }, "id" | "token">
+
+  export type TeamInviteOrderByWithAggregationInput = {
+    id?: SortOrder
+    teamId?: SortOrder
+    email?: SortOrder
+    role?: SortOrder
+    token?: SortOrder
+    expiresAt?: SortOrder
+    acceptedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: TeamInviteCountOrderByAggregateInput
+    _max?: TeamInviteMaxOrderByAggregateInput
+    _min?: TeamInviteMinOrderByAggregateInput
+  }
+
+  export type TeamInviteScalarWhereWithAggregatesInput = {
+    AND?: TeamInviteScalarWhereWithAggregatesInput | TeamInviteScalarWhereWithAggregatesInput[]
+    OR?: TeamInviteScalarWhereWithAggregatesInput[]
+    NOT?: TeamInviteScalarWhereWithAggregatesInput | TeamInviteScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"TeamInvite"> | string
+    teamId?: StringWithAggregatesFilter<"TeamInvite"> | string
+    email?: StringWithAggregatesFilter<"TeamInvite"> | string
+    role?: EnumTeamRoleWithAggregatesFilter<"TeamInvite"> | $Enums.TeamRole
+    token?: StringWithAggregatesFilter<"TeamInvite"> | string
+    expiresAt?: DateTimeWithAggregatesFilter<"TeamInvite"> | Date | string
+    acceptedAt?: DateTimeNullableWithAggregatesFilter<"TeamInvite"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"TeamInvite"> | Date | string
+  }
+
+  export type TeamGenerationWhereInput = {
+    AND?: TeamGenerationWhereInput | TeamGenerationWhereInput[]
+    OR?: TeamGenerationWhereInput[]
+    NOT?: TeamGenerationWhereInput | TeamGenerationWhereInput[]
+    id?: StringFilter<"TeamGeneration"> | string
+    teamId?: StringFilter<"TeamGeneration"> | string
+    createdById?: StringFilter<"TeamGeneration"> | string
+    text?: StringFilter<"TeamGeneration"> | string
+    style?: IntFilter<"TeamGeneration"> | number
+    bias?: FloatFilter<"TeamGeneration"> | number
+    strokeColor?: StringFilter<"TeamGeneration"> | string
+    strokeWidth?: IntFilter<"TeamGeneration"> | number
+    svgContent?: StringNullableFilter<"TeamGeneration"> | string | null
+    fileUrl?: StringNullableFilter<"TeamGeneration"> | string | null
+    fileKey?: StringNullableFilter<"TeamGeneration"> | string | null
+    linesCount?: IntFilter<"TeamGeneration"> | number
+    charactersCount?: IntFilter<"TeamGeneration"> | number
+    createdAt?: DateTimeFilter<"TeamGeneration"> | Date | string
+    team?: XOR<TeamScalarRelationFilter, TeamWhereInput>
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type TeamGenerationOrderByWithRelationInput = {
+    id?: SortOrder
+    teamId?: SortOrder
+    createdById?: SortOrder
+    text?: SortOrder
+    style?: SortOrder
+    bias?: SortOrder
+    strokeColor?: SortOrder
+    strokeWidth?: SortOrder
+    svgContent?: SortOrderInput | SortOrder
+    fileUrl?: SortOrderInput | SortOrder
+    fileKey?: SortOrderInput | SortOrder
+    linesCount?: SortOrder
+    charactersCount?: SortOrder
+    createdAt?: SortOrder
+    team?: TeamOrderByWithRelationInput
+    createdBy?: UserOrderByWithRelationInput
+  }
+
+  export type TeamGenerationWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    fileKey?: string
+    AND?: TeamGenerationWhereInput | TeamGenerationWhereInput[]
+    OR?: TeamGenerationWhereInput[]
+    NOT?: TeamGenerationWhereInput | TeamGenerationWhereInput[]
+    teamId?: StringFilter<"TeamGeneration"> | string
+    createdById?: StringFilter<"TeamGeneration"> | string
+    text?: StringFilter<"TeamGeneration"> | string
+    style?: IntFilter<"TeamGeneration"> | number
+    bias?: FloatFilter<"TeamGeneration"> | number
+    strokeColor?: StringFilter<"TeamGeneration"> | string
+    strokeWidth?: IntFilter<"TeamGeneration"> | number
+    svgContent?: StringNullableFilter<"TeamGeneration"> | string | null
+    fileUrl?: StringNullableFilter<"TeamGeneration"> | string | null
+    linesCount?: IntFilter<"TeamGeneration"> | number
+    charactersCount?: IntFilter<"TeamGeneration"> | number
+    createdAt?: DateTimeFilter<"TeamGeneration"> | Date | string
+    team?: XOR<TeamScalarRelationFilter, TeamWhereInput>
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "fileKey">
+
+  export type TeamGenerationOrderByWithAggregationInput = {
+    id?: SortOrder
+    teamId?: SortOrder
+    createdById?: SortOrder
+    text?: SortOrder
+    style?: SortOrder
+    bias?: SortOrder
+    strokeColor?: SortOrder
+    strokeWidth?: SortOrder
+    svgContent?: SortOrderInput | SortOrder
+    fileUrl?: SortOrderInput | SortOrder
+    fileKey?: SortOrderInput | SortOrder
+    linesCount?: SortOrder
+    charactersCount?: SortOrder
+    createdAt?: SortOrder
+    _count?: TeamGenerationCountOrderByAggregateInput
+    _avg?: TeamGenerationAvgOrderByAggregateInput
+    _max?: TeamGenerationMaxOrderByAggregateInput
+    _min?: TeamGenerationMinOrderByAggregateInput
+    _sum?: TeamGenerationSumOrderByAggregateInput
+  }
+
+  export type TeamGenerationScalarWhereWithAggregatesInput = {
+    AND?: TeamGenerationScalarWhereWithAggregatesInput | TeamGenerationScalarWhereWithAggregatesInput[]
+    OR?: TeamGenerationScalarWhereWithAggregatesInput[]
+    NOT?: TeamGenerationScalarWhereWithAggregatesInput | TeamGenerationScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"TeamGeneration"> | string
+    teamId?: StringWithAggregatesFilter<"TeamGeneration"> | string
+    createdById?: StringWithAggregatesFilter<"TeamGeneration"> | string
+    text?: StringWithAggregatesFilter<"TeamGeneration"> | string
+    style?: IntWithAggregatesFilter<"TeamGeneration"> | number
+    bias?: FloatWithAggregatesFilter<"TeamGeneration"> | number
+    strokeColor?: StringWithAggregatesFilter<"TeamGeneration"> | string
+    strokeWidth?: IntWithAggregatesFilter<"TeamGeneration"> | number
+    svgContent?: StringNullableWithAggregatesFilter<"TeamGeneration"> | string | null
+    fileUrl?: StringNullableWithAggregatesFilter<"TeamGeneration"> | string | null
+    fileKey?: StringNullableWithAggregatesFilter<"TeamGeneration"> | string | null
+    linesCount?: IntWithAggregatesFilter<"TeamGeneration"> | number
+    charactersCount?: IntWithAggregatesFilter<"TeamGeneration"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"TeamGeneration"> | Date | string
+  }
+
   export type AccountCreateInput = {
     id?: string
     type: string
@@ -14992,6 +26577,11 @@ export namespace Prisma {
     savedGenerations?: SavedGenerationCreateNestedManyWithoutUserInput
     batchJobs?: BatchJobCreateNestedManyWithoutUserInput
     payments?: PaymentCreateNestedManyWithoutUserInput
+    createdTemplates?: TemplateCreateNestedManyWithoutCreatedByInput
+    templateDocuments?: TemplateDocumentCreateNestedManyWithoutUserInput
+    bulkJobs?: BulkJobCreateNestedManyWithoutUserInput
+    teamMemberships?: TeamMemberCreateNestedManyWithoutUserInput
+    teamGenerations?: TeamGenerationCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -15011,6 +26601,11 @@ export namespace Prisma {
     savedGenerations?: SavedGenerationUncheckedCreateNestedManyWithoutUserInput
     batchJobs?: BatchJobUncheckedCreateNestedManyWithoutUserInput
     payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    createdTemplates?: TemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    templateDocuments?: TemplateDocumentUncheckedCreateNestedManyWithoutUserInput
+    bulkJobs?: BulkJobUncheckedCreateNestedManyWithoutUserInput
+    teamMemberships?: TeamMemberUncheckedCreateNestedManyWithoutUserInput
+    teamGenerations?: TeamGenerationUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUpdateInput = {
@@ -15030,6 +26625,11 @@ export namespace Prisma {
     savedGenerations?: SavedGenerationUpdateManyWithoutUserNestedInput
     batchJobs?: BatchJobUpdateManyWithoutUserNestedInput
     payments?: PaymentUpdateManyWithoutUserNestedInput
+    createdTemplates?: TemplateUpdateManyWithoutCreatedByNestedInput
+    templateDocuments?: TemplateDocumentUpdateManyWithoutUserNestedInput
+    bulkJobs?: BulkJobUpdateManyWithoutUserNestedInput
+    teamMemberships?: TeamMemberUpdateManyWithoutUserNestedInput
+    teamGenerations?: TeamGenerationUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -15049,6 +26649,11 @@ export namespace Prisma {
     savedGenerations?: SavedGenerationUncheckedUpdateManyWithoutUserNestedInput
     batchJobs?: BatchJobUncheckedUpdateManyWithoutUserNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    createdTemplates?: TemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    templateDocuments?: TemplateDocumentUncheckedUpdateManyWithoutUserNestedInput
+    bulkJobs?: BulkJobUncheckedUpdateManyWithoutUserNestedInput
+    teamMemberships?: TeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    teamGenerations?: TeamGenerationUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -15321,6 +26926,8 @@ export namespace Prisma {
     amount: number
     credits: number
     status?: $Enums.PaymentStatus
+    razorpayOrderId?: string | null
+    razorpayPaymentId?: string | null
     stripePaymentId?: string | null
     stripeSessionId?: string | null
     createdAt?: Date | string
@@ -15334,6 +26941,8 @@ export namespace Prisma {
     amount: number
     credits: number
     status?: $Enums.PaymentStatus
+    razorpayOrderId?: string | null
+    razorpayPaymentId?: string | null
     stripePaymentId?: string | null
     stripeSessionId?: string | null
     createdAt?: Date | string
@@ -15345,6 +26954,8 @@ export namespace Prisma {
     amount?: FloatFieldUpdateOperationsInput | number
     credits?: IntFieldUpdateOperationsInput | number
     status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    razorpayOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    razorpayPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     stripePaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     stripeSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15358,6 +26969,8 @@ export namespace Prisma {
     amount?: FloatFieldUpdateOperationsInput | number
     credits?: IntFieldUpdateOperationsInput | number
     status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    razorpayOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    razorpayPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     stripePaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     stripeSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15370,6 +26983,8 @@ export namespace Prisma {
     amount: number
     credits: number
     status?: $Enums.PaymentStatus
+    razorpayOrderId?: string | null
+    razorpayPaymentId?: string | null
     stripePaymentId?: string | null
     stripeSessionId?: string | null
     createdAt?: Date | string
@@ -15381,6 +26996,8 @@ export namespace Prisma {
     amount?: FloatFieldUpdateOperationsInput | number
     credits?: IntFieldUpdateOperationsInput | number
     status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    razorpayOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    razorpayPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     stripePaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     stripeSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15393,6 +27010,8 @@ export namespace Prisma {
     amount?: FloatFieldUpdateOperationsInput | number
     credits?: IntFieldUpdateOperationsInput | number
     status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    razorpayOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    razorpayPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     stripePaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     stripeSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15792,6 +27411,835 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type TemplateCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    category: $Enums.TemplateCategory
+    thumbnail?: string | null
+    config: JsonNullValueInput | InputJsonValue
+    isSystem?: boolean
+    usageCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdBy?: UserCreateNestedOneWithoutCreatedTemplatesInput
+    documents?: TemplateDocumentCreateNestedManyWithoutTemplateInput
+  }
+
+  export type TemplateUncheckedCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    category: $Enums.TemplateCategory
+    thumbnail?: string | null
+    config: JsonNullValueInput | InputJsonValue
+    isSystem?: boolean
+    createdById?: string | null
+    usageCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    documents?: TemplateDocumentUncheckedCreateNestedManyWithoutTemplateInput
+  }
+
+  export type TemplateUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
+    config?: JsonNullValueInput | InputJsonValue
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    usageCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneWithoutCreatedTemplatesNestedInput
+    documents?: TemplateDocumentUpdateManyWithoutTemplateNestedInput
+  }
+
+  export type TemplateUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
+    config?: JsonNullValueInput | InputJsonValue
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    usageCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    documents?: TemplateDocumentUncheckedUpdateManyWithoutTemplateNestedInput
+  }
+
+  export type TemplateCreateManyInput = {
+    id?: string
+    name: string
+    description?: string | null
+    category: $Enums.TemplateCategory
+    thumbnail?: string | null
+    config: JsonNullValueInput | InputJsonValue
+    isSystem?: boolean
+    createdById?: string | null
+    usageCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TemplateUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
+    config?: JsonNullValueInput | InputJsonValue
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    usageCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TemplateUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
+    config?: JsonNullValueInput | InputJsonValue
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    usageCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TemplateDocumentCreateInput = {
+    id?: string
+    name?: string
+    content: JsonNullValueInput | InputJsonValue
+    style?: number
+    bias?: number
+    strokeColor?: string
+    strokeWidth?: number
+    status?: $Enums.GenerationStatus
+    outputUrl?: string | null
+    outputKey?: string | null
+    previewSvg?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutTemplateDocumentsInput
+    template: TemplateCreateNestedOneWithoutDocumentsInput
+  }
+
+  export type TemplateDocumentUncheckedCreateInput = {
+    id?: string
+    userId: string
+    templateId: string
+    name?: string
+    content: JsonNullValueInput | InputJsonValue
+    style?: number
+    bias?: number
+    strokeColor?: string
+    strokeWidth?: number
+    status?: $Enums.GenerationStatus
+    outputUrl?: string | null
+    outputKey?: string | null
+    previewSvg?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TemplateDocumentUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    content?: JsonNullValueInput | InputJsonValue
+    style?: IntFieldUpdateOperationsInput | number
+    bias?: FloatFieldUpdateOperationsInput | number
+    strokeColor?: StringFieldUpdateOperationsInput | string
+    strokeWidth?: IntFieldUpdateOperationsInput | number
+    status?: EnumGenerationStatusFieldUpdateOperationsInput | $Enums.GenerationStatus
+    outputUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    outputKey?: NullableStringFieldUpdateOperationsInput | string | null
+    previewSvg?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutTemplateDocumentsNestedInput
+    template?: TemplateUpdateOneRequiredWithoutDocumentsNestedInput
+  }
+
+  export type TemplateDocumentUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    templateId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    content?: JsonNullValueInput | InputJsonValue
+    style?: IntFieldUpdateOperationsInput | number
+    bias?: FloatFieldUpdateOperationsInput | number
+    strokeColor?: StringFieldUpdateOperationsInput | string
+    strokeWidth?: IntFieldUpdateOperationsInput | number
+    status?: EnumGenerationStatusFieldUpdateOperationsInput | $Enums.GenerationStatus
+    outputUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    outputKey?: NullableStringFieldUpdateOperationsInput | string | null
+    previewSvg?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TemplateDocumentCreateManyInput = {
+    id?: string
+    userId: string
+    templateId: string
+    name?: string
+    content: JsonNullValueInput | InputJsonValue
+    style?: number
+    bias?: number
+    strokeColor?: string
+    strokeWidth?: number
+    status?: $Enums.GenerationStatus
+    outputUrl?: string | null
+    outputKey?: string | null
+    previewSvg?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TemplateDocumentUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    content?: JsonNullValueInput | InputJsonValue
+    style?: IntFieldUpdateOperationsInput | number
+    bias?: FloatFieldUpdateOperationsInput | number
+    strokeColor?: StringFieldUpdateOperationsInput | string
+    strokeWidth?: IntFieldUpdateOperationsInput | number
+    status?: EnumGenerationStatusFieldUpdateOperationsInput | $Enums.GenerationStatus
+    outputUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    outputKey?: NullableStringFieldUpdateOperationsInput | string | null
+    previewSvg?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TemplateDocumentUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    templateId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    content?: JsonNullValueInput | InputJsonValue
+    style?: IntFieldUpdateOperationsInput | number
+    bias?: FloatFieldUpdateOperationsInput | number
+    strokeColor?: StringFieldUpdateOperationsInput | string
+    strokeWidth?: IntFieldUpdateOperationsInput | number
+    status?: EnumGenerationStatusFieldUpdateOperationsInput | $Enums.GenerationStatus
+    outputUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    outputKey?: NullableStringFieldUpdateOperationsInput | string | null
+    previewSvg?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BulkJobCreateInput = {
+    id?: string
+    name?: string | null
+    sourceFileName: string
+    sourceFileUrl?: string | null
+    sourceFileKey?: string | null
+    textColumn: string
+    filenameColumn?: string | null
+    totalRows: number
+    style?: number
+    bias?: number
+    strokeColor?: string
+    strokeWidth?: number
+    status?: $Enums.BatchStatus
+    processedCount?: number
+    failedCount?: number
+    creditsUsed?: number
+    outputZipUrl?: string | null
+    outputZipKey?: string | null
+    errorLog?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutBulkJobsInput
+    items?: BulkJobItemCreateNestedManyWithoutBulkJobInput
+  }
+
+  export type BulkJobUncheckedCreateInput = {
+    id?: string
+    userId: string
+    name?: string | null
+    sourceFileName: string
+    sourceFileUrl?: string | null
+    sourceFileKey?: string | null
+    textColumn: string
+    filenameColumn?: string | null
+    totalRows: number
+    style?: number
+    bias?: number
+    strokeColor?: string
+    strokeWidth?: number
+    status?: $Enums.BatchStatus
+    processedCount?: number
+    failedCount?: number
+    creditsUsed?: number
+    outputZipUrl?: string | null
+    outputZipKey?: string | null
+    errorLog?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: BulkJobItemUncheckedCreateNestedManyWithoutBulkJobInput
+  }
+
+  export type BulkJobUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceFileName?: StringFieldUpdateOperationsInput | string
+    sourceFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceFileKey?: NullableStringFieldUpdateOperationsInput | string | null
+    textColumn?: StringFieldUpdateOperationsInput | string
+    filenameColumn?: NullableStringFieldUpdateOperationsInput | string | null
+    totalRows?: IntFieldUpdateOperationsInput | number
+    style?: IntFieldUpdateOperationsInput | number
+    bias?: FloatFieldUpdateOperationsInput | number
+    strokeColor?: StringFieldUpdateOperationsInput | string
+    strokeWidth?: IntFieldUpdateOperationsInput | number
+    status?: EnumBatchStatusFieldUpdateOperationsInput | $Enums.BatchStatus
+    processedCount?: IntFieldUpdateOperationsInput | number
+    failedCount?: IntFieldUpdateOperationsInput | number
+    creditsUsed?: IntFieldUpdateOperationsInput | number
+    outputZipUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    outputZipKey?: NullableStringFieldUpdateOperationsInput | string | null
+    errorLog?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutBulkJobsNestedInput
+    items?: BulkJobItemUpdateManyWithoutBulkJobNestedInput
+  }
+
+  export type BulkJobUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceFileName?: StringFieldUpdateOperationsInput | string
+    sourceFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceFileKey?: NullableStringFieldUpdateOperationsInput | string | null
+    textColumn?: StringFieldUpdateOperationsInput | string
+    filenameColumn?: NullableStringFieldUpdateOperationsInput | string | null
+    totalRows?: IntFieldUpdateOperationsInput | number
+    style?: IntFieldUpdateOperationsInput | number
+    bias?: FloatFieldUpdateOperationsInput | number
+    strokeColor?: StringFieldUpdateOperationsInput | string
+    strokeWidth?: IntFieldUpdateOperationsInput | number
+    status?: EnumBatchStatusFieldUpdateOperationsInput | $Enums.BatchStatus
+    processedCount?: IntFieldUpdateOperationsInput | number
+    failedCount?: IntFieldUpdateOperationsInput | number
+    creditsUsed?: IntFieldUpdateOperationsInput | number
+    outputZipUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    outputZipKey?: NullableStringFieldUpdateOperationsInput | string | null
+    errorLog?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: BulkJobItemUncheckedUpdateManyWithoutBulkJobNestedInput
+  }
+
+  export type BulkJobCreateManyInput = {
+    id?: string
+    userId: string
+    name?: string | null
+    sourceFileName: string
+    sourceFileUrl?: string | null
+    sourceFileKey?: string | null
+    textColumn: string
+    filenameColumn?: string | null
+    totalRows: number
+    style?: number
+    bias?: number
+    strokeColor?: string
+    strokeWidth?: number
+    status?: $Enums.BatchStatus
+    processedCount?: number
+    failedCount?: number
+    creditsUsed?: number
+    outputZipUrl?: string | null
+    outputZipKey?: string | null
+    errorLog?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BulkJobUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceFileName?: StringFieldUpdateOperationsInput | string
+    sourceFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceFileKey?: NullableStringFieldUpdateOperationsInput | string | null
+    textColumn?: StringFieldUpdateOperationsInput | string
+    filenameColumn?: NullableStringFieldUpdateOperationsInput | string | null
+    totalRows?: IntFieldUpdateOperationsInput | number
+    style?: IntFieldUpdateOperationsInput | number
+    bias?: FloatFieldUpdateOperationsInput | number
+    strokeColor?: StringFieldUpdateOperationsInput | string
+    strokeWidth?: IntFieldUpdateOperationsInput | number
+    status?: EnumBatchStatusFieldUpdateOperationsInput | $Enums.BatchStatus
+    processedCount?: IntFieldUpdateOperationsInput | number
+    failedCount?: IntFieldUpdateOperationsInput | number
+    creditsUsed?: IntFieldUpdateOperationsInput | number
+    outputZipUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    outputZipKey?: NullableStringFieldUpdateOperationsInput | string | null
+    errorLog?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BulkJobUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceFileName?: StringFieldUpdateOperationsInput | string
+    sourceFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceFileKey?: NullableStringFieldUpdateOperationsInput | string | null
+    textColumn?: StringFieldUpdateOperationsInput | string
+    filenameColumn?: NullableStringFieldUpdateOperationsInput | string | null
+    totalRows?: IntFieldUpdateOperationsInput | number
+    style?: IntFieldUpdateOperationsInput | number
+    bias?: FloatFieldUpdateOperationsInput | number
+    strokeColor?: StringFieldUpdateOperationsInput | string
+    strokeWidth?: IntFieldUpdateOperationsInput | number
+    status?: EnumBatchStatusFieldUpdateOperationsInput | $Enums.BatchStatus
+    processedCount?: IntFieldUpdateOperationsInput | number
+    failedCount?: IntFieldUpdateOperationsInput | number
+    creditsUsed?: IntFieldUpdateOperationsInput | number
+    outputZipUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    outputZipKey?: NullableStringFieldUpdateOperationsInput | string | null
+    errorLog?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BulkJobItemCreateInput = {
+    id?: string
+    rowIndex: number
+    text: string
+    outputFilename?: string | null
+    status?: $Enums.GenerationStatus
+    svgContent?: string | null
+    outputUrl?: string | null
+    errorMessage?: string | null
+    createdAt?: Date | string
+    bulkJob: BulkJobCreateNestedOneWithoutItemsInput
+  }
+
+  export type BulkJobItemUncheckedCreateInput = {
+    id?: string
+    bulkJobId: string
+    rowIndex: number
+    text: string
+    outputFilename?: string | null
+    status?: $Enums.GenerationStatus
+    svgContent?: string | null
+    outputUrl?: string | null
+    errorMessage?: string | null
+    createdAt?: Date | string
+  }
+
+  export type BulkJobItemUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rowIndex?: IntFieldUpdateOperationsInput | number
+    text?: StringFieldUpdateOperationsInput | string
+    outputFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumGenerationStatusFieldUpdateOperationsInput | $Enums.GenerationStatus
+    svgContent?: NullableStringFieldUpdateOperationsInput | string | null
+    outputUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bulkJob?: BulkJobUpdateOneRequiredWithoutItemsNestedInput
+  }
+
+  export type BulkJobItemUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    bulkJobId?: StringFieldUpdateOperationsInput | string
+    rowIndex?: IntFieldUpdateOperationsInput | number
+    text?: StringFieldUpdateOperationsInput | string
+    outputFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumGenerationStatusFieldUpdateOperationsInput | $Enums.GenerationStatus
+    svgContent?: NullableStringFieldUpdateOperationsInput | string | null
+    outputUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BulkJobItemCreateManyInput = {
+    id?: string
+    bulkJobId: string
+    rowIndex: number
+    text: string
+    outputFilename?: string | null
+    status?: $Enums.GenerationStatus
+    svgContent?: string | null
+    outputUrl?: string | null
+    errorMessage?: string | null
+    createdAt?: Date | string
+  }
+
+  export type BulkJobItemUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rowIndex?: IntFieldUpdateOperationsInput | number
+    text?: StringFieldUpdateOperationsInput | string
+    outputFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumGenerationStatusFieldUpdateOperationsInput | $Enums.GenerationStatus
+    svgContent?: NullableStringFieldUpdateOperationsInput | string | null
+    outputUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BulkJobItemUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    bulkJobId?: StringFieldUpdateOperationsInput | string
+    rowIndex?: IntFieldUpdateOperationsInput | number
+    text?: StringFieldUpdateOperationsInput | string
+    outputFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumGenerationStatusFieldUpdateOperationsInput | $Enums.GenerationStatus
+    svgContent?: NullableStringFieldUpdateOperationsInput | string | null
+    outputUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TeamCreateInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    logo?: string | null
+    credits?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: TeamMemberCreateNestedManyWithoutTeamInput
+    invites?: TeamInviteCreateNestedManyWithoutTeamInput
+    generations?: TeamGenerationCreateNestedManyWithoutTeamInput
+  }
+
+  export type TeamUncheckedCreateInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    logo?: string | null
+    credits?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: TeamMemberUncheckedCreateNestedManyWithoutTeamInput
+    invites?: TeamInviteUncheckedCreateNestedManyWithoutTeamInput
+    generations?: TeamGenerationUncheckedCreateNestedManyWithoutTeamInput
+  }
+
+  export type TeamUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    credits?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: TeamMemberUpdateManyWithoutTeamNestedInput
+    invites?: TeamInviteUpdateManyWithoutTeamNestedInput
+    generations?: TeamGenerationUpdateManyWithoutTeamNestedInput
+  }
+
+  export type TeamUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    credits?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: TeamMemberUncheckedUpdateManyWithoutTeamNestedInput
+    invites?: TeamInviteUncheckedUpdateManyWithoutTeamNestedInput
+    generations?: TeamGenerationUncheckedUpdateManyWithoutTeamNestedInput
+  }
+
+  export type TeamCreateManyInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    logo?: string | null
+    credits?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TeamUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    credits?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TeamUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    credits?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TeamMemberCreateInput = {
+    id?: string
+    role?: $Enums.TeamRole
+    joinedAt?: Date | string
+    team: TeamCreateNestedOneWithoutMembersInput
+    user: UserCreateNestedOneWithoutTeamMembershipsInput
+  }
+
+  export type TeamMemberUncheckedCreateInput = {
+    id?: string
+    teamId: string
+    userId: string
+    role?: $Enums.TeamRole
+    joinedAt?: Date | string
+  }
+
+  export type TeamMemberUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: EnumTeamRoleFieldUpdateOperationsInput | $Enums.TeamRole
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    team?: TeamUpdateOneRequiredWithoutMembersNestedInput
+    user?: UserUpdateOneRequiredWithoutTeamMembershipsNestedInput
+  }
+
+  export type TeamMemberUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    teamId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: EnumTeamRoleFieldUpdateOperationsInput | $Enums.TeamRole
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TeamMemberCreateManyInput = {
+    id?: string
+    teamId: string
+    userId: string
+    role?: $Enums.TeamRole
+    joinedAt?: Date | string
+  }
+
+  export type TeamMemberUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: EnumTeamRoleFieldUpdateOperationsInput | $Enums.TeamRole
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TeamMemberUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    teamId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: EnumTeamRoleFieldUpdateOperationsInput | $Enums.TeamRole
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TeamInviteCreateInput = {
+    id?: string
+    email: string
+    role?: $Enums.TeamRole
+    token?: string
+    expiresAt: Date | string
+    acceptedAt?: Date | string | null
+    createdAt?: Date | string
+    team: TeamCreateNestedOneWithoutInvitesInput
+  }
+
+  export type TeamInviteUncheckedCreateInput = {
+    id?: string
+    teamId: string
+    email: string
+    role?: $Enums.TeamRole
+    token?: string
+    expiresAt: Date | string
+    acceptedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type TeamInviteUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    role?: EnumTeamRoleFieldUpdateOperationsInput | $Enums.TeamRole
+    token?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    acceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    team?: TeamUpdateOneRequiredWithoutInvitesNestedInput
+  }
+
+  export type TeamInviteUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    teamId?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    role?: EnumTeamRoleFieldUpdateOperationsInput | $Enums.TeamRole
+    token?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    acceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TeamInviteCreateManyInput = {
+    id?: string
+    teamId: string
+    email: string
+    role?: $Enums.TeamRole
+    token?: string
+    expiresAt: Date | string
+    acceptedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type TeamInviteUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    role?: EnumTeamRoleFieldUpdateOperationsInput | $Enums.TeamRole
+    token?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    acceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TeamInviteUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    teamId?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    role?: EnumTeamRoleFieldUpdateOperationsInput | $Enums.TeamRole
+    token?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    acceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TeamGenerationCreateInput = {
+    id?: string
+    text: string
+    style: number
+    bias: number
+    strokeColor?: string
+    strokeWidth?: number
+    svgContent?: string | null
+    fileUrl?: string | null
+    fileKey?: string | null
+    linesCount?: number
+    charactersCount?: number
+    createdAt?: Date | string
+    team: TeamCreateNestedOneWithoutGenerationsInput
+    createdBy: UserCreateNestedOneWithoutTeamGenerationsInput
+  }
+
+  export type TeamGenerationUncheckedCreateInput = {
+    id?: string
+    teamId: string
+    createdById: string
+    text: string
+    style: number
+    bias: number
+    strokeColor?: string
+    strokeWidth?: number
+    svgContent?: string | null
+    fileUrl?: string | null
+    fileKey?: string | null
+    linesCount?: number
+    charactersCount?: number
+    createdAt?: Date | string
+  }
+
+  export type TeamGenerationUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    text?: StringFieldUpdateOperationsInput | string
+    style?: IntFieldUpdateOperationsInput | number
+    bias?: FloatFieldUpdateOperationsInput | number
+    strokeColor?: StringFieldUpdateOperationsInput | string
+    strokeWidth?: IntFieldUpdateOperationsInput | number
+    svgContent?: NullableStringFieldUpdateOperationsInput | string | null
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    fileKey?: NullableStringFieldUpdateOperationsInput | string | null
+    linesCount?: IntFieldUpdateOperationsInput | number
+    charactersCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    team?: TeamUpdateOneRequiredWithoutGenerationsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutTeamGenerationsNestedInput
+  }
+
+  export type TeamGenerationUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    teamId?: StringFieldUpdateOperationsInput | string
+    createdById?: StringFieldUpdateOperationsInput | string
+    text?: StringFieldUpdateOperationsInput | string
+    style?: IntFieldUpdateOperationsInput | number
+    bias?: FloatFieldUpdateOperationsInput | number
+    strokeColor?: StringFieldUpdateOperationsInput | string
+    strokeWidth?: IntFieldUpdateOperationsInput | number
+    svgContent?: NullableStringFieldUpdateOperationsInput | string | null
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    fileKey?: NullableStringFieldUpdateOperationsInput | string | null
+    linesCount?: IntFieldUpdateOperationsInput | number
+    charactersCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TeamGenerationCreateManyInput = {
+    id?: string
+    teamId: string
+    createdById: string
+    text: string
+    style: number
+    bias: number
+    strokeColor?: string
+    strokeWidth?: number
+    svgContent?: string | null
+    fileUrl?: string | null
+    fileKey?: string | null
+    linesCount?: number
+    charactersCount?: number
+    createdAt?: Date | string
+  }
+
+  export type TeamGenerationUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    text?: StringFieldUpdateOperationsInput | string
+    style?: IntFieldUpdateOperationsInput | number
+    bias?: FloatFieldUpdateOperationsInput | number
+    strokeColor?: StringFieldUpdateOperationsInput | string
+    strokeWidth?: IntFieldUpdateOperationsInput | number
+    svgContent?: NullableStringFieldUpdateOperationsInput | string | null
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    fileKey?: NullableStringFieldUpdateOperationsInput | string | null
+    linesCount?: IntFieldUpdateOperationsInput | number
+    charactersCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TeamGenerationUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    teamId?: StringFieldUpdateOperationsInput | string
+    createdById?: StringFieldUpdateOperationsInput | string
+    text?: StringFieldUpdateOperationsInput | string
+    style?: IntFieldUpdateOperationsInput | number
+    bias?: FloatFieldUpdateOperationsInput | number
+    strokeColor?: StringFieldUpdateOperationsInput | string
+    strokeWidth?: IntFieldUpdateOperationsInput | number
+    svgContent?: NullableStringFieldUpdateOperationsInput | string | null
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    fileKey?: NullableStringFieldUpdateOperationsInput | string | null
+    linesCount?: IntFieldUpdateOperationsInput | number
+    charactersCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -16068,6 +28516,36 @@ export namespace Prisma {
     none?: PaymentWhereInput
   }
 
+  export type TemplateListRelationFilter = {
+    every?: TemplateWhereInput
+    some?: TemplateWhereInput
+    none?: TemplateWhereInput
+  }
+
+  export type TemplateDocumentListRelationFilter = {
+    every?: TemplateDocumentWhereInput
+    some?: TemplateDocumentWhereInput
+    none?: TemplateDocumentWhereInput
+  }
+
+  export type BulkJobListRelationFilter = {
+    every?: BulkJobWhereInput
+    some?: BulkJobWhereInput
+    none?: BulkJobWhereInput
+  }
+
+  export type TeamMemberListRelationFilter = {
+    every?: TeamMemberWhereInput
+    some?: TeamMemberWhereInput
+    none?: TeamMemberWhereInput
+  }
+
+  export type TeamGenerationListRelationFilter = {
+    every?: TeamGenerationWhereInput
+    some?: TeamGenerationWhereInput
+    none?: TeamGenerationWhereInput
+  }
+
   export type AccountOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -16093,6 +28571,26 @@ export namespace Prisma {
   }
 
   export type PaymentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TemplateOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TemplateDocumentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type BulkJobOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TeamMemberOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TeamGenerationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -16388,6 +28886,8 @@ export namespace Prisma {
     amount?: SortOrder
     credits?: SortOrder
     status?: SortOrder
+    razorpayOrderId?: SortOrder
+    razorpayPaymentId?: SortOrder
     stripePaymentId?: SortOrder
     stripeSessionId?: SortOrder
     createdAt?: SortOrder
@@ -16405,6 +28905,8 @@ export namespace Prisma {
     amount?: SortOrder
     credits?: SortOrder
     status?: SortOrder
+    razorpayOrderId?: SortOrder
+    razorpayPaymentId?: SortOrder
     stripePaymentId?: SortOrder
     stripeSessionId?: SortOrder
     createdAt?: SortOrder
@@ -16417,6 +28919,8 @@ export namespace Prisma {
     amount?: SortOrder
     credits?: SortOrder
     status?: SortOrder
+    razorpayOrderId?: SortOrder
+    razorpayPaymentId?: SortOrder
     stripePaymentId?: SortOrder
     stripeSessionId?: SortOrder
     createdAt?: SortOrder
@@ -16738,6 +29242,551 @@ export namespace Prisma {
     _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
+  export type EnumTemplateCategoryFilter<$PrismaModel = never> = {
+    equals?: $Enums.TemplateCategory | EnumTemplateCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.TemplateCategory[] | ListEnumTemplateCategoryFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TemplateCategory[] | ListEnumTemplateCategoryFieldRefInput<$PrismaModel>
+    not?: NestedEnumTemplateCategoryFilter<$PrismaModel> | $Enums.TemplateCategory
+  }
+  export type JsonFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type UserNullableScalarRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
+  }
+
+  export type TemplateCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    category?: SortOrder
+    thumbnail?: SortOrder
+    config?: SortOrder
+    isSystem?: SortOrder
+    createdById?: SortOrder
+    usageCount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TemplateAvgOrderByAggregateInput = {
+    usageCount?: SortOrder
+  }
+
+  export type TemplateMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    category?: SortOrder
+    thumbnail?: SortOrder
+    isSystem?: SortOrder
+    createdById?: SortOrder
+    usageCount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TemplateMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    category?: SortOrder
+    thumbnail?: SortOrder
+    isSystem?: SortOrder
+    createdById?: SortOrder
+    usageCount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TemplateSumOrderByAggregateInput = {
+    usageCount?: SortOrder
+  }
+
+  export type EnumTemplateCategoryWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TemplateCategory | EnumTemplateCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.TemplateCategory[] | ListEnumTemplateCategoryFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TemplateCategory[] | ListEnumTemplateCategoryFieldRefInput<$PrismaModel>
+    not?: NestedEnumTemplateCategoryWithAggregatesFilter<$PrismaModel> | $Enums.TemplateCategory
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTemplateCategoryFilter<$PrismaModel>
+    _max?: NestedEnumTemplateCategoryFilter<$PrismaModel>
+  }
+  export type JsonWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedJsonFilter<$PrismaModel>
+    _max?: NestedJsonFilter<$PrismaModel>
+  }
+
+  export type TemplateScalarRelationFilter = {
+    is?: TemplateWhereInput
+    isNot?: TemplateWhereInput
+  }
+
+  export type TemplateDocumentCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    templateId?: SortOrder
+    name?: SortOrder
+    content?: SortOrder
+    style?: SortOrder
+    bias?: SortOrder
+    strokeColor?: SortOrder
+    strokeWidth?: SortOrder
+    status?: SortOrder
+    outputUrl?: SortOrder
+    outputKey?: SortOrder
+    previewSvg?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TemplateDocumentAvgOrderByAggregateInput = {
+    style?: SortOrder
+    bias?: SortOrder
+    strokeWidth?: SortOrder
+  }
+
+  export type TemplateDocumentMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    templateId?: SortOrder
+    name?: SortOrder
+    style?: SortOrder
+    bias?: SortOrder
+    strokeColor?: SortOrder
+    strokeWidth?: SortOrder
+    status?: SortOrder
+    outputUrl?: SortOrder
+    outputKey?: SortOrder
+    previewSvg?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TemplateDocumentMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    templateId?: SortOrder
+    name?: SortOrder
+    style?: SortOrder
+    bias?: SortOrder
+    strokeColor?: SortOrder
+    strokeWidth?: SortOrder
+    status?: SortOrder
+    outputUrl?: SortOrder
+    outputKey?: SortOrder
+    previewSvg?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TemplateDocumentSumOrderByAggregateInput = {
+    style?: SortOrder
+    bias?: SortOrder
+    strokeWidth?: SortOrder
+  }
+
+  export type BulkJobItemListRelationFilter = {
+    every?: BulkJobItemWhereInput
+    some?: BulkJobItemWhereInput
+    none?: BulkJobItemWhereInput
+  }
+
+  export type BulkJobItemOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type BulkJobCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    sourceFileName?: SortOrder
+    sourceFileUrl?: SortOrder
+    sourceFileKey?: SortOrder
+    textColumn?: SortOrder
+    filenameColumn?: SortOrder
+    totalRows?: SortOrder
+    style?: SortOrder
+    bias?: SortOrder
+    strokeColor?: SortOrder
+    strokeWidth?: SortOrder
+    status?: SortOrder
+    processedCount?: SortOrder
+    failedCount?: SortOrder
+    creditsUsed?: SortOrder
+    outputZipUrl?: SortOrder
+    outputZipKey?: SortOrder
+    errorLog?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BulkJobAvgOrderByAggregateInput = {
+    totalRows?: SortOrder
+    style?: SortOrder
+    bias?: SortOrder
+    strokeWidth?: SortOrder
+    processedCount?: SortOrder
+    failedCount?: SortOrder
+    creditsUsed?: SortOrder
+  }
+
+  export type BulkJobMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    sourceFileName?: SortOrder
+    sourceFileUrl?: SortOrder
+    sourceFileKey?: SortOrder
+    textColumn?: SortOrder
+    filenameColumn?: SortOrder
+    totalRows?: SortOrder
+    style?: SortOrder
+    bias?: SortOrder
+    strokeColor?: SortOrder
+    strokeWidth?: SortOrder
+    status?: SortOrder
+    processedCount?: SortOrder
+    failedCount?: SortOrder
+    creditsUsed?: SortOrder
+    outputZipUrl?: SortOrder
+    outputZipKey?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BulkJobMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    sourceFileName?: SortOrder
+    sourceFileUrl?: SortOrder
+    sourceFileKey?: SortOrder
+    textColumn?: SortOrder
+    filenameColumn?: SortOrder
+    totalRows?: SortOrder
+    style?: SortOrder
+    bias?: SortOrder
+    strokeColor?: SortOrder
+    strokeWidth?: SortOrder
+    status?: SortOrder
+    processedCount?: SortOrder
+    failedCount?: SortOrder
+    creditsUsed?: SortOrder
+    outputZipUrl?: SortOrder
+    outputZipKey?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type BulkJobSumOrderByAggregateInput = {
+    totalRows?: SortOrder
+    style?: SortOrder
+    bias?: SortOrder
+    strokeWidth?: SortOrder
+    processedCount?: SortOrder
+    failedCount?: SortOrder
+    creditsUsed?: SortOrder
+  }
+
+  export type BulkJobScalarRelationFilter = {
+    is?: BulkJobWhereInput
+    isNot?: BulkJobWhereInput
+  }
+
+  export type BulkJobItemCountOrderByAggregateInput = {
+    id?: SortOrder
+    bulkJobId?: SortOrder
+    rowIndex?: SortOrder
+    text?: SortOrder
+    outputFilename?: SortOrder
+    status?: SortOrder
+    svgContent?: SortOrder
+    outputUrl?: SortOrder
+    errorMessage?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type BulkJobItemAvgOrderByAggregateInput = {
+    rowIndex?: SortOrder
+  }
+
+  export type BulkJobItemMaxOrderByAggregateInput = {
+    id?: SortOrder
+    bulkJobId?: SortOrder
+    rowIndex?: SortOrder
+    text?: SortOrder
+    outputFilename?: SortOrder
+    status?: SortOrder
+    svgContent?: SortOrder
+    outputUrl?: SortOrder
+    errorMessage?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type BulkJobItemMinOrderByAggregateInput = {
+    id?: SortOrder
+    bulkJobId?: SortOrder
+    rowIndex?: SortOrder
+    text?: SortOrder
+    outputFilename?: SortOrder
+    status?: SortOrder
+    svgContent?: SortOrder
+    outputUrl?: SortOrder
+    errorMessage?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type BulkJobItemSumOrderByAggregateInput = {
+    rowIndex?: SortOrder
+  }
+
+  export type TeamInviteListRelationFilter = {
+    every?: TeamInviteWhereInput
+    some?: TeamInviteWhereInput
+    none?: TeamInviteWhereInput
+  }
+
+  export type TeamInviteOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TeamCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    slug?: SortOrder
+    description?: SortOrder
+    logo?: SortOrder
+    credits?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TeamAvgOrderByAggregateInput = {
+    credits?: SortOrder
+  }
+
+  export type TeamMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    slug?: SortOrder
+    description?: SortOrder
+    logo?: SortOrder
+    credits?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TeamMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    slug?: SortOrder
+    description?: SortOrder
+    logo?: SortOrder
+    credits?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TeamSumOrderByAggregateInput = {
+    credits?: SortOrder
+  }
+
+  export type EnumTeamRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.TeamRole | EnumTeamRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.TeamRole[] | ListEnumTeamRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TeamRole[] | ListEnumTeamRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumTeamRoleFilter<$PrismaModel> | $Enums.TeamRole
+  }
+
+  export type TeamScalarRelationFilter = {
+    is?: TeamWhereInput
+    isNot?: TeamWhereInput
+  }
+
+  export type TeamMemberTeamIdUserIdCompoundUniqueInput = {
+    teamId: string
+    userId: string
+  }
+
+  export type TeamMemberCountOrderByAggregateInput = {
+    id?: SortOrder
+    teamId?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    joinedAt?: SortOrder
+  }
+
+  export type TeamMemberMaxOrderByAggregateInput = {
+    id?: SortOrder
+    teamId?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    joinedAt?: SortOrder
+  }
+
+  export type TeamMemberMinOrderByAggregateInput = {
+    id?: SortOrder
+    teamId?: SortOrder
+    userId?: SortOrder
+    role?: SortOrder
+    joinedAt?: SortOrder
+  }
+
+  export type EnumTeamRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TeamRole | EnumTeamRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.TeamRole[] | ListEnumTeamRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TeamRole[] | ListEnumTeamRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumTeamRoleWithAggregatesFilter<$PrismaModel> | $Enums.TeamRole
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTeamRoleFilter<$PrismaModel>
+    _max?: NestedEnumTeamRoleFilter<$PrismaModel>
+  }
+
+  export type TeamInviteCountOrderByAggregateInput = {
+    id?: SortOrder
+    teamId?: SortOrder
+    email?: SortOrder
+    role?: SortOrder
+    token?: SortOrder
+    expiresAt?: SortOrder
+    acceptedAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type TeamInviteMaxOrderByAggregateInput = {
+    id?: SortOrder
+    teamId?: SortOrder
+    email?: SortOrder
+    role?: SortOrder
+    token?: SortOrder
+    expiresAt?: SortOrder
+    acceptedAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type TeamInviteMinOrderByAggregateInput = {
+    id?: SortOrder
+    teamId?: SortOrder
+    email?: SortOrder
+    role?: SortOrder
+    token?: SortOrder
+    expiresAt?: SortOrder
+    acceptedAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type TeamGenerationCountOrderByAggregateInput = {
+    id?: SortOrder
+    teamId?: SortOrder
+    createdById?: SortOrder
+    text?: SortOrder
+    style?: SortOrder
+    bias?: SortOrder
+    strokeColor?: SortOrder
+    strokeWidth?: SortOrder
+    svgContent?: SortOrder
+    fileUrl?: SortOrder
+    fileKey?: SortOrder
+    linesCount?: SortOrder
+    charactersCount?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type TeamGenerationAvgOrderByAggregateInput = {
+    style?: SortOrder
+    bias?: SortOrder
+    strokeWidth?: SortOrder
+    linesCount?: SortOrder
+    charactersCount?: SortOrder
+  }
+
+  export type TeamGenerationMaxOrderByAggregateInput = {
+    id?: SortOrder
+    teamId?: SortOrder
+    createdById?: SortOrder
+    text?: SortOrder
+    style?: SortOrder
+    bias?: SortOrder
+    strokeColor?: SortOrder
+    strokeWidth?: SortOrder
+    svgContent?: SortOrder
+    fileUrl?: SortOrder
+    fileKey?: SortOrder
+    linesCount?: SortOrder
+    charactersCount?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type TeamGenerationMinOrderByAggregateInput = {
+    id?: SortOrder
+    teamId?: SortOrder
+    createdById?: SortOrder
+    text?: SortOrder
+    style?: SortOrder
+    bias?: SortOrder
+    strokeColor?: SortOrder
+    strokeWidth?: SortOrder
+    svgContent?: SortOrder
+    fileUrl?: SortOrder
+    fileKey?: SortOrder
+    linesCount?: SortOrder
+    charactersCount?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type TeamGenerationSumOrderByAggregateInput = {
+    style?: SortOrder
+    bias?: SortOrder
+    strokeWidth?: SortOrder
+    linesCount?: SortOrder
+    charactersCount?: SortOrder
+  }
+
   export type UserCreateNestedOneWithoutAccountsInput = {
     create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
     connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
@@ -16835,6 +29884,41 @@ export namespace Prisma {
     connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
   }
 
+  export type TemplateCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<TemplateCreateWithoutCreatedByInput, TemplateUncheckedCreateWithoutCreatedByInput> | TemplateCreateWithoutCreatedByInput[] | TemplateUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: TemplateCreateOrConnectWithoutCreatedByInput | TemplateCreateOrConnectWithoutCreatedByInput[]
+    createMany?: TemplateCreateManyCreatedByInputEnvelope
+    connect?: TemplateWhereUniqueInput | TemplateWhereUniqueInput[]
+  }
+
+  export type TemplateDocumentCreateNestedManyWithoutUserInput = {
+    create?: XOR<TemplateDocumentCreateWithoutUserInput, TemplateDocumentUncheckedCreateWithoutUserInput> | TemplateDocumentCreateWithoutUserInput[] | TemplateDocumentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TemplateDocumentCreateOrConnectWithoutUserInput | TemplateDocumentCreateOrConnectWithoutUserInput[]
+    createMany?: TemplateDocumentCreateManyUserInputEnvelope
+    connect?: TemplateDocumentWhereUniqueInput | TemplateDocumentWhereUniqueInput[]
+  }
+
+  export type BulkJobCreateNestedManyWithoutUserInput = {
+    create?: XOR<BulkJobCreateWithoutUserInput, BulkJobUncheckedCreateWithoutUserInput> | BulkJobCreateWithoutUserInput[] | BulkJobUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: BulkJobCreateOrConnectWithoutUserInput | BulkJobCreateOrConnectWithoutUserInput[]
+    createMany?: BulkJobCreateManyUserInputEnvelope
+    connect?: BulkJobWhereUniqueInput | BulkJobWhereUniqueInput[]
+  }
+
+  export type TeamMemberCreateNestedManyWithoutUserInput = {
+    create?: XOR<TeamMemberCreateWithoutUserInput, TeamMemberUncheckedCreateWithoutUserInput> | TeamMemberCreateWithoutUserInput[] | TeamMemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TeamMemberCreateOrConnectWithoutUserInput | TeamMemberCreateOrConnectWithoutUserInput[]
+    createMany?: TeamMemberCreateManyUserInputEnvelope
+    connect?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
+  }
+
+  export type TeamGenerationCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<TeamGenerationCreateWithoutCreatedByInput, TeamGenerationUncheckedCreateWithoutCreatedByInput> | TeamGenerationCreateWithoutCreatedByInput[] | TeamGenerationUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: TeamGenerationCreateOrConnectWithoutCreatedByInput | TeamGenerationCreateOrConnectWithoutCreatedByInput[]
+    createMany?: TeamGenerationCreateManyCreatedByInputEnvelope
+    connect?: TeamGenerationWhereUniqueInput | TeamGenerationWhereUniqueInput[]
+  }
+
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -16882,6 +29966,41 @@ export namespace Prisma {
     connectOrCreate?: PaymentCreateOrConnectWithoutUserInput | PaymentCreateOrConnectWithoutUserInput[]
     createMany?: PaymentCreateManyUserInputEnvelope
     connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+  }
+
+  export type TemplateUncheckedCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<TemplateCreateWithoutCreatedByInput, TemplateUncheckedCreateWithoutCreatedByInput> | TemplateCreateWithoutCreatedByInput[] | TemplateUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: TemplateCreateOrConnectWithoutCreatedByInput | TemplateCreateOrConnectWithoutCreatedByInput[]
+    createMany?: TemplateCreateManyCreatedByInputEnvelope
+    connect?: TemplateWhereUniqueInput | TemplateWhereUniqueInput[]
+  }
+
+  export type TemplateDocumentUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<TemplateDocumentCreateWithoutUserInput, TemplateDocumentUncheckedCreateWithoutUserInput> | TemplateDocumentCreateWithoutUserInput[] | TemplateDocumentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TemplateDocumentCreateOrConnectWithoutUserInput | TemplateDocumentCreateOrConnectWithoutUserInput[]
+    createMany?: TemplateDocumentCreateManyUserInputEnvelope
+    connect?: TemplateDocumentWhereUniqueInput | TemplateDocumentWhereUniqueInput[]
+  }
+
+  export type BulkJobUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<BulkJobCreateWithoutUserInput, BulkJobUncheckedCreateWithoutUserInput> | BulkJobCreateWithoutUserInput[] | BulkJobUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: BulkJobCreateOrConnectWithoutUserInput | BulkJobCreateOrConnectWithoutUserInput[]
+    createMany?: BulkJobCreateManyUserInputEnvelope
+    connect?: BulkJobWhereUniqueInput | BulkJobWhereUniqueInput[]
+  }
+
+  export type TeamMemberUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<TeamMemberCreateWithoutUserInput, TeamMemberUncheckedCreateWithoutUserInput> | TeamMemberCreateWithoutUserInput[] | TeamMemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TeamMemberCreateOrConnectWithoutUserInput | TeamMemberCreateOrConnectWithoutUserInput[]
+    createMany?: TeamMemberCreateManyUserInputEnvelope
+    connect?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
+  }
+
+  export type TeamGenerationUncheckedCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<TeamGenerationCreateWithoutCreatedByInput, TeamGenerationUncheckedCreateWithoutCreatedByInput> | TeamGenerationCreateWithoutCreatedByInput[] | TeamGenerationUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: TeamGenerationCreateOrConnectWithoutCreatedByInput | TeamGenerationCreateOrConnectWithoutCreatedByInput[]
+    createMany?: TeamGenerationCreateManyCreatedByInputEnvelope
+    connect?: TeamGenerationWhereUniqueInput | TeamGenerationWhereUniqueInput[]
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -16994,6 +30113,76 @@ export namespace Prisma {
     deleteMany?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
   }
 
+  export type TemplateUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<TemplateCreateWithoutCreatedByInput, TemplateUncheckedCreateWithoutCreatedByInput> | TemplateCreateWithoutCreatedByInput[] | TemplateUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: TemplateCreateOrConnectWithoutCreatedByInput | TemplateCreateOrConnectWithoutCreatedByInput[]
+    upsert?: TemplateUpsertWithWhereUniqueWithoutCreatedByInput | TemplateUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: TemplateCreateManyCreatedByInputEnvelope
+    set?: TemplateWhereUniqueInput | TemplateWhereUniqueInput[]
+    disconnect?: TemplateWhereUniqueInput | TemplateWhereUniqueInput[]
+    delete?: TemplateWhereUniqueInput | TemplateWhereUniqueInput[]
+    connect?: TemplateWhereUniqueInput | TemplateWhereUniqueInput[]
+    update?: TemplateUpdateWithWhereUniqueWithoutCreatedByInput | TemplateUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: TemplateUpdateManyWithWhereWithoutCreatedByInput | TemplateUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: TemplateScalarWhereInput | TemplateScalarWhereInput[]
+  }
+
+  export type TemplateDocumentUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TemplateDocumentCreateWithoutUserInput, TemplateDocumentUncheckedCreateWithoutUserInput> | TemplateDocumentCreateWithoutUserInput[] | TemplateDocumentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TemplateDocumentCreateOrConnectWithoutUserInput | TemplateDocumentCreateOrConnectWithoutUserInput[]
+    upsert?: TemplateDocumentUpsertWithWhereUniqueWithoutUserInput | TemplateDocumentUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TemplateDocumentCreateManyUserInputEnvelope
+    set?: TemplateDocumentWhereUniqueInput | TemplateDocumentWhereUniqueInput[]
+    disconnect?: TemplateDocumentWhereUniqueInput | TemplateDocumentWhereUniqueInput[]
+    delete?: TemplateDocumentWhereUniqueInput | TemplateDocumentWhereUniqueInput[]
+    connect?: TemplateDocumentWhereUniqueInput | TemplateDocumentWhereUniqueInput[]
+    update?: TemplateDocumentUpdateWithWhereUniqueWithoutUserInput | TemplateDocumentUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TemplateDocumentUpdateManyWithWhereWithoutUserInput | TemplateDocumentUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TemplateDocumentScalarWhereInput | TemplateDocumentScalarWhereInput[]
+  }
+
+  export type BulkJobUpdateManyWithoutUserNestedInput = {
+    create?: XOR<BulkJobCreateWithoutUserInput, BulkJobUncheckedCreateWithoutUserInput> | BulkJobCreateWithoutUserInput[] | BulkJobUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: BulkJobCreateOrConnectWithoutUserInput | BulkJobCreateOrConnectWithoutUserInput[]
+    upsert?: BulkJobUpsertWithWhereUniqueWithoutUserInput | BulkJobUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: BulkJobCreateManyUserInputEnvelope
+    set?: BulkJobWhereUniqueInput | BulkJobWhereUniqueInput[]
+    disconnect?: BulkJobWhereUniqueInput | BulkJobWhereUniqueInput[]
+    delete?: BulkJobWhereUniqueInput | BulkJobWhereUniqueInput[]
+    connect?: BulkJobWhereUniqueInput | BulkJobWhereUniqueInput[]
+    update?: BulkJobUpdateWithWhereUniqueWithoutUserInput | BulkJobUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: BulkJobUpdateManyWithWhereWithoutUserInput | BulkJobUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: BulkJobScalarWhereInput | BulkJobScalarWhereInput[]
+  }
+
+  export type TeamMemberUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TeamMemberCreateWithoutUserInput, TeamMemberUncheckedCreateWithoutUserInput> | TeamMemberCreateWithoutUserInput[] | TeamMemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TeamMemberCreateOrConnectWithoutUserInput | TeamMemberCreateOrConnectWithoutUserInput[]
+    upsert?: TeamMemberUpsertWithWhereUniqueWithoutUserInput | TeamMemberUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TeamMemberCreateManyUserInputEnvelope
+    set?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
+    disconnect?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
+    delete?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
+    connect?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
+    update?: TeamMemberUpdateWithWhereUniqueWithoutUserInput | TeamMemberUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TeamMemberUpdateManyWithWhereWithoutUserInput | TeamMemberUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TeamMemberScalarWhereInput | TeamMemberScalarWhereInput[]
+  }
+
+  export type TeamGenerationUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<TeamGenerationCreateWithoutCreatedByInput, TeamGenerationUncheckedCreateWithoutCreatedByInput> | TeamGenerationCreateWithoutCreatedByInput[] | TeamGenerationUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: TeamGenerationCreateOrConnectWithoutCreatedByInput | TeamGenerationCreateOrConnectWithoutCreatedByInput[]
+    upsert?: TeamGenerationUpsertWithWhereUniqueWithoutCreatedByInput | TeamGenerationUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: TeamGenerationCreateManyCreatedByInputEnvelope
+    set?: TeamGenerationWhereUniqueInput | TeamGenerationWhereUniqueInput[]
+    disconnect?: TeamGenerationWhereUniqueInput | TeamGenerationWhereUniqueInput[]
+    delete?: TeamGenerationWhereUniqueInput | TeamGenerationWhereUniqueInput[]
+    connect?: TeamGenerationWhereUniqueInput | TeamGenerationWhereUniqueInput[]
+    update?: TeamGenerationUpdateWithWhereUniqueWithoutCreatedByInput | TeamGenerationUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: TeamGenerationUpdateManyWithWhereWithoutCreatedByInput | TeamGenerationUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: TeamGenerationScalarWhereInput | TeamGenerationScalarWhereInput[]
+  }
+
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -17090,6 +30279,76 @@ export namespace Prisma {
     update?: PaymentUpdateWithWhereUniqueWithoutUserInput | PaymentUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: PaymentUpdateManyWithWhereWithoutUserInput | PaymentUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
+  }
+
+  export type TemplateUncheckedUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<TemplateCreateWithoutCreatedByInput, TemplateUncheckedCreateWithoutCreatedByInput> | TemplateCreateWithoutCreatedByInput[] | TemplateUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: TemplateCreateOrConnectWithoutCreatedByInput | TemplateCreateOrConnectWithoutCreatedByInput[]
+    upsert?: TemplateUpsertWithWhereUniqueWithoutCreatedByInput | TemplateUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: TemplateCreateManyCreatedByInputEnvelope
+    set?: TemplateWhereUniqueInput | TemplateWhereUniqueInput[]
+    disconnect?: TemplateWhereUniqueInput | TemplateWhereUniqueInput[]
+    delete?: TemplateWhereUniqueInput | TemplateWhereUniqueInput[]
+    connect?: TemplateWhereUniqueInput | TemplateWhereUniqueInput[]
+    update?: TemplateUpdateWithWhereUniqueWithoutCreatedByInput | TemplateUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: TemplateUpdateManyWithWhereWithoutCreatedByInput | TemplateUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: TemplateScalarWhereInput | TemplateScalarWhereInput[]
+  }
+
+  export type TemplateDocumentUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TemplateDocumentCreateWithoutUserInput, TemplateDocumentUncheckedCreateWithoutUserInput> | TemplateDocumentCreateWithoutUserInput[] | TemplateDocumentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TemplateDocumentCreateOrConnectWithoutUserInput | TemplateDocumentCreateOrConnectWithoutUserInput[]
+    upsert?: TemplateDocumentUpsertWithWhereUniqueWithoutUserInput | TemplateDocumentUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TemplateDocumentCreateManyUserInputEnvelope
+    set?: TemplateDocumentWhereUniqueInput | TemplateDocumentWhereUniqueInput[]
+    disconnect?: TemplateDocumentWhereUniqueInput | TemplateDocumentWhereUniqueInput[]
+    delete?: TemplateDocumentWhereUniqueInput | TemplateDocumentWhereUniqueInput[]
+    connect?: TemplateDocumentWhereUniqueInput | TemplateDocumentWhereUniqueInput[]
+    update?: TemplateDocumentUpdateWithWhereUniqueWithoutUserInput | TemplateDocumentUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TemplateDocumentUpdateManyWithWhereWithoutUserInput | TemplateDocumentUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TemplateDocumentScalarWhereInput | TemplateDocumentScalarWhereInput[]
+  }
+
+  export type BulkJobUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<BulkJobCreateWithoutUserInput, BulkJobUncheckedCreateWithoutUserInput> | BulkJobCreateWithoutUserInput[] | BulkJobUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: BulkJobCreateOrConnectWithoutUserInput | BulkJobCreateOrConnectWithoutUserInput[]
+    upsert?: BulkJobUpsertWithWhereUniqueWithoutUserInput | BulkJobUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: BulkJobCreateManyUserInputEnvelope
+    set?: BulkJobWhereUniqueInput | BulkJobWhereUniqueInput[]
+    disconnect?: BulkJobWhereUniqueInput | BulkJobWhereUniqueInput[]
+    delete?: BulkJobWhereUniqueInput | BulkJobWhereUniqueInput[]
+    connect?: BulkJobWhereUniqueInput | BulkJobWhereUniqueInput[]
+    update?: BulkJobUpdateWithWhereUniqueWithoutUserInput | BulkJobUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: BulkJobUpdateManyWithWhereWithoutUserInput | BulkJobUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: BulkJobScalarWhereInput | BulkJobScalarWhereInput[]
+  }
+
+  export type TeamMemberUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TeamMemberCreateWithoutUserInput, TeamMemberUncheckedCreateWithoutUserInput> | TeamMemberCreateWithoutUserInput[] | TeamMemberUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TeamMemberCreateOrConnectWithoutUserInput | TeamMemberCreateOrConnectWithoutUserInput[]
+    upsert?: TeamMemberUpsertWithWhereUniqueWithoutUserInput | TeamMemberUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TeamMemberCreateManyUserInputEnvelope
+    set?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
+    disconnect?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
+    delete?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
+    connect?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
+    update?: TeamMemberUpdateWithWhereUniqueWithoutUserInput | TeamMemberUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TeamMemberUpdateManyWithWhereWithoutUserInput | TeamMemberUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TeamMemberScalarWhereInput | TeamMemberScalarWhereInput[]
+  }
+
+  export type TeamGenerationUncheckedUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<TeamGenerationCreateWithoutCreatedByInput, TeamGenerationUncheckedCreateWithoutCreatedByInput> | TeamGenerationCreateWithoutCreatedByInput[] | TeamGenerationUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: TeamGenerationCreateOrConnectWithoutCreatedByInput | TeamGenerationCreateOrConnectWithoutCreatedByInput[]
+    upsert?: TeamGenerationUpsertWithWhereUniqueWithoutCreatedByInput | TeamGenerationUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: TeamGenerationCreateManyCreatedByInputEnvelope
+    set?: TeamGenerationWhereUniqueInput | TeamGenerationWhereUniqueInput[]
+    disconnect?: TeamGenerationWhereUniqueInput | TeamGenerationWhereUniqueInput[]
+    delete?: TeamGenerationWhereUniqueInput | TeamGenerationWhereUniqueInput[]
+    connect?: TeamGenerationWhereUniqueInput | TeamGenerationWhereUniqueInput[]
+    update?: TeamGenerationUpdateWithWhereUniqueWithoutCreatedByInput | TeamGenerationUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: TeamGenerationUpdateManyWithWhereWithoutCreatedByInput | TeamGenerationUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: TeamGenerationScalarWhereInput | TeamGenerationScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutUsageHistoryInput = {
@@ -17259,6 +30518,366 @@ export namespace Prisma {
     update?: SavedGenerationUpdateWithWhereUniqueWithoutBatchJobInput | SavedGenerationUpdateWithWhereUniqueWithoutBatchJobInput[]
     updateMany?: SavedGenerationUpdateManyWithWhereWithoutBatchJobInput | SavedGenerationUpdateManyWithWhereWithoutBatchJobInput[]
     deleteMany?: SavedGenerationScalarWhereInput | SavedGenerationScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutCreatedTemplatesInput = {
+    create?: XOR<UserCreateWithoutCreatedTemplatesInput, UserUncheckedCreateWithoutCreatedTemplatesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedTemplatesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type TemplateDocumentCreateNestedManyWithoutTemplateInput = {
+    create?: XOR<TemplateDocumentCreateWithoutTemplateInput, TemplateDocumentUncheckedCreateWithoutTemplateInput> | TemplateDocumentCreateWithoutTemplateInput[] | TemplateDocumentUncheckedCreateWithoutTemplateInput[]
+    connectOrCreate?: TemplateDocumentCreateOrConnectWithoutTemplateInput | TemplateDocumentCreateOrConnectWithoutTemplateInput[]
+    createMany?: TemplateDocumentCreateManyTemplateInputEnvelope
+    connect?: TemplateDocumentWhereUniqueInput | TemplateDocumentWhereUniqueInput[]
+  }
+
+  export type TemplateDocumentUncheckedCreateNestedManyWithoutTemplateInput = {
+    create?: XOR<TemplateDocumentCreateWithoutTemplateInput, TemplateDocumentUncheckedCreateWithoutTemplateInput> | TemplateDocumentCreateWithoutTemplateInput[] | TemplateDocumentUncheckedCreateWithoutTemplateInput[]
+    connectOrCreate?: TemplateDocumentCreateOrConnectWithoutTemplateInput | TemplateDocumentCreateOrConnectWithoutTemplateInput[]
+    createMany?: TemplateDocumentCreateManyTemplateInputEnvelope
+    connect?: TemplateDocumentWhereUniqueInput | TemplateDocumentWhereUniqueInput[]
+  }
+
+  export type EnumTemplateCategoryFieldUpdateOperationsInput = {
+    set?: $Enums.TemplateCategory
+  }
+
+  export type UserUpdateOneWithoutCreatedTemplatesNestedInput = {
+    create?: XOR<UserCreateWithoutCreatedTemplatesInput, UserUncheckedCreateWithoutCreatedTemplatesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedTemplatesInput
+    upsert?: UserUpsertWithoutCreatedTemplatesInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCreatedTemplatesInput, UserUpdateWithoutCreatedTemplatesInput>, UserUncheckedUpdateWithoutCreatedTemplatesInput>
+  }
+
+  export type TemplateDocumentUpdateManyWithoutTemplateNestedInput = {
+    create?: XOR<TemplateDocumentCreateWithoutTemplateInput, TemplateDocumentUncheckedCreateWithoutTemplateInput> | TemplateDocumentCreateWithoutTemplateInput[] | TemplateDocumentUncheckedCreateWithoutTemplateInput[]
+    connectOrCreate?: TemplateDocumentCreateOrConnectWithoutTemplateInput | TemplateDocumentCreateOrConnectWithoutTemplateInput[]
+    upsert?: TemplateDocumentUpsertWithWhereUniqueWithoutTemplateInput | TemplateDocumentUpsertWithWhereUniqueWithoutTemplateInput[]
+    createMany?: TemplateDocumentCreateManyTemplateInputEnvelope
+    set?: TemplateDocumentWhereUniqueInput | TemplateDocumentWhereUniqueInput[]
+    disconnect?: TemplateDocumentWhereUniqueInput | TemplateDocumentWhereUniqueInput[]
+    delete?: TemplateDocumentWhereUniqueInput | TemplateDocumentWhereUniqueInput[]
+    connect?: TemplateDocumentWhereUniqueInput | TemplateDocumentWhereUniqueInput[]
+    update?: TemplateDocumentUpdateWithWhereUniqueWithoutTemplateInput | TemplateDocumentUpdateWithWhereUniqueWithoutTemplateInput[]
+    updateMany?: TemplateDocumentUpdateManyWithWhereWithoutTemplateInput | TemplateDocumentUpdateManyWithWhereWithoutTemplateInput[]
+    deleteMany?: TemplateDocumentScalarWhereInput | TemplateDocumentScalarWhereInput[]
+  }
+
+  export type TemplateDocumentUncheckedUpdateManyWithoutTemplateNestedInput = {
+    create?: XOR<TemplateDocumentCreateWithoutTemplateInput, TemplateDocumentUncheckedCreateWithoutTemplateInput> | TemplateDocumentCreateWithoutTemplateInput[] | TemplateDocumentUncheckedCreateWithoutTemplateInput[]
+    connectOrCreate?: TemplateDocumentCreateOrConnectWithoutTemplateInput | TemplateDocumentCreateOrConnectWithoutTemplateInput[]
+    upsert?: TemplateDocumentUpsertWithWhereUniqueWithoutTemplateInput | TemplateDocumentUpsertWithWhereUniqueWithoutTemplateInput[]
+    createMany?: TemplateDocumentCreateManyTemplateInputEnvelope
+    set?: TemplateDocumentWhereUniqueInput | TemplateDocumentWhereUniqueInput[]
+    disconnect?: TemplateDocumentWhereUniqueInput | TemplateDocumentWhereUniqueInput[]
+    delete?: TemplateDocumentWhereUniqueInput | TemplateDocumentWhereUniqueInput[]
+    connect?: TemplateDocumentWhereUniqueInput | TemplateDocumentWhereUniqueInput[]
+    update?: TemplateDocumentUpdateWithWhereUniqueWithoutTemplateInput | TemplateDocumentUpdateWithWhereUniqueWithoutTemplateInput[]
+    updateMany?: TemplateDocumentUpdateManyWithWhereWithoutTemplateInput | TemplateDocumentUpdateManyWithWhereWithoutTemplateInput[]
+    deleteMany?: TemplateDocumentScalarWhereInput | TemplateDocumentScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutTemplateDocumentsInput = {
+    create?: XOR<UserCreateWithoutTemplateDocumentsInput, UserUncheckedCreateWithoutTemplateDocumentsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTemplateDocumentsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type TemplateCreateNestedOneWithoutDocumentsInput = {
+    create?: XOR<TemplateCreateWithoutDocumentsInput, TemplateUncheckedCreateWithoutDocumentsInput>
+    connectOrCreate?: TemplateCreateOrConnectWithoutDocumentsInput
+    connect?: TemplateWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutTemplateDocumentsNestedInput = {
+    create?: XOR<UserCreateWithoutTemplateDocumentsInput, UserUncheckedCreateWithoutTemplateDocumentsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTemplateDocumentsInput
+    upsert?: UserUpsertWithoutTemplateDocumentsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTemplateDocumentsInput, UserUpdateWithoutTemplateDocumentsInput>, UserUncheckedUpdateWithoutTemplateDocumentsInput>
+  }
+
+  export type TemplateUpdateOneRequiredWithoutDocumentsNestedInput = {
+    create?: XOR<TemplateCreateWithoutDocumentsInput, TemplateUncheckedCreateWithoutDocumentsInput>
+    connectOrCreate?: TemplateCreateOrConnectWithoutDocumentsInput
+    upsert?: TemplateUpsertWithoutDocumentsInput
+    connect?: TemplateWhereUniqueInput
+    update?: XOR<XOR<TemplateUpdateToOneWithWhereWithoutDocumentsInput, TemplateUpdateWithoutDocumentsInput>, TemplateUncheckedUpdateWithoutDocumentsInput>
+  }
+
+  export type UserCreateNestedOneWithoutBulkJobsInput = {
+    create?: XOR<UserCreateWithoutBulkJobsInput, UserUncheckedCreateWithoutBulkJobsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutBulkJobsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type BulkJobItemCreateNestedManyWithoutBulkJobInput = {
+    create?: XOR<BulkJobItemCreateWithoutBulkJobInput, BulkJobItemUncheckedCreateWithoutBulkJobInput> | BulkJobItemCreateWithoutBulkJobInput[] | BulkJobItemUncheckedCreateWithoutBulkJobInput[]
+    connectOrCreate?: BulkJobItemCreateOrConnectWithoutBulkJobInput | BulkJobItemCreateOrConnectWithoutBulkJobInput[]
+    createMany?: BulkJobItemCreateManyBulkJobInputEnvelope
+    connect?: BulkJobItemWhereUniqueInput | BulkJobItemWhereUniqueInput[]
+  }
+
+  export type BulkJobItemUncheckedCreateNestedManyWithoutBulkJobInput = {
+    create?: XOR<BulkJobItemCreateWithoutBulkJobInput, BulkJobItemUncheckedCreateWithoutBulkJobInput> | BulkJobItemCreateWithoutBulkJobInput[] | BulkJobItemUncheckedCreateWithoutBulkJobInput[]
+    connectOrCreate?: BulkJobItemCreateOrConnectWithoutBulkJobInput | BulkJobItemCreateOrConnectWithoutBulkJobInput[]
+    createMany?: BulkJobItemCreateManyBulkJobInputEnvelope
+    connect?: BulkJobItemWhereUniqueInput | BulkJobItemWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutBulkJobsNestedInput = {
+    create?: XOR<UserCreateWithoutBulkJobsInput, UserUncheckedCreateWithoutBulkJobsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutBulkJobsInput
+    upsert?: UserUpsertWithoutBulkJobsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutBulkJobsInput, UserUpdateWithoutBulkJobsInput>, UserUncheckedUpdateWithoutBulkJobsInput>
+  }
+
+  export type BulkJobItemUpdateManyWithoutBulkJobNestedInput = {
+    create?: XOR<BulkJobItemCreateWithoutBulkJobInput, BulkJobItemUncheckedCreateWithoutBulkJobInput> | BulkJobItemCreateWithoutBulkJobInput[] | BulkJobItemUncheckedCreateWithoutBulkJobInput[]
+    connectOrCreate?: BulkJobItemCreateOrConnectWithoutBulkJobInput | BulkJobItemCreateOrConnectWithoutBulkJobInput[]
+    upsert?: BulkJobItemUpsertWithWhereUniqueWithoutBulkJobInput | BulkJobItemUpsertWithWhereUniqueWithoutBulkJobInput[]
+    createMany?: BulkJobItemCreateManyBulkJobInputEnvelope
+    set?: BulkJobItemWhereUniqueInput | BulkJobItemWhereUniqueInput[]
+    disconnect?: BulkJobItemWhereUniqueInput | BulkJobItemWhereUniqueInput[]
+    delete?: BulkJobItemWhereUniqueInput | BulkJobItemWhereUniqueInput[]
+    connect?: BulkJobItemWhereUniqueInput | BulkJobItemWhereUniqueInput[]
+    update?: BulkJobItemUpdateWithWhereUniqueWithoutBulkJobInput | BulkJobItemUpdateWithWhereUniqueWithoutBulkJobInput[]
+    updateMany?: BulkJobItemUpdateManyWithWhereWithoutBulkJobInput | BulkJobItemUpdateManyWithWhereWithoutBulkJobInput[]
+    deleteMany?: BulkJobItemScalarWhereInput | BulkJobItemScalarWhereInput[]
+  }
+
+  export type BulkJobItemUncheckedUpdateManyWithoutBulkJobNestedInput = {
+    create?: XOR<BulkJobItemCreateWithoutBulkJobInput, BulkJobItemUncheckedCreateWithoutBulkJobInput> | BulkJobItemCreateWithoutBulkJobInput[] | BulkJobItemUncheckedCreateWithoutBulkJobInput[]
+    connectOrCreate?: BulkJobItemCreateOrConnectWithoutBulkJobInput | BulkJobItemCreateOrConnectWithoutBulkJobInput[]
+    upsert?: BulkJobItemUpsertWithWhereUniqueWithoutBulkJobInput | BulkJobItemUpsertWithWhereUniqueWithoutBulkJobInput[]
+    createMany?: BulkJobItemCreateManyBulkJobInputEnvelope
+    set?: BulkJobItemWhereUniqueInput | BulkJobItemWhereUniqueInput[]
+    disconnect?: BulkJobItemWhereUniqueInput | BulkJobItemWhereUniqueInput[]
+    delete?: BulkJobItemWhereUniqueInput | BulkJobItemWhereUniqueInput[]
+    connect?: BulkJobItemWhereUniqueInput | BulkJobItemWhereUniqueInput[]
+    update?: BulkJobItemUpdateWithWhereUniqueWithoutBulkJobInput | BulkJobItemUpdateWithWhereUniqueWithoutBulkJobInput[]
+    updateMany?: BulkJobItemUpdateManyWithWhereWithoutBulkJobInput | BulkJobItemUpdateManyWithWhereWithoutBulkJobInput[]
+    deleteMany?: BulkJobItemScalarWhereInput | BulkJobItemScalarWhereInput[]
+  }
+
+  export type BulkJobCreateNestedOneWithoutItemsInput = {
+    create?: XOR<BulkJobCreateWithoutItemsInput, BulkJobUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: BulkJobCreateOrConnectWithoutItemsInput
+    connect?: BulkJobWhereUniqueInput
+  }
+
+  export type BulkJobUpdateOneRequiredWithoutItemsNestedInput = {
+    create?: XOR<BulkJobCreateWithoutItemsInput, BulkJobUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: BulkJobCreateOrConnectWithoutItemsInput
+    upsert?: BulkJobUpsertWithoutItemsInput
+    connect?: BulkJobWhereUniqueInput
+    update?: XOR<XOR<BulkJobUpdateToOneWithWhereWithoutItemsInput, BulkJobUpdateWithoutItemsInput>, BulkJobUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type TeamMemberCreateNestedManyWithoutTeamInput = {
+    create?: XOR<TeamMemberCreateWithoutTeamInput, TeamMemberUncheckedCreateWithoutTeamInput> | TeamMemberCreateWithoutTeamInput[] | TeamMemberUncheckedCreateWithoutTeamInput[]
+    connectOrCreate?: TeamMemberCreateOrConnectWithoutTeamInput | TeamMemberCreateOrConnectWithoutTeamInput[]
+    createMany?: TeamMemberCreateManyTeamInputEnvelope
+    connect?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
+  }
+
+  export type TeamInviteCreateNestedManyWithoutTeamInput = {
+    create?: XOR<TeamInviteCreateWithoutTeamInput, TeamInviteUncheckedCreateWithoutTeamInput> | TeamInviteCreateWithoutTeamInput[] | TeamInviteUncheckedCreateWithoutTeamInput[]
+    connectOrCreate?: TeamInviteCreateOrConnectWithoutTeamInput | TeamInviteCreateOrConnectWithoutTeamInput[]
+    createMany?: TeamInviteCreateManyTeamInputEnvelope
+    connect?: TeamInviteWhereUniqueInput | TeamInviteWhereUniqueInput[]
+  }
+
+  export type TeamGenerationCreateNestedManyWithoutTeamInput = {
+    create?: XOR<TeamGenerationCreateWithoutTeamInput, TeamGenerationUncheckedCreateWithoutTeamInput> | TeamGenerationCreateWithoutTeamInput[] | TeamGenerationUncheckedCreateWithoutTeamInput[]
+    connectOrCreate?: TeamGenerationCreateOrConnectWithoutTeamInput | TeamGenerationCreateOrConnectWithoutTeamInput[]
+    createMany?: TeamGenerationCreateManyTeamInputEnvelope
+    connect?: TeamGenerationWhereUniqueInput | TeamGenerationWhereUniqueInput[]
+  }
+
+  export type TeamMemberUncheckedCreateNestedManyWithoutTeamInput = {
+    create?: XOR<TeamMemberCreateWithoutTeamInput, TeamMemberUncheckedCreateWithoutTeamInput> | TeamMemberCreateWithoutTeamInput[] | TeamMemberUncheckedCreateWithoutTeamInput[]
+    connectOrCreate?: TeamMemberCreateOrConnectWithoutTeamInput | TeamMemberCreateOrConnectWithoutTeamInput[]
+    createMany?: TeamMemberCreateManyTeamInputEnvelope
+    connect?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
+  }
+
+  export type TeamInviteUncheckedCreateNestedManyWithoutTeamInput = {
+    create?: XOR<TeamInviteCreateWithoutTeamInput, TeamInviteUncheckedCreateWithoutTeamInput> | TeamInviteCreateWithoutTeamInput[] | TeamInviteUncheckedCreateWithoutTeamInput[]
+    connectOrCreate?: TeamInviteCreateOrConnectWithoutTeamInput | TeamInviteCreateOrConnectWithoutTeamInput[]
+    createMany?: TeamInviteCreateManyTeamInputEnvelope
+    connect?: TeamInviteWhereUniqueInput | TeamInviteWhereUniqueInput[]
+  }
+
+  export type TeamGenerationUncheckedCreateNestedManyWithoutTeamInput = {
+    create?: XOR<TeamGenerationCreateWithoutTeamInput, TeamGenerationUncheckedCreateWithoutTeamInput> | TeamGenerationCreateWithoutTeamInput[] | TeamGenerationUncheckedCreateWithoutTeamInput[]
+    connectOrCreate?: TeamGenerationCreateOrConnectWithoutTeamInput | TeamGenerationCreateOrConnectWithoutTeamInput[]
+    createMany?: TeamGenerationCreateManyTeamInputEnvelope
+    connect?: TeamGenerationWhereUniqueInput | TeamGenerationWhereUniqueInput[]
+  }
+
+  export type TeamMemberUpdateManyWithoutTeamNestedInput = {
+    create?: XOR<TeamMemberCreateWithoutTeamInput, TeamMemberUncheckedCreateWithoutTeamInput> | TeamMemberCreateWithoutTeamInput[] | TeamMemberUncheckedCreateWithoutTeamInput[]
+    connectOrCreate?: TeamMemberCreateOrConnectWithoutTeamInput | TeamMemberCreateOrConnectWithoutTeamInput[]
+    upsert?: TeamMemberUpsertWithWhereUniqueWithoutTeamInput | TeamMemberUpsertWithWhereUniqueWithoutTeamInput[]
+    createMany?: TeamMemberCreateManyTeamInputEnvelope
+    set?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
+    disconnect?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
+    delete?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
+    connect?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
+    update?: TeamMemberUpdateWithWhereUniqueWithoutTeamInput | TeamMemberUpdateWithWhereUniqueWithoutTeamInput[]
+    updateMany?: TeamMemberUpdateManyWithWhereWithoutTeamInput | TeamMemberUpdateManyWithWhereWithoutTeamInput[]
+    deleteMany?: TeamMemberScalarWhereInput | TeamMemberScalarWhereInput[]
+  }
+
+  export type TeamInviteUpdateManyWithoutTeamNestedInput = {
+    create?: XOR<TeamInviteCreateWithoutTeamInput, TeamInviteUncheckedCreateWithoutTeamInput> | TeamInviteCreateWithoutTeamInput[] | TeamInviteUncheckedCreateWithoutTeamInput[]
+    connectOrCreate?: TeamInviteCreateOrConnectWithoutTeamInput | TeamInviteCreateOrConnectWithoutTeamInput[]
+    upsert?: TeamInviteUpsertWithWhereUniqueWithoutTeamInput | TeamInviteUpsertWithWhereUniqueWithoutTeamInput[]
+    createMany?: TeamInviteCreateManyTeamInputEnvelope
+    set?: TeamInviteWhereUniqueInput | TeamInviteWhereUniqueInput[]
+    disconnect?: TeamInviteWhereUniqueInput | TeamInviteWhereUniqueInput[]
+    delete?: TeamInviteWhereUniqueInput | TeamInviteWhereUniqueInput[]
+    connect?: TeamInviteWhereUniqueInput | TeamInviteWhereUniqueInput[]
+    update?: TeamInviteUpdateWithWhereUniqueWithoutTeamInput | TeamInviteUpdateWithWhereUniqueWithoutTeamInput[]
+    updateMany?: TeamInviteUpdateManyWithWhereWithoutTeamInput | TeamInviteUpdateManyWithWhereWithoutTeamInput[]
+    deleteMany?: TeamInviteScalarWhereInput | TeamInviteScalarWhereInput[]
+  }
+
+  export type TeamGenerationUpdateManyWithoutTeamNestedInput = {
+    create?: XOR<TeamGenerationCreateWithoutTeamInput, TeamGenerationUncheckedCreateWithoutTeamInput> | TeamGenerationCreateWithoutTeamInput[] | TeamGenerationUncheckedCreateWithoutTeamInput[]
+    connectOrCreate?: TeamGenerationCreateOrConnectWithoutTeamInput | TeamGenerationCreateOrConnectWithoutTeamInput[]
+    upsert?: TeamGenerationUpsertWithWhereUniqueWithoutTeamInput | TeamGenerationUpsertWithWhereUniqueWithoutTeamInput[]
+    createMany?: TeamGenerationCreateManyTeamInputEnvelope
+    set?: TeamGenerationWhereUniqueInput | TeamGenerationWhereUniqueInput[]
+    disconnect?: TeamGenerationWhereUniqueInput | TeamGenerationWhereUniqueInput[]
+    delete?: TeamGenerationWhereUniqueInput | TeamGenerationWhereUniqueInput[]
+    connect?: TeamGenerationWhereUniqueInput | TeamGenerationWhereUniqueInput[]
+    update?: TeamGenerationUpdateWithWhereUniqueWithoutTeamInput | TeamGenerationUpdateWithWhereUniqueWithoutTeamInput[]
+    updateMany?: TeamGenerationUpdateManyWithWhereWithoutTeamInput | TeamGenerationUpdateManyWithWhereWithoutTeamInput[]
+    deleteMany?: TeamGenerationScalarWhereInput | TeamGenerationScalarWhereInput[]
+  }
+
+  export type TeamMemberUncheckedUpdateManyWithoutTeamNestedInput = {
+    create?: XOR<TeamMemberCreateWithoutTeamInput, TeamMemberUncheckedCreateWithoutTeamInput> | TeamMemberCreateWithoutTeamInput[] | TeamMemberUncheckedCreateWithoutTeamInput[]
+    connectOrCreate?: TeamMemberCreateOrConnectWithoutTeamInput | TeamMemberCreateOrConnectWithoutTeamInput[]
+    upsert?: TeamMemberUpsertWithWhereUniqueWithoutTeamInput | TeamMemberUpsertWithWhereUniqueWithoutTeamInput[]
+    createMany?: TeamMemberCreateManyTeamInputEnvelope
+    set?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
+    disconnect?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
+    delete?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
+    connect?: TeamMemberWhereUniqueInput | TeamMemberWhereUniqueInput[]
+    update?: TeamMemberUpdateWithWhereUniqueWithoutTeamInput | TeamMemberUpdateWithWhereUniqueWithoutTeamInput[]
+    updateMany?: TeamMemberUpdateManyWithWhereWithoutTeamInput | TeamMemberUpdateManyWithWhereWithoutTeamInput[]
+    deleteMany?: TeamMemberScalarWhereInput | TeamMemberScalarWhereInput[]
+  }
+
+  export type TeamInviteUncheckedUpdateManyWithoutTeamNestedInput = {
+    create?: XOR<TeamInviteCreateWithoutTeamInput, TeamInviteUncheckedCreateWithoutTeamInput> | TeamInviteCreateWithoutTeamInput[] | TeamInviteUncheckedCreateWithoutTeamInput[]
+    connectOrCreate?: TeamInviteCreateOrConnectWithoutTeamInput | TeamInviteCreateOrConnectWithoutTeamInput[]
+    upsert?: TeamInviteUpsertWithWhereUniqueWithoutTeamInput | TeamInviteUpsertWithWhereUniqueWithoutTeamInput[]
+    createMany?: TeamInviteCreateManyTeamInputEnvelope
+    set?: TeamInviteWhereUniqueInput | TeamInviteWhereUniqueInput[]
+    disconnect?: TeamInviteWhereUniqueInput | TeamInviteWhereUniqueInput[]
+    delete?: TeamInviteWhereUniqueInput | TeamInviteWhereUniqueInput[]
+    connect?: TeamInviteWhereUniqueInput | TeamInviteWhereUniqueInput[]
+    update?: TeamInviteUpdateWithWhereUniqueWithoutTeamInput | TeamInviteUpdateWithWhereUniqueWithoutTeamInput[]
+    updateMany?: TeamInviteUpdateManyWithWhereWithoutTeamInput | TeamInviteUpdateManyWithWhereWithoutTeamInput[]
+    deleteMany?: TeamInviteScalarWhereInput | TeamInviteScalarWhereInput[]
+  }
+
+  export type TeamGenerationUncheckedUpdateManyWithoutTeamNestedInput = {
+    create?: XOR<TeamGenerationCreateWithoutTeamInput, TeamGenerationUncheckedCreateWithoutTeamInput> | TeamGenerationCreateWithoutTeamInput[] | TeamGenerationUncheckedCreateWithoutTeamInput[]
+    connectOrCreate?: TeamGenerationCreateOrConnectWithoutTeamInput | TeamGenerationCreateOrConnectWithoutTeamInput[]
+    upsert?: TeamGenerationUpsertWithWhereUniqueWithoutTeamInput | TeamGenerationUpsertWithWhereUniqueWithoutTeamInput[]
+    createMany?: TeamGenerationCreateManyTeamInputEnvelope
+    set?: TeamGenerationWhereUniqueInput | TeamGenerationWhereUniqueInput[]
+    disconnect?: TeamGenerationWhereUniqueInput | TeamGenerationWhereUniqueInput[]
+    delete?: TeamGenerationWhereUniqueInput | TeamGenerationWhereUniqueInput[]
+    connect?: TeamGenerationWhereUniqueInput | TeamGenerationWhereUniqueInput[]
+    update?: TeamGenerationUpdateWithWhereUniqueWithoutTeamInput | TeamGenerationUpdateWithWhereUniqueWithoutTeamInput[]
+    updateMany?: TeamGenerationUpdateManyWithWhereWithoutTeamInput | TeamGenerationUpdateManyWithWhereWithoutTeamInput[]
+    deleteMany?: TeamGenerationScalarWhereInput | TeamGenerationScalarWhereInput[]
+  }
+
+  export type TeamCreateNestedOneWithoutMembersInput = {
+    create?: XOR<TeamCreateWithoutMembersInput, TeamUncheckedCreateWithoutMembersInput>
+    connectOrCreate?: TeamCreateOrConnectWithoutMembersInput
+    connect?: TeamWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutTeamMembershipsInput = {
+    create?: XOR<UserCreateWithoutTeamMembershipsInput, UserUncheckedCreateWithoutTeamMembershipsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTeamMembershipsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumTeamRoleFieldUpdateOperationsInput = {
+    set?: $Enums.TeamRole
+  }
+
+  export type TeamUpdateOneRequiredWithoutMembersNestedInput = {
+    create?: XOR<TeamCreateWithoutMembersInput, TeamUncheckedCreateWithoutMembersInput>
+    connectOrCreate?: TeamCreateOrConnectWithoutMembersInput
+    upsert?: TeamUpsertWithoutMembersInput
+    connect?: TeamWhereUniqueInput
+    update?: XOR<XOR<TeamUpdateToOneWithWhereWithoutMembersInput, TeamUpdateWithoutMembersInput>, TeamUncheckedUpdateWithoutMembersInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutTeamMembershipsNestedInput = {
+    create?: XOR<UserCreateWithoutTeamMembershipsInput, UserUncheckedCreateWithoutTeamMembershipsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTeamMembershipsInput
+    upsert?: UserUpsertWithoutTeamMembershipsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTeamMembershipsInput, UserUpdateWithoutTeamMembershipsInput>, UserUncheckedUpdateWithoutTeamMembershipsInput>
+  }
+
+  export type TeamCreateNestedOneWithoutInvitesInput = {
+    create?: XOR<TeamCreateWithoutInvitesInput, TeamUncheckedCreateWithoutInvitesInput>
+    connectOrCreate?: TeamCreateOrConnectWithoutInvitesInput
+    connect?: TeamWhereUniqueInput
+  }
+
+  export type TeamUpdateOneRequiredWithoutInvitesNestedInput = {
+    create?: XOR<TeamCreateWithoutInvitesInput, TeamUncheckedCreateWithoutInvitesInput>
+    connectOrCreate?: TeamCreateOrConnectWithoutInvitesInput
+    upsert?: TeamUpsertWithoutInvitesInput
+    connect?: TeamWhereUniqueInput
+    update?: XOR<XOR<TeamUpdateToOneWithWhereWithoutInvitesInput, TeamUpdateWithoutInvitesInput>, TeamUncheckedUpdateWithoutInvitesInput>
+  }
+
+  export type TeamCreateNestedOneWithoutGenerationsInput = {
+    create?: XOR<TeamCreateWithoutGenerationsInput, TeamUncheckedCreateWithoutGenerationsInput>
+    connectOrCreate?: TeamCreateOrConnectWithoutGenerationsInput
+    connect?: TeamWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutTeamGenerationsInput = {
+    create?: XOR<UserCreateWithoutTeamGenerationsInput, UserUncheckedCreateWithoutTeamGenerationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTeamGenerationsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type TeamUpdateOneRequiredWithoutGenerationsNestedInput = {
+    create?: XOR<TeamCreateWithoutGenerationsInput, TeamUncheckedCreateWithoutGenerationsInput>
+    connectOrCreate?: TeamCreateOrConnectWithoutGenerationsInput
+    upsert?: TeamUpsertWithoutGenerationsInput
+    connect?: TeamWhereUniqueInput
+    update?: XOR<XOR<TeamUpdateToOneWithWhereWithoutGenerationsInput, TeamUpdateWithoutGenerationsInput>, TeamUncheckedUpdateWithoutGenerationsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutTeamGenerationsNestedInput = {
+    create?: XOR<UserCreateWithoutTeamGenerationsInput, UserUncheckedCreateWithoutTeamGenerationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTeamGenerationsInput
+    upsert?: UserUpsertWithoutTeamGenerationsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTeamGenerationsInput, UserUpdateWithoutTeamGenerationsInput>, UserUncheckedUpdateWithoutTeamGenerationsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -17568,6 +31187,63 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
+  export type NestedEnumTemplateCategoryFilter<$PrismaModel = never> = {
+    equals?: $Enums.TemplateCategory | EnumTemplateCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.TemplateCategory[] | ListEnumTemplateCategoryFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TemplateCategory[] | ListEnumTemplateCategoryFieldRefInput<$PrismaModel>
+    not?: NestedEnumTemplateCategoryFilter<$PrismaModel> | $Enums.TemplateCategory
+  }
+
+  export type NestedEnumTemplateCategoryWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TemplateCategory | EnumTemplateCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.TemplateCategory[] | ListEnumTemplateCategoryFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TemplateCategory[] | ListEnumTemplateCategoryFieldRefInput<$PrismaModel>
+    not?: NestedEnumTemplateCategoryWithAggregatesFilter<$PrismaModel> | $Enums.TemplateCategory
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTemplateCategoryFilter<$PrismaModel>
+    _max?: NestedEnumTemplateCategoryFilter<$PrismaModel>
+  }
+  export type NestedJsonFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type NestedEnumTeamRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.TeamRole | EnumTeamRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.TeamRole[] | ListEnumTeamRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TeamRole[] | ListEnumTeamRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumTeamRoleFilter<$PrismaModel> | $Enums.TeamRole
+  }
+
+  export type NestedEnumTeamRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TeamRole | EnumTeamRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.TeamRole[] | ListEnumTeamRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TeamRole[] | ListEnumTeamRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumTeamRoleWithAggregatesFilter<$PrismaModel> | $Enums.TeamRole
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTeamRoleFilter<$PrismaModel>
+    _max?: NestedEnumTeamRoleFilter<$PrismaModel>
+  }
+
   export type UserCreateWithoutAccountsInput = {
     id?: string
     name?: string | null
@@ -17584,6 +31260,11 @@ export namespace Prisma {
     savedGenerations?: SavedGenerationCreateNestedManyWithoutUserInput
     batchJobs?: BatchJobCreateNestedManyWithoutUserInput
     payments?: PaymentCreateNestedManyWithoutUserInput
+    createdTemplates?: TemplateCreateNestedManyWithoutCreatedByInput
+    templateDocuments?: TemplateDocumentCreateNestedManyWithoutUserInput
+    bulkJobs?: BulkJobCreateNestedManyWithoutUserInput
+    teamMemberships?: TeamMemberCreateNestedManyWithoutUserInput
+    teamGenerations?: TeamGenerationCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -17602,6 +31283,11 @@ export namespace Prisma {
     savedGenerations?: SavedGenerationUncheckedCreateNestedManyWithoutUserInput
     batchJobs?: BatchJobUncheckedCreateNestedManyWithoutUserInput
     payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    createdTemplates?: TemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    templateDocuments?: TemplateDocumentUncheckedCreateNestedManyWithoutUserInput
+    bulkJobs?: BulkJobUncheckedCreateNestedManyWithoutUserInput
+    teamMemberships?: TeamMemberUncheckedCreateNestedManyWithoutUserInput
+    teamGenerations?: TeamGenerationUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -17636,6 +31322,11 @@ export namespace Prisma {
     savedGenerations?: SavedGenerationUpdateManyWithoutUserNestedInput
     batchJobs?: BatchJobUpdateManyWithoutUserNestedInput
     payments?: PaymentUpdateManyWithoutUserNestedInput
+    createdTemplates?: TemplateUpdateManyWithoutCreatedByNestedInput
+    templateDocuments?: TemplateDocumentUpdateManyWithoutUserNestedInput
+    bulkJobs?: BulkJobUpdateManyWithoutUserNestedInput
+    teamMemberships?: TeamMemberUpdateManyWithoutUserNestedInput
+    teamGenerations?: TeamGenerationUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -17654,6 +31345,11 @@ export namespace Prisma {
     savedGenerations?: SavedGenerationUncheckedUpdateManyWithoutUserNestedInput
     batchJobs?: BatchJobUncheckedUpdateManyWithoutUserNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    createdTemplates?: TemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    templateDocuments?: TemplateDocumentUncheckedUpdateManyWithoutUserNestedInput
+    bulkJobs?: BulkJobUncheckedUpdateManyWithoutUserNestedInput
+    teamMemberships?: TeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    teamGenerations?: TeamGenerationUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -17672,6 +31368,11 @@ export namespace Prisma {
     savedGenerations?: SavedGenerationCreateNestedManyWithoutUserInput
     batchJobs?: BatchJobCreateNestedManyWithoutUserInput
     payments?: PaymentCreateNestedManyWithoutUserInput
+    createdTemplates?: TemplateCreateNestedManyWithoutCreatedByInput
+    templateDocuments?: TemplateDocumentCreateNestedManyWithoutUserInput
+    bulkJobs?: BulkJobCreateNestedManyWithoutUserInput
+    teamMemberships?: TeamMemberCreateNestedManyWithoutUserInput
+    teamGenerations?: TeamGenerationCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -17690,6 +31391,11 @@ export namespace Prisma {
     savedGenerations?: SavedGenerationUncheckedCreateNestedManyWithoutUserInput
     batchJobs?: BatchJobUncheckedCreateNestedManyWithoutUserInput
     payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    createdTemplates?: TemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    templateDocuments?: TemplateDocumentUncheckedCreateNestedManyWithoutUserInput
+    bulkJobs?: BulkJobUncheckedCreateNestedManyWithoutUserInput
+    teamMemberships?: TeamMemberUncheckedCreateNestedManyWithoutUserInput
+    teamGenerations?: TeamGenerationUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -17724,6 +31430,11 @@ export namespace Prisma {
     savedGenerations?: SavedGenerationUpdateManyWithoutUserNestedInput
     batchJobs?: BatchJobUpdateManyWithoutUserNestedInput
     payments?: PaymentUpdateManyWithoutUserNestedInput
+    createdTemplates?: TemplateUpdateManyWithoutCreatedByNestedInput
+    templateDocuments?: TemplateDocumentUpdateManyWithoutUserNestedInput
+    bulkJobs?: BulkJobUpdateManyWithoutUserNestedInput
+    teamMemberships?: TeamMemberUpdateManyWithoutUserNestedInput
+    teamGenerations?: TeamGenerationUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -17742,6 +31453,11 @@ export namespace Prisma {
     savedGenerations?: SavedGenerationUncheckedUpdateManyWithoutUserNestedInput
     batchJobs?: BatchJobUncheckedUpdateManyWithoutUserNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    createdTemplates?: TemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    templateDocuments?: TemplateDocumentUncheckedUpdateManyWithoutUserNestedInput
+    bulkJobs?: BulkJobUncheckedUpdateManyWithoutUserNestedInput
+    teamMemberships?: TeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    teamGenerations?: TeamGenerationUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type AccountCreateWithoutUserInput = {
@@ -17987,6 +31703,8 @@ export namespace Prisma {
     amount: number
     credits: number
     status?: $Enums.PaymentStatus
+    razorpayOrderId?: string | null
+    razorpayPaymentId?: string | null
     stripePaymentId?: string | null
     stripeSessionId?: string | null
     createdAt?: Date | string
@@ -17998,6 +31716,8 @@ export namespace Prisma {
     amount: number
     credits: number
     status?: $Enums.PaymentStatus
+    razorpayOrderId?: string | null
+    razorpayPaymentId?: string | null
     stripePaymentId?: string | null
     stripeSessionId?: string | null
     createdAt?: Date | string
@@ -18011,6 +31731,214 @@ export namespace Prisma {
 
   export type PaymentCreateManyUserInputEnvelope = {
     data: PaymentCreateManyUserInput | PaymentCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TemplateCreateWithoutCreatedByInput = {
+    id?: string
+    name: string
+    description?: string | null
+    category: $Enums.TemplateCategory
+    thumbnail?: string | null
+    config: JsonNullValueInput | InputJsonValue
+    isSystem?: boolean
+    usageCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    documents?: TemplateDocumentCreateNestedManyWithoutTemplateInput
+  }
+
+  export type TemplateUncheckedCreateWithoutCreatedByInput = {
+    id?: string
+    name: string
+    description?: string | null
+    category: $Enums.TemplateCategory
+    thumbnail?: string | null
+    config: JsonNullValueInput | InputJsonValue
+    isSystem?: boolean
+    usageCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    documents?: TemplateDocumentUncheckedCreateNestedManyWithoutTemplateInput
+  }
+
+  export type TemplateCreateOrConnectWithoutCreatedByInput = {
+    where: TemplateWhereUniqueInput
+    create: XOR<TemplateCreateWithoutCreatedByInput, TemplateUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type TemplateCreateManyCreatedByInputEnvelope = {
+    data: TemplateCreateManyCreatedByInput | TemplateCreateManyCreatedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TemplateDocumentCreateWithoutUserInput = {
+    id?: string
+    name?: string
+    content: JsonNullValueInput | InputJsonValue
+    style?: number
+    bias?: number
+    strokeColor?: string
+    strokeWidth?: number
+    status?: $Enums.GenerationStatus
+    outputUrl?: string | null
+    outputKey?: string | null
+    previewSvg?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    template: TemplateCreateNestedOneWithoutDocumentsInput
+  }
+
+  export type TemplateDocumentUncheckedCreateWithoutUserInput = {
+    id?: string
+    templateId: string
+    name?: string
+    content: JsonNullValueInput | InputJsonValue
+    style?: number
+    bias?: number
+    strokeColor?: string
+    strokeWidth?: number
+    status?: $Enums.GenerationStatus
+    outputUrl?: string | null
+    outputKey?: string | null
+    previewSvg?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TemplateDocumentCreateOrConnectWithoutUserInput = {
+    where: TemplateDocumentWhereUniqueInput
+    create: XOR<TemplateDocumentCreateWithoutUserInput, TemplateDocumentUncheckedCreateWithoutUserInput>
+  }
+
+  export type TemplateDocumentCreateManyUserInputEnvelope = {
+    data: TemplateDocumentCreateManyUserInput | TemplateDocumentCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type BulkJobCreateWithoutUserInput = {
+    id?: string
+    name?: string | null
+    sourceFileName: string
+    sourceFileUrl?: string | null
+    sourceFileKey?: string | null
+    textColumn: string
+    filenameColumn?: string | null
+    totalRows: number
+    style?: number
+    bias?: number
+    strokeColor?: string
+    strokeWidth?: number
+    status?: $Enums.BatchStatus
+    processedCount?: number
+    failedCount?: number
+    creditsUsed?: number
+    outputZipUrl?: string | null
+    outputZipKey?: string | null
+    errorLog?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: BulkJobItemCreateNestedManyWithoutBulkJobInput
+  }
+
+  export type BulkJobUncheckedCreateWithoutUserInput = {
+    id?: string
+    name?: string | null
+    sourceFileName: string
+    sourceFileUrl?: string | null
+    sourceFileKey?: string | null
+    textColumn: string
+    filenameColumn?: string | null
+    totalRows: number
+    style?: number
+    bias?: number
+    strokeColor?: string
+    strokeWidth?: number
+    status?: $Enums.BatchStatus
+    processedCount?: number
+    failedCount?: number
+    creditsUsed?: number
+    outputZipUrl?: string | null
+    outputZipKey?: string | null
+    errorLog?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: BulkJobItemUncheckedCreateNestedManyWithoutBulkJobInput
+  }
+
+  export type BulkJobCreateOrConnectWithoutUserInput = {
+    where: BulkJobWhereUniqueInput
+    create: XOR<BulkJobCreateWithoutUserInput, BulkJobUncheckedCreateWithoutUserInput>
+  }
+
+  export type BulkJobCreateManyUserInputEnvelope = {
+    data: BulkJobCreateManyUserInput | BulkJobCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TeamMemberCreateWithoutUserInput = {
+    id?: string
+    role?: $Enums.TeamRole
+    joinedAt?: Date | string
+    team: TeamCreateNestedOneWithoutMembersInput
+  }
+
+  export type TeamMemberUncheckedCreateWithoutUserInput = {
+    id?: string
+    teamId: string
+    role?: $Enums.TeamRole
+    joinedAt?: Date | string
+  }
+
+  export type TeamMemberCreateOrConnectWithoutUserInput = {
+    where: TeamMemberWhereUniqueInput
+    create: XOR<TeamMemberCreateWithoutUserInput, TeamMemberUncheckedCreateWithoutUserInput>
+  }
+
+  export type TeamMemberCreateManyUserInputEnvelope = {
+    data: TeamMemberCreateManyUserInput | TeamMemberCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TeamGenerationCreateWithoutCreatedByInput = {
+    id?: string
+    text: string
+    style: number
+    bias: number
+    strokeColor?: string
+    strokeWidth?: number
+    svgContent?: string | null
+    fileUrl?: string | null
+    fileKey?: string | null
+    linesCount?: number
+    charactersCount?: number
+    createdAt?: Date | string
+    team: TeamCreateNestedOneWithoutGenerationsInput
+  }
+
+  export type TeamGenerationUncheckedCreateWithoutCreatedByInput = {
+    id?: string
+    teamId: string
+    text: string
+    style: number
+    bias: number
+    strokeColor?: string
+    strokeWidth?: number
+    svgContent?: string | null
+    fileUrl?: string | null
+    fileKey?: string | null
+    linesCount?: number
+    charactersCount?: number
+    createdAt?: Date | string
+  }
+
+  export type TeamGenerationCreateOrConnectWithoutCreatedByInput = {
+    where: TeamGenerationWhereUniqueInput
+    create: XOR<TeamGenerationCreateWithoutCreatedByInput, TeamGenerationUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type TeamGenerationCreateManyCreatedByInputEnvelope = {
+    data: TeamGenerationCreateManyCreatedByInput | TeamGenerationCreateManyCreatedByInput[]
     skipDuplicates?: boolean
   }
 
@@ -18247,10 +32175,189 @@ export namespace Prisma {
     amount?: FloatFilter<"Payment"> | number
     credits?: IntFilter<"Payment"> | number
     status?: EnumPaymentStatusFilter<"Payment"> | $Enums.PaymentStatus
+    razorpayOrderId?: StringNullableFilter<"Payment"> | string | null
+    razorpayPaymentId?: StringNullableFilter<"Payment"> | string | null
     stripePaymentId?: StringNullableFilter<"Payment"> | string | null
     stripeSessionId?: StringNullableFilter<"Payment"> | string | null
     createdAt?: DateTimeFilter<"Payment"> | Date | string
     updatedAt?: DateTimeFilter<"Payment"> | Date | string
+  }
+
+  export type TemplateUpsertWithWhereUniqueWithoutCreatedByInput = {
+    where: TemplateWhereUniqueInput
+    update: XOR<TemplateUpdateWithoutCreatedByInput, TemplateUncheckedUpdateWithoutCreatedByInput>
+    create: XOR<TemplateCreateWithoutCreatedByInput, TemplateUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type TemplateUpdateWithWhereUniqueWithoutCreatedByInput = {
+    where: TemplateWhereUniqueInput
+    data: XOR<TemplateUpdateWithoutCreatedByInput, TemplateUncheckedUpdateWithoutCreatedByInput>
+  }
+
+  export type TemplateUpdateManyWithWhereWithoutCreatedByInput = {
+    where: TemplateScalarWhereInput
+    data: XOR<TemplateUpdateManyMutationInput, TemplateUncheckedUpdateManyWithoutCreatedByInput>
+  }
+
+  export type TemplateScalarWhereInput = {
+    AND?: TemplateScalarWhereInput | TemplateScalarWhereInput[]
+    OR?: TemplateScalarWhereInput[]
+    NOT?: TemplateScalarWhereInput | TemplateScalarWhereInput[]
+    id?: StringFilter<"Template"> | string
+    name?: StringFilter<"Template"> | string
+    description?: StringNullableFilter<"Template"> | string | null
+    category?: EnumTemplateCategoryFilter<"Template"> | $Enums.TemplateCategory
+    thumbnail?: StringNullableFilter<"Template"> | string | null
+    config?: JsonFilter<"Template">
+    isSystem?: BoolFilter<"Template"> | boolean
+    createdById?: StringNullableFilter<"Template"> | string | null
+    usageCount?: IntFilter<"Template"> | number
+    createdAt?: DateTimeFilter<"Template"> | Date | string
+    updatedAt?: DateTimeFilter<"Template"> | Date | string
+  }
+
+  export type TemplateDocumentUpsertWithWhereUniqueWithoutUserInput = {
+    where: TemplateDocumentWhereUniqueInput
+    update: XOR<TemplateDocumentUpdateWithoutUserInput, TemplateDocumentUncheckedUpdateWithoutUserInput>
+    create: XOR<TemplateDocumentCreateWithoutUserInput, TemplateDocumentUncheckedCreateWithoutUserInput>
+  }
+
+  export type TemplateDocumentUpdateWithWhereUniqueWithoutUserInput = {
+    where: TemplateDocumentWhereUniqueInput
+    data: XOR<TemplateDocumentUpdateWithoutUserInput, TemplateDocumentUncheckedUpdateWithoutUserInput>
+  }
+
+  export type TemplateDocumentUpdateManyWithWhereWithoutUserInput = {
+    where: TemplateDocumentScalarWhereInput
+    data: XOR<TemplateDocumentUpdateManyMutationInput, TemplateDocumentUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type TemplateDocumentScalarWhereInput = {
+    AND?: TemplateDocumentScalarWhereInput | TemplateDocumentScalarWhereInput[]
+    OR?: TemplateDocumentScalarWhereInput[]
+    NOT?: TemplateDocumentScalarWhereInput | TemplateDocumentScalarWhereInput[]
+    id?: StringFilter<"TemplateDocument"> | string
+    userId?: StringFilter<"TemplateDocument"> | string
+    templateId?: StringFilter<"TemplateDocument"> | string
+    name?: StringFilter<"TemplateDocument"> | string
+    content?: JsonFilter<"TemplateDocument">
+    style?: IntFilter<"TemplateDocument"> | number
+    bias?: FloatFilter<"TemplateDocument"> | number
+    strokeColor?: StringFilter<"TemplateDocument"> | string
+    strokeWidth?: IntFilter<"TemplateDocument"> | number
+    status?: EnumGenerationStatusFilter<"TemplateDocument"> | $Enums.GenerationStatus
+    outputUrl?: StringNullableFilter<"TemplateDocument"> | string | null
+    outputKey?: StringNullableFilter<"TemplateDocument"> | string | null
+    previewSvg?: StringNullableFilter<"TemplateDocument"> | string | null
+    createdAt?: DateTimeFilter<"TemplateDocument"> | Date | string
+    updatedAt?: DateTimeFilter<"TemplateDocument"> | Date | string
+  }
+
+  export type BulkJobUpsertWithWhereUniqueWithoutUserInput = {
+    where: BulkJobWhereUniqueInput
+    update: XOR<BulkJobUpdateWithoutUserInput, BulkJobUncheckedUpdateWithoutUserInput>
+    create: XOR<BulkJobCreateWithoutUserInput, BulkJobUncheckedCreateWithoutUserInput>
+  }
+
+  export type BulkJobUpdateWithWhereUniqueWithoutUserInput = {
+    where: BulkJobWhereUniqueInput
+    data: XOR<BulkJobUpdateWithoutUserInput, BulkJobUncheckedUpdateWithoutUserInput>
+  }
+
+  export type BulkJobUpdateManyWithWhereWithoutUserInput = {
+    where: BulkJobScalarWhereInput
+    data: XOR<BulkJobUpdateManyMutationInput, BulkJobUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type BulkJobScalarWhereInput = {
+    AND?: BulkJobScalarWhereInput | BulkJobScalarWhereInput[]
+    OR?: BulkJobScalarWhereInput[]
+    NOT?: BulkJobScalarWhereInput | BulkJobScalarWhereInput[]
+    id?: StringFilter<"BulkJob"> | string
+    userId?: StringFilter<"BulkJob"> | string
+    name?: StringNullableFilter<"BulkJob"> | string | null
+    sourceFileName?: StringFilter<"BulkJob"> | string
+    sourceFileUrl?: StringNullableFilter<"BulkJob"> | string | null
+    sourceFileKey?: StringNullableFilter<"BulkJob"> | string | null
+    textColumn?: StringFilter<"BulkJob"> | string
+    filenameColumn?: StringNullableFilter<"BulkJob"> | string | null
+    totalRows?: IntFilter<"BulkJob"> | number
+    style?: IntFilter<"BulkJob"> | number
+    bias?: FloatFilter<"BulkJob"> | number
+    strokeColor?: StringFilter<"BulkJob"> | string
+    strokeWidth?: IntFilter<"BulkJob"> | number
+    status?: EnumBatchStatusFilter<"BulkJob"> | $Enums.BatchStatus
+    processedCount?: IntFilter<"BulkJob"> | number
+    failedCount?: IntFilter<"BulkJob"> | number
+    creditsUsed?: IntFilter<"BulkJob"> | number
+    outputZipUrl?: StringNullableFilter<"BulkJob"> | string | null
+    outputZipKey?: StringNullableFilter<"BulkJob"> | string | null
+    errorLog?: JsonNullableFilter<"BulkJob">
+    createdAt?: DateTimeFilter<"BulkJob"> | Date | string
+    updatedAt?: DateTimeFilter<"BulkJob"> | Date | string
+  }
+
+  export type TeamMemberUpsertWithWhereUniqueWithoutUserInput = {
+    where: TeamMemberWhereUniqueInput
+    update: XOR<TeamMemberUpdateWithoutUserInput, TeamMemberUncheckedUpdateWithoutUserInput>
+    create: XOR<TeamMemberCreateWithoutUserInput, TeamMemberUncheckedCreateWithoutUserInput>
+  }
+
+  export type TeamMemberUpdateWithWhereUniqueWithoutUserInput = {
+    where: TeamMemberWhereUniqueInput
+    data: XOR<TeamMemberUpdateWithoutUserInput, TeamMemberUncheckedUpdateWithoutUserInput>
+  }
+
+  export type TeamMemberUpdateManyWithWhereWithoutUserInput = {
+    where: TeamMemberScalarWhereInput
+    data: XOR<TeamMemberUpdateManyMutationInput, TeamMemberUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type TeamMemberScalarWhereInput = {
+    AND?: TeamMemberScalarWhereInput | TeamMemberScalarWhereInput[]
+    OR?: TeamMemberScalarWhereInput[]
+    NOT?: TeamMemberScalarWhereInput | TeamMemberScalarWhereInput[]
+    id?: StringFilter<"TeamMember"> | string
+    teamId?: StringFilter<"TeamMember"> | string
+    userId?: StringFilter<"TeamMember"> | string
+    role?: EnumTeamRoleFilter<"TeamMember"> | $Enums.TeamRole
+    joinedAt?: DateTimeFilter<"TeamMember"> | Date | string
+  }
+
+  export type TeamGenerationUpsertWithWhereUniqueWithoutCreatedByInput = {
+    where: TeamGenerationWhereUniqueInput
+    update: XOR<TeamGenerationUpdateWithoutCreatedByInput, TeamGenerationUncheckedUpdateWithoutCreatedByInput>
+    create: XOR<TeamGenerationCreateWithoutCreatedByInput, TeamGenerationUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type TeamGenerationUpdateWithWhereUniqueWithoutCreatedByInput = {
+    where: TeamGenerationWhereUniqueInput
+    data: XOR<TeamGenerationUpdateWithoutCreatedByInput, TeamGenerationUncheckedUpdateWithoutCreatedByInput>
+  }
+
+  export type TeamGenerationUpdateManyWithWhereWithoutCreatedByInput = {
+    where: TeamGenerationScalarWhereInput
+    data: XOR<TeamGenerationUpdateManyMutationInput, TeamGenerationUncheckedUpdateManyWithoutCreatedByInput>
+  }
+
+  export type TeamGenerationScalarWhereInput = {
+    AND?: TeamGenerationScalarWhereInput | TeamGenerationScalarWhereInput[]
+    OR?: TeamGenerationScalarWhereInput[]
+    NOT?: TeamGenerationScalarWhereInput | TeamGenerationScalarWhereInput[]
+    id?: StringFilter<"TeamGeneration"> | string
+    teamId?: StringFilter<"TeamGeneration"> | string
+    createdById?: StringFilter<"TeamGeneration"> | string
+    text?: StringFilter<"TeamGeneration"> | string
+    style?: IntFilter<"TeamGeneration"> | number
+    bias?: FloatFilter<"TeamGeneration"> | number
+    strokeColor?: StringFilter<"TeamGeneration"> | string
+    strokeWidth?: IntFilter<"TeamGeneration"> | number
+    svgContent?: StringNullableFilter<"TeamGeneration"> | string | null
+    fileUrl?: StringNullableFilter<"TeamGeneration"> | string | null
+    fileKey?: StringNullableFilter<"TeamGeneration"> | string | null
+    linesCount?: IntFilter<"TeamGeneration"> | number
+    charactersCount?: IntFilter<"TeamGeneration"> | number
+    createdAt?: DateTimeFilter<"TeamGeneration"> | Date | string
   }
 
   export type UserCreateWithoutUsageHistoryInput = {
@@ -18269,6 +32376,11 @@ export namespace Prisma {
     savedGenerations?: SavedGenerationCreateNestedManyWithoutUserInput
     batchJobs?: BatchJobCreateNestedManyWithoutUserInput
     payments?: PaymentCreateNestedManyWithoutUserInput
+    createdTemplates?: TemplateCreateNestedManyWithoutCreatedByInput
+    templateDocuments?: TemplateDocumentCreateNestedManyWithoutUserInput
+    bulkJobs?: BulkJobCreateNestedManyWithoutUserInput
+    teamMemberships?: TeamMemberCreateNestedManyWithoutUserInput
+    teamGenerations?: TeamGenerationCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutUsageHistoryInput = {
@@ -18287,6 +32399,11 @@ export namespace Prisma {
     savedGenerations?: SavedGenerationUncheckedCreateNestedManyWithoutUserInput
     batchJobs?: BatchJobUncheckedCreateNestedManyWithoutUserInput
     payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    createdTemplates?: TemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    templateDocuments?: TemplateDocumentUncheckedCreateNestedManyWithoutUserInput
+    bulkJobs?: BulkJobUncheckedCreateNestedManyWithoutUserInput
+    teamMemberships?: TeamMemberUncheckedCreateNestedManyWithoutUserInput
+    teamGenerations?: TeamGenerationUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutUsageHistoryInput = {
@@ -18321,6 +32438,11 @@ export namespace Prisma {
     savedGenerations?: SavedGenerationUpdateManyWithoutUserNestedInput
     batchJobs?: BatchJobUpdateManyWithoutUserNestedInput
     payments?: PaymentUpdateManyWithoutUserNestedInput
+    createdTemplates?: TemplateUpdateManyWithoutCreatedByNestedInput
+    templateDocuments?: TemplateDocumentUpdateManyWithoutUserNestedInput
+    bulkJobs?: BulkJobUpdateManyWithoutUserNestedInput
+    teamMemberships?: TeamMemberUpdateManyWithoutUserNestedInput
+    teamGenerations?: TeamGenerationUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUsageHistoryInput = {
@@ -18339,6 +32461,11 @@ export namespace Prisma {
     savedGenerations?: SavedGenerationUncheckedUpdateManyWithoutUserNestedInput
     batchJobs?: BatchJobUncheckedUpdateManyWithoutUserNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    createdTemplates?: TemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    templateDocuments?: TemplateDocumentUncheckedUpdateManyWithoutUserNestedInput
+    bulkJobs?: BulkJobUncheckedUpdateManyWithoutUserNestedInput
+    teamMemberships?: TeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    teamGenerations?: TeamGenerationUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserCreateWithoutSynthesisHistoryInput = {
@@ -18357,6 +32484,11 @@ export namespace Prisma {
     savedGenerations?: SavedGenerationCreateNestedManyWithoutUserInput
     batchJobs?: BatchJobCreateNestedManyWithoutUserInput
     payments?: PaymentCreateNestedManyWithoutUserInput
+    createdTemplates?: TemplateCreateNestedManyWithoutCreatedByInput
+    templateDocuments?: TemplateDocumentCreateNestedManyWithoutUserInput
+    bulkJobs?: BulkJobCreateNestedManyWithoutUserInput
+    teamMemberships?: TeamMemberCreateNestedManyWithoutUserInput
+    teamGenerations?: TeamGenerationCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutSynthesisHistoryInput = {
@@ -18375,6 +32507,11 @@ export namespace Prisma {
     savedGenerations?: SavedGenerationUncheckedCreateNestedManyWithoutUserInput
     batchJobs?: BatchJobUncheckedCreateNestedManyWithoutUserInput
     payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    createdTemplates?: TemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    templateDocuments?: TemplateDocumentUncheckedCreateNestedManyWithoutUserInput
+    bulkJobs?: BulkJobUncheckedCreateNestedManyWithoutUserInput
+    teamMemberships?: TeamMemberUncheckedCreateNestedManyWithoutUserInput
+    teamGenerations?: TeamGenerationUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutSynthesisHistoryInput = {
@@ -18409,6 +32546,11 @@ export namespace Prisma {
     savedGenerations?: SavedGenerationUpdateManyWithoutUserNestedInput
     batchJobs?: BatchJobUpdateManyWithoutUserNestedInput
     payments?: PaymentUpdateManyWithoutUserNestedInput
+    createdTemplates?: TemplateUpdateManyWithoutCreatedByNestedInput
+    templateDocuments?: TemplateDocumentUpdateManyWithoutUserNestedInput
+    bulkJobs?: BulkJobUpdateManyWithoutUserNestedInput
+    teamMemberships?: TeamMemberUpdateManyWithoutUserNestedInput
+    teamGenerations?: TeamGenerationUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSynthesisHistoryInput = {
@@ -18427,6 +32569,11 @@ export namespace Prisma {
     savedGenerations?: SavedGenerationUncheckedUpdateManyWithoutUserNestedInput
     batchJobs?: BatchJobUncheckedUpdateManyWithoutUserNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    createdTemplates?: TemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    templateDocuments?: TemplateDocumentUncheckedUpdateManyWithoutUserNestedInput
+    bulkJobs?: BulkJobUncheckedUpdateManyWithoutUserNestedInput
+    teamMemberships?: TeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    teamGenerations?: TeamGenerationUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserCreateWithoutPaymentsInput = {
@@ -18445,6 +32592,11 @@ export namespace Prisma {
     synthesisHistory?: SynthesisUsageCreateNestedManyWithoutUserInput
     savedGenerations?: SavedGenerationCreateNestedManyWithoutUserInput
     batchJobs?: BatchJobCreateNestedManyWithoutUserInput
+    createdTemplates?: TemplateCreateNestedManyWithoutCreatedByInput
+    templateDocuments?: TemplateDocumentCreateNestedManyWithoutUserInput
+    bulkJobs?: BulkJobCreateNestedManyWithoutUserInput
+    teamMemberships?: TeamMemberCreateNestedManyWithoutUserInput
+    teamGenerations?: TeamGenerationCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutPaymentsInput = {
@@ -18463,6 +32615,11 @@ export namespace Prisma {
     synthesisHistory?: SynthesisUsageUncheckedCreateNestedManyWithoutUserInput
     savedGenerations?: SavedGenerationUncheckedCreateNestedManyWithoutUserInput
     batchJobs?: BatchJobUncheckedCreateNestedManyWithoutUserInput
+    createdTemplates?: TemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    templateDocuments?: TemplateDocumentUncheckedCreateNestedManyWithoutUserInput
+    bulkJobs?: BulkJobUncheckedCreateNestedManyWithoutUserInput
+    teamMemberships?: TeamMemberUncheckedCreateNestedManyWithoutUserInput
+    teamGenerations?: TeamGenerationUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutPaymentsInput = {
@@ -18497,6 +32654,11 @@ export namespace Prisma {
     synthesisHistory?: SynthesisUsageUpdateManyWithoutUserNestedInput
     savedGenerations?: SavedGenerationUpdateManyWithoutUserNestedInput
     batchJobs?: BatchJobUpdateManyWithoutUserNestedInput
+    createdTemplates?: TemplateUpdateManyWithoutCreatedByNestedInput
+    templateDocuments?: TemplateDocumentUpdateManyWithoutUserNestedInput
+    bulkJobs?: BulkJobUpdateManyWithoutUserNestedInput
+    teamMemberships?: TeamMemberUpdateManyWithoutUserNestedInput
+    teamGenerations?: TeamGenerationUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPaymentsInput = {
@@ -18515,6 +32677,11 @@ export namespace Prisma {
     synthesisHistory?: SynthesisUsageUncheckedUpdateManyWithoutUserNestedInput
     savedGenerations?: SavedGenerationUncheckedUpdateManyWithoutUserNestedInput
     batchJobs?: BatchJobUncheckedUpdateManyWithoutUserNestedInput
+    createdTemplates?: TemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    templateDocuments?: TemplateDocumentUncheckedUpdateManyWithoutUserNestedInput
+    bulkJobs?: BulkJobUncheckedUpdateManyWithoutUserNestedInput
+    teamMemberships?: TeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    teamGenerations?: TeamGenerationUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserCreateWithoutSavedGenerationsInput = {
@@ -18533,6 +32700,11 @@ export namespace Prisma {
     synthesisHistory?: SynthesisUsageCreateNestedManyWithoutUserInput
     batchJobs?: BatchJobCreateNestedManyWithoutUserInput
     payments?: PaymentCreateNestedManyWithoutUserInput
+    createdTemplates?: TemplateCreateNestedManyWithoutCreatedByInput
+    templateDocuments?: TemplateDocumentCreateNestedManyWithoutUserInput
+    bulkJobs?: BulkJobCreateNestedManyWithoutUserInput
+    teamMemberships?: TeamMemberCreateNestedManyWithoutUserInput
+    teamGenerations?: TeamGenerationCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutSavedGenerationsInput = {
@@ -18551,6 +32723,11 @@ export namespace Prisma {
     synthesisHistory?: SynthesisUsageUncheckedCreateNestedManyWithoutUserInput
     batchJobs?: BatchJobUncheckedCreateNestedManyWithoutUserInput
     payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    createdTemplates?: TemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    templateDocuments?: TemplateDocumentUncheckedCreateNestedManyWithoutUserInput
+    bulkJobs?: BulkJobUncheckedCreateNestedManyWithoutUserInput
+    teamMemberships?: TeamMemberUncheckedCreateNestedManyWithoutUserInput
+    teamGenerations?: TeamGenerationUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutSavedGenerationsInput = {
@@ -18620,6 +32797,11 @@ export namespace Prisma {
     synthesisHistory?: SynthesisUsageUpdateManyWithoutUserNestedInput
     batchJobs?: BatchJobUpdateManyWithoutUserNestedInput
     payments?: PaymentUpdateManyWithoutUserNestedInput
+    createdTemplates?: TemplateUpdateManyWithoutCreatedByNestedInput
+    templateDocuments?: TemplateDocumentUpdateManyWithoutUserNestedInput
+    bulkJobs?: BulkJobUpdateManyWithoutUserNestedInput
+    teamMemberships?: TeamMemberUpdateManyWithoutUserNestedInput
+    teamGenerations?: TeamGenerationUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSavedGenerationsInput = {
@@ -18638,6 +32820,11 @@ export namespace Prisma {
     synthesisHistory?: SynthesisUsageUncheckedUpdateManyWithoutUserNestedInput
     batchJobs?: BatchJobUncheckedUpdateManyWithoutUserNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    createdTemplates?: TemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    templateDocuments?: TemplateDocumentUncheckedUpdateManyWithoutUserNestedInput
+    bulkJobs?: BulkJobUncheckedUpdateManyWithoutUserNestedInput
+    teamMemberships?: TeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    teamGenerations?: TeamGenerationUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type BatchJobUpsertWithoutGenerationsInput = {
@@ -18697,6 +32884,11 @@ export namespace Prisma {
     synthesisHistory?: SynthesisUsageCreateNestedManyWithoutUserInput
     savedGenerations?: SavedGenerationCreateNestedManyWithoutUserInput
     payments?: PaymentCreateNestedManyWithoutUserInput
+    createdTemplates?: TemplateCreateNestedManyWithoutCreatedByInput
+    templateDocuments?: TemplateDocumentCreateNestedManyWithoutUserInput
+    bulkJobs?: BulkJobCreateNestedManyWithoutUserInput
+    teamMemberships?: TeamMemberCreateNestedManyWithoutUserInput
+    teamGenerations?: TeamGenerationCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutBatchJobsInput = {
@@ -18715,6 +32907,11 @@ export namespace Prisma {
     synthesisHistory?: SynthesisUsageUncheckedCreateNestedManyWithoutUserInput
     savedGenerations?: SavedGenerationUncheckedCreateNestedManyWithoutUserInput
     payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    createdTemplates?: TemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    templateDocuments?: TemplateDocumentUncheckedCreateNestedManyWithoutUserInput
+    bulkJobs?: BulkJobUncheckedCreateNestedManyWithoutUserInput
+    teamMemberships?: TeamMemberUncheckedCreateNestedManyWithoutUserInput
+    teamGenerations?: TeamGenerationUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutBatchJobsInput = {
@@ -18815,6 +33012,11 @@ export namespace Prisma {
     synthesisHistory?: SynthesisUsageUpdateManyWithoutUserNestedInput
     savedGenerations?: SavedGenerationUpdateManyWithoutUserNestedInput
     payments?: PaymentUpdateManyWithoutUserNestedInput
+    createdTemplates?: TemplateUpdateManyWithoutCreatedByNestedInput
+    templateDocuments?: TemplateDocumentUpdateManyWithoutUserNestedInput
+    bulkJobs?: BulkJobUpdateManyWithoutUserNestedInput
+    teamMemberships?: TeamMemberUpdateManyWithoutUserNestedInput
+    teamGenerations?: TeamGenerationUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBatchJobsInput = {
@@ -18833,6 +33035,11 @@ export namespace Prisma {
     synthesisHistory?: SynthesisUsageUncheckedUpdateManyWithoutUserNestedInput
     savedGenerations?: SavedGenerationUncheckedUpdateManyWithoutUserNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    createdTemplates?: TemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    templateDocuments?: TemplateDocumentUncheckedUpdateManyWithoutUserNestedInput
+    bulkJobs?: BulkJobUncheckedUpdateManyWithoutUserNestedInput
+    teamMemberships?: TeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    teamGenerations?: TeamGenerationUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type SavedGenerationUpsertWithWhereUniqueWithoutBatchJobInput = {
@@ -18849,6 +33056,1222 @@ export namespace Prisma {
   export type SavedGenerationUpdateManyWithWhereWithoutBatchJobInput = {
     where: SavedGenerationScalarWhereInput
     data: XOR<SavedGenerationUpdateManyMutationInput, SavedGenerationUncheckedUpdateManyWithoutBatchJobInput>
+  }
+
+  export type UserCreateWithoutCreatedTemplatesInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    password?: string | null
+    credits?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    usageHistory?: UsageCreateNestedManyWithoutUserInput
+    synthesisHistory?: SynthesisUsageCreateNestedManyWithoutUserInput
+    savedGenerations?: SavedGenerationCreateNestedManyWithoutUserInput
+    batchJobs?: BatchJobCreateNestedManyWithoutUserInput
+    payments?: PaymentCreateNestedManyWithoutUserInput
+    templateDocuments?: TemplateDocumentCreateNestedManyWithoutUserInput
+    bulkJobs?: BulkJobCreateNestedManyWithoutUserInput
+    teamMemberships?: TeamMemberCreateNestedManyWithoutUserInput
+    teamGenerations?: TeamGenerationCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutCreatedTemplatesInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    password?: string | null
+    credits?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    usageHistory?: UsageUncheckedCreateNestedManyWithoutUserInput
+    synthesisHistory?: SynthesisUsageUncheckedCreateNestedManyWithoutUserInput
+    savedGenerations?: SavedGenerationUncheckedCreateNestedManyWithoutUserInput
+    batchJobs?: BatchJobUncheckedCreateNestedManyWithoutUserInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    templateDocuments?: TemplateDocumentUncheckedCreateNestedManyWithoutUserInput
+    bulkJobs?: BulkJobUncheckedCreateNestedManyWithoutUserInput
+    teamMemberships?: TeamMemberUncheckedCreateNestedManyWithoutUserInput
+    teamGenerations?: TeamGenerationUncheckedCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutCreatedTemplatesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCreatedTemplatesInput, UserUncheckedCreateWithoutCreatedTemplatesInput>
+  }
+
+  export type TemplateDocumentCreateWithoutTemplateInput = {
+    id?: string
+    name?: string
+    content: JsonNullValueInput | InputJsonValue
+    style?: number
+    bias?: number
+    strokeColor?: string
+    strokeWidth?: number
+    status?: $Enums.GenerationStatus
+    outputUrl?: string | null
+    outputKey?: string | null
+    previewSvg?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutTemplateDocumentsInput
+  }
+
+  export type TemplateDocumentUncheckedCreateWithoutTemplateInput = {
+    id?: string
+    userId: string
+    name?: string
+    content: JsonNullValueInput | InputJsonValue
+    style?: number
+    bias?: number
+    strokeColor?: string
+    strokeWidth?: number
+    status?: $Enums.GenerationStatus
+    outputUrl?: string | null
+    outputKey?: string | null
+    previewSvg?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TemplateDocumentCreateOrConnectWithoutTemplateInput = {
+    where: TemplateDocumentWhereUniqueInput
+    create: XOR<TemplateDocumentCreateWithoutTemplateInput, TemplateDocumentUncheckedCreateWithoutTemplateInput>
+  }
+
+  export type TemplateDocumentCreateManyTemplateInputEnvelope = {
+    data: TemplateDocumentCreateManyTemplateInput | TemplateDocumentCreateManyTemplateInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutCreatedTemplatesInput = {
+    update: XOR<UserUpdateWithoutCreatedTemplatesInput, UserUncheckedUpdateWithoutCreatedTemplatesInput>
+    create: XOR<UserCreateWithoutCreatedTemplatesInput, UserUncheckedCreateWithoutCreatedTemplatesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCreatedTemplatesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCreatedTemplatesInput, UserUncheckedUpdateWithoutCreatedTemplatesInput>
+  }
+
+  export type UserUpdateWithoutCreatedTemplatesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    credits?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    usageHistory?: UsageUpdateManyWithoutUserNestedInput
+    synthesisHistory?: SynthesisUsageUpdateManyWithoutUserNestedInput
+    savedGenerations?: SavedGenerationUpdateManyWithoutUserNestedInput
+    batchJobs?: BatchJobUpdateManyWithoutUserNestedInput
+    payments?: PaymentUpdateManyWithoutUserNestedInput
+    templateDocuments?: TemplateDocumentUpdateManyWithoutUserNestedInput
+    bulkJobs?: BulkJobUpdateManyWithoutUserNestedInput
+    teamMemberships?: TeamMemberUpdateManyWithoutUserNestedInput
+    teamGenerations?: TeamGenerationUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCreatedTemplatesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    credits?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    usageHistory?: UsageUncheckedUpdateManyWithoutUserNestedInput
+    synthesisHistory?: SynthesisUsageUncheckedUpdateManyWithoutUserNestedInput
+    savedGenerations?: SavedGenerationUncheckedUpdateManyWithoutUserNestedInput
+    batchJobs?: BatchJobUncheckedUpdateManyWithoutUserNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    templateDocuments?: TemplateDocumentUncheckedUpdateManyWithoutUserNestedInput
+    bulkJobs?: BulkJobUncheckedUpdateManyWithoutUserNestedInput
+    teamMemberships?: TeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    teamGenerations?: TeamGenerationUncheckedUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type TemplateDocumentUpsertWithWhereUniqueWithoutTemplateInput = {
+    where: TemplateDocumentWhereUniqueInput
+    update: XOR<TemplateDocumentUpdateWithoutTemplateInput, TemplateDocumentUncheckedUpdateWithoutTemplateInput>
+    create: XOR<TemplateDocumentCreateWithoutTemplateInput, TemplateDocumentUncheckedCreateWithoutTemplateInput>
+  }
+
+  export type TemplateDocumentUpdateWithWhereUniqueWithoutTemplateInput = {
+    where: TemplateDocumentWhereUniqueInput
+    data: XOR<TemplateDocumentUpdateWithoutTemplateInput, TemplateDocumentUncheckedUpdateWithoutTemplateInput>
+  }
+
+  export type TemplateDocumentUpdateManyWithWhereWithoutTemplateInput = {
+    where: TemplateDocumentScalarWhereInput
+    data: XOR<TemplateDocumentUpdateManyMutationInput, TemplateDocumentUncheckedUpdateManyWithoutTemplateInput>
+  }
+
+  export type UserCreateWithoutTemplateDocumentsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    password?: string | null
+    credits?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    usageHistory?: UsageCreateNestedManyWithoutUserInput
+    synthesisHistory?: SynthesisUsageCreateNestedManyWithoutUserInput
+    savedGenerations?: SavedGenerationCreateNestedManyWithoutUserInput
+    batchJobs?: BatchJobCreateNestedManyWithoutUserInput
+    payments?: PaymentCreateNestedManyWithoutUserInput
+    createdTemplates?: TemplateCreateNestedManyWithoutCreatedByInput
+    bulkJobs?: BulkJobCreateNestedManyWithoutUserInput
+    teamMemberships?: TeamMemberCreateNestedManyWithoutUserInput
+    teamGenerations?: TeamGenerationCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutTemplateDocumentsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    password?: string | null
+    credits?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    usageHistory?: UsageUncheckedCreateNestedManyWithoutUserInput
+    synthesisHistory?: SynthesisUsageUncheckedCreateNestedManyWithoutUserInput
+    savedGenerations?: SavedGenerationUncheckedCreateNestedManyWithoutUserInput
+    batchJobs?: BatchJobUncheckedCreateNestedManyWithoutUserInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    createdTemplates?: TemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    bulkJobs?: BulkJobUncheckedCreateNestedManyWithoutUserInput
+    teamMemberships?: TeamMemberUncheckedCreateNestedManyWithoutUserInput
+    teamGenerations?: TeamGenerationUncheckedCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutTemplateDocumentsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTemplateDocumentsInput, UserUncheckedCreateWithoutTemplateDocumentsInput>
+  }
+
+  export type TemplateCreateWithoutDocumentsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    category: $Enums.TemplateCategory
+    thumbnail?: string | null
+    config: JsonNullValueInput | InputJsonValue
+    isSystem?: boolean
+    usageCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdBy?: UserCreateNestedOneWithoutCreatedTemplatesInput
+  }
+
+  export type TemplateUncheckedCreateWithoutDocumentsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    category: $Enums.TemplateCategory
+    thumbnail?: string | null
+    config: JsonNullValueInput | InputJsonValue
+    isSystem?: boolean
+    createdById?: string | null
+    usageCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TemplateCreateOrConnectWithoutDocumentsInput = {
+    where: TemplateWhereUniqueInput
+    create: XOR<TemplateCreateWithoutDocumentsInput, TemplateUncheckedCreateWithoutDocumentsInput>
+  }
+
+  export type UserUpsertWithoutTemplateDocumentsInput = {
+    update: XOR<UserUpdateWithoutTemplateDocumentsInput, UserUncheckedUpdateWithoutTemplateDocumentsInput>
+    create: XOR<UserCreateWithoutTemplateDocumentsInput, UserUncheckedCreateWithoutTemplateDocumentsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutTemplateDocumentsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutTemplateDocumentsInput, UserUncheckedUpdateWithoutTemplateDocumentsInput>
+  }
+
+  export type UserUpdateWithoutTemplateDocumentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    credits?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    usageHistory?: UsageUpdateManyWithoutUserNestedInput
+    synthesisHistory?: SynthesisUsageUpdateManyWithoutUserNestedInput
+    savedGenerations?: SavedGenerationUpdateManyWithoutUserNestedInput
+    batchJobs?: BatchJobUpdateManyWithoutUserNestedInput
+    payments?: PaymentUpdateManyWithoutUserNestedInput
+    createdTemplates?: TemplateUpdateManyWithoutCreatedByNestedInput
+    bulkJobs?: BulkJobUpdateManyWithoutUserNestedInput
+    teamMemberships?: TeamMemberUpdateManyWithoutUserNestedInput
+    teamGenerations?: TeamGenerationUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutTemplateDocumentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    credits?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    usageHistory?: UsageUncheckedUpdateManyWithoutUserNestedInput
+    synthesisHistory?: SynthesisUsageUncheckedUpdateManyWithoutUserNestedInput
+    savedGenerations?: SavedGenerationUncheckedUpdateManyWithoutUserNestedInput
+    batchJobs?: BatchJobUncheckedUpdateManyWithoutUserNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    createdTemplates?: TemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    bulkJobs?: BulkJobUncheckedUpdateManyWithoutUserNestedInput
+    teamMemberships?: TeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    teamGenerations?: TeamGenerationUncheckedUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type TemplateUpsertWithoutDocumentsInput = {
+    update: XOR<TemplateUpdateWithoutDocumentsInput, TemplateUncheckedUpdateWithoutDocumentsInput>
+    create: XOR<TemplateCreateWithoutDocumentsInput, TemplateUncheckedCreateWithoutDocumentsInput>
+    where?: TemplateWhereInput
+  }
+
+  export type TemplateUpdateToOneWithWhereWithoutDocumentsInput = {
+    where?: TemplateWhereInput
+    data: XOR<TemplateUpdateWithoutDocumentsInput, TemplateUncheckedUpdateWithoutDocumentsInput>
+  }
+
+  export type TemplateUpdateWithoutDocumentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
+    config?: JsonNullValueInput | InputJsonValue
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    usageCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneWithoutCreatedTemplatesNestedInput
+  }
+
+  export type TemplateUncheckedUpdateWithoutDocumentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
+    config?: JsonNullValueInput | InputJsonValue
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    usageCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserCreateWithoutBulkJobsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    password?: string | null
+    credits?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    usageHistory?: UsageCreateNestedManyWithoutUserInput
+    synthesisHistory?: SynthesisUsageCreateNestedManyWithoutUserInput
+    savedGenerations?: SavedGenerationCreateNestedManyWithoutUserInput
+    batchJobs?: BatchJobCreateNestedManyWithoutUserInput
+    payments?: PaymentCreateNestedManyWithoutUserInput
+    createdTemplates?: TemplateCreateNestedManyWithoutCreatedByInput
+    templateDocuments?: TemplateDocumentCreateNestedManyWithoutUserInput
+    teamMemberships?: TeamMemberCreateNestedManyWithoutUserInput
+    teamGenerations?: TeamGenerationCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutBulkJobsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    password?: string | null
+    credits?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    usageHistory?: UsageUncheckedCreateNestedManyWithoutUserInput
+    synthesisHistory?: SynthesisUsageUncheckedCreateNestedManyWithoutUserInput
+    savedGenerations?: SavedGenerationUncheckedCreateNestedManyWithoutUserInput
+    batchJobs?: BatchJobUncheckedCreateNestedManyWithoutUserInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    createdTemplates?: TemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    templateDocuments?: TemplateDocumentUncheckedCreateNestedManyWithoutUserInput
+    teamMemberships?: TeamMemberUncheckedCreateNestedManyWithoutUserInput
+    teamGenerations?: TeamGenerationUncheckedCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutBulkJobsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutBulkJobsInput, UserUncheckedCreateWithoutBulkJobsInput>
+  }
+
+  export type BulkJobItemCreateWithoutBulkJobInput = {
+    id?: string
+    rowIndex: number
+    text: string
+    outputFilename?: string | null
+    status?: $Enums.GenerationStatus
+    svgContent?: string | null
+    outputUrl?: string | null
+    errorMessage?: string | null
+    createdAt?: Date | string
+  }
+
+  export type BulkJobItemUncheckedCreateWithoutBulkJobInput = {
+    id?: string
+    rowIndex: number
+    text: string
+    outputFilename?: string | null
+    status?: $Enums.GenerationStatus
+    svgContent?: string | null
+    outputUrl?: string | null
+    errorMessage?: string | null
+    createdAt?: Date | string
+  }
+
+  export type BulkJobItemCreateOrConnectWithoutBulkJobInput = {
+    where: BulkJobItemWhereUniqueInput
+    create: XOR<BulkJobItemCreateWithoutBulkJobInput, BulkJobItemUncheckedCreateWithoutBulkJobInput>
+  }
+
+  export type BulkJobItemCreateManyBulkJobInputEnvelope = {
+    data: BulkJobItemCreateManyBulkJobInput | BulkJobItemCreateManyBulkJobInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutBulkJobsInput = {
+    update: XOR<UserUpdateWithoutBulkJobsInput, UserUncheckedUpdateWithoutBulkJobsInput>
+    create: XOR<UserCreateWithoutBulkJobsInput, UserUncheckedCreateWithoutBulkJobsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutBulkJobsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutBulkJobsInput, UserUncheckedUpdateWithoutBulkJobsInput>
+  }
+
+  export type UserUpdateWithoutBulkJobsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    credits?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    usageHistory?: UsageUpdateManyWithoutUserNestedInput
+    synthesisHistory?: SynthesisUsageUpdateManyWithoutUserNestedInput
+    savedGenerations?: SavedGenerationUpdateManyWithoutUserNestedInput
+    batchJobs?: BatchJobUpdateManyWithoutUserNestedInput
+    payments?: PaymentUpdateManyWithoutUserNestedInput
+    createdTemplates?: TemplateUpdateManyWithoutCreatedByNestedInput
+    templateDocuments?: TemplateDocumentUpdateManyWithoutUserNestedInput
+    teamMemberships?: TeamMemberUpdateManyWithoutUserNestedInput
+    teamGenerations?: TeamGenerationUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutBulkJobsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    credits?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    usageHistory?: UsageUncheckedUpdateManyWithoutUserNestedInput
+    synthesisHistory?: SynthesisUsageUncheckedUpdateManyWithoutUserNestedInput
+    savedGenerations?: SavedGenerationUncheckedUpdateManyWithoutUserNestedInput
+    batchJobs?: BatchJobUncheckedUpdateManyWithoutUserNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    createdTemplates?: TemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    templateDocuments?: TemplateDocumentUncheckedUpdateManyWithoutUserNestedInput
+    teamMemberships?: TeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    teamGenerations?: TeamGenerationUncheckedUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type BulkJobItemUpsertWithWhereUniqueWithoutBulkJobInput = {
+    where: BulkJobItemWhereUniqueInput
+    update: XOR<BulkJobItemUpdateWithoutBulkJobInput, BulkJobItemUncheckedUpdateWithoutBulkJobInput>
+    create: XOR<BulkJobItemCreateWithoutBulkJobInput, BulkJobItemUncheckedCreateWithoutBulkJobInput>
+  }
+
+  export type BulkJobItemUpdateWithWhereUniqueWithoutBulkJobInput = {
+    where: BulkJobItemWhereUniqueInput
+    data: XOR<BulkJobItemUpdateWithoutBulkJobInput, BulkJobItemUncheckedUpdateWithoutBulkJobInput>
+  }
+
+  export type BulkJobItemUpdateManyWithWhereWithoutBulkJobInput = {
+    where: BulkJobItemScalarWhereInput
+    data: XOR<BulkJobItemUpdateManyMutationInput, BulkJobItemUncheckedUpdateManyWithoutBulkJobInput>
+  }
+
+  export type BulkJobItemScalarWhereInput = {
+    AND?: BulkJobItemScalarWhereInput | BulkJobItemScalarWhereInput[]
+    OR?: BulkJobItemScalarWhereInput[]
+    NOT?: BulkJobItemScalarWhereInput | BulkJobItemScalarWhereInput[]
+    id?: StringFilter<"BulkJobItem"> | string
+    bulkJobId?: StringFilter<"BulkJobItem"> | string
+    rowIndex?: IntFilter<"BulkJobItem"> | number
+    text?: StringFilter<"BulkJobItem"> | string
+    outputFilename?: StringNullableFilter<"BulkJobItem"> | string | null
+    status?: EnumGenerationStatusFilter<"BulkJobItem"> | $Enums.GenerationStatus
+    svgContent?: StringNullableFilter<"BulkJobItem"> | string | null
+    outputUrl?: StringNullableFilter<"BulkJobItem"> | string | null
+    errorMessage?: StringNullableFilter<"BulkJobItem"> | string | null
+    createdAt?: DateTimeFilter<"BulkJobItem"> | Date | string
+  }
+
+  export type BulkJobCreateWithoutItemsInput = {
+    id?: string
+    name?: string | null
+    sourceFileName: string
+    sourceFileUrl?: string | null
+    sourceFileKey?: string | null
+    textColumn: string
+    filenameColumn?: string | null
+    totalRows: number
+    style?: number
+    bias?: number
+    strokeColor?: string
+    strokeWidth?: number
+    status?: $Enums.BatchStatus
+    processedCount?: number
+    failedCount?: number
+    creditsUsed?: number
+    outputZipUrl?: string | null
+    outputZipKey?: string | null
+    errorLog?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutBulkJobsInput
+  }
+
+  export type BulkJobUncheckedCreateWithoutItemsInput = {
+    id?: string
+    userId: string
+    name?: string | null
+    sourceFileName: string
+    sourceFileUrl?: string | null
+    sourceFileKey?: string | null
+    textColumn: string
+    filenameColumn?: string | null
+    totalRows: number
+    style?: number
+    bias?: number
+    strokeColor?: string
+    strokeWidth?: number
+    status?: $Enums.BatchStatus
+    processedCount?: number
+    failedCount?: number
+    creditsUsed?: number
+    outputZipUrl?: string | null
+    outputZipKey?: string | null
+    errorLog?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BulkJobCreateOrConnectWithoutItemsInput = {
+    where: BulkJobWhereUniqueInput
+    create: XOR<BulkJobCreateWithoutItemsInput, BulkJobUncheckedCreateWithoutItemsInput>
+  }
+
+  export type BulkJobUpsertWithoutItemsInput = {
+    update: XOR<BulkJobUpdateWithoutItemsInput, BulkJobUncheckedUpdateWithoutItemsInput>
+    create: XOR<BulkJobCreateWithoutItemsInput, BulkJobUncheckedCreateWithoutItemsInput>
+    where?: BulkJobWhereInput
+  }
+
+  export type BulkJobUpdateToOneWithWhereWithoutItemsInput = {
+    where?: BulkJobWhereInput
+    data: XOR<BulkJobUpdateWithoutItemsInput, BulkJobUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type BulkJobUpdateWithoutItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceFileName?: StringFieldUpdateOperationsInput | string
+    sourceFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceFileKey?: NullableStringFieldUpdateOperationsInput | string | null
+    textColumn?: StringFieldUpdateOperationsInput | string
+    filenameColumn?: NullableStringFieldUpdateOperationsInput | string | null
+    totalRows?: IntFieldUpdateOperationsInput | number
+    style?: IntFieldUpdateOperationsInput | number
+    bias?: FloatFieldUpdateOperationsInput | number
+    strokeColor?: StringFieldUpdateOperationsInput | string
+    strokeWidth?: IntFieldUpdateOperationsInput | number
+    status?: EnumBatchStatusFieldUpdateOperationsInput | $Enums.BatchStatus
+    processedCount?: IntFieldUpdateOperationsInput | number
+    failedCount?: IntFieldUpdateOperationsInput | number
+    creditsUsed?: IntFieldUpdateOperationsInput | number
+    outputZipUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    outputZipKey?: NullableStringFieldUpdateOperationsInput | string | null
+    errorLog?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutBulkJobsNestedInput
+  }
+
+  export type BulkJobUncheckedUpdateWithoutItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceFileName?: StringFieldUpdateOperationsInput | string
+    sourceFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceFileKey?: NullableStringFieldUpdateOperationsInput | string | null
+    textColumn?: StringFieldUpdateOperationsInput | string
+    filenameColumn?: NullableStringFieldUpdateOperationsInput | string | null
+    totalRows?: IntFieldUpdateOperationsInput | number
+    style?: IntFieldUpdateOperationsInput | number
+    bias?: FloatFieldUpdateOperationsInput | number
+    strokeColor?: StringFieldUpdateOperationsInput | string
+    strokeWidth?: IntFieldUpdateOperationsInput | number
+    status?: EnumBatchStatusFieldUpdateOperationsInput | $Enums.BatchStatus
+    processedCount?: IntFieldUpdateOperationsInput | number
+    failedCount?: IntFieldUpdateOperationsInput | number
+    creditsUsed?: IntFieldUpdateOperationsInput | number
+    outputZipUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    outputZipKey?: NullableStringFieldUpdateOperationsInput | string | null
+    errorLog?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TeamMemberCreateWithoutTeamInput = {
+    id?: string
+    role?: $Enums.TeamRole
+    joinedAt?: Date | string
+    user: UserCreateNestedOneWithoutTeamMembershipsInput
+  }
+
+  export type TeamMemberUncheckedCreateWithoutTeamInput = {
+    id?: string
+    userId: string
+    role?: $Enums.TeamRole
+    joinedAt?: Date | string
+  }
+
+  export type TeamMemberCreateOrConnectWithoutTeamInput = {
+    where: TeamMemberWhereUniqueInput
+    create: XOR<TeamMemberCreateWithoutTeamInput, TeamMemberUncheckedCreateWithoutTeamInput>
+  }
+
+  export type TeamMemberCreateManyTeamInputEnvelope = {
+    data: TeamMemberCreateManyTeamInput | TeamMemberCreateManyTeamInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TeamInviteCreateWithoutTeamInput = {
+    id?: string
+    email: string
+    role?: $Enums.TeamRole
+    token?: string
+    expiresAt: Date | string
+    acceptedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type TeamInviteUncheckedCreateWithoutTeamInput = {
+    id?: string
+    email: string
+    role?: $Enums.TeamRole
+    token?: string
+    expiresAt: Date | string
+    acceptedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type TeamInviteCreateOrConnectWithoutTeamInput = {
+    where: TeamInviteWhereUniqueInput
+    create: XOR<TeamInviteCreateWithoutTeamInput, TeamInviteUncheckedCreateWithoutTeamInput>
+  }
+
+  export type TeamInviteCreateManyTeamInputEnvelope = {
+    data: TeamInviteCreateManyTeamInput | TeamInviteCreateManyTeamInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TeamGenerationCreateWithoutTeamInput = {
+    id?: string
+    text: string
+    style: number
+    bias: number
+    strokeColor?: string
+    strokeWidth?: number
+    svgContent?: string | null
+    fileUrl?: string | null
+    fileKey?: string | null
+    linesCount?: number
+    charactersCount?: number
+    createdAt?: Date | string
+    createdBy: UserCreateNestedOneWithoutTeamGenerationsInput
+  }
+
+  export type TeamGenerationUncheckedCreateWithoutTeamInput = {
+    id?: string
+    createdById: string
+    text: string
+    style: number
+    bias: number
+    strokeColor?: string
+    strokeWidth?: number
+    svgContent?: string | null
+    fileUrl?: string | null
+    fileKey?: string | null
+    linesCount?: number
+    charactersCount?: number
+    createdAt?: Date | string
+  }
+
+  export type TeamGenerationCreateOrConnectWithoutTeamInput = {
+    where: TeamGenerationWhereUniqueInput
+    create: XOR<TeamGenerationCreateWithoutTeamInput, TeamGenerationUncheckedCreateWithoutTeamInput>
+  }
+
+  export type TeamGenerationCreateManyTeamInputEnvelope = {
+    data: TeamGenerationCreateManyTeamInput | TeamGenerationCreateManyTeamInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TeamMemberUpsertWithWhereUniqueWithoutTeamInput = {
+    where: TeamMemberWhereUniqueInput
+    update: XOR<TeamMemberUpdateWithoutTeamInput, TeamMemberUncheckedUpdateWithoutTeamInput>
+    create: XOR<TeamMemberCreateWithoutTeamInput, TeamMemberUncheckedCreateWithoutTeamInput>
+  }
+
+  export type TeamMemberUpdateWithWhereUniqueWithoutTeamInput = {
+    where: TeamMemberWhereUniqueInput
+    data: XOR<TeamMemberUpdateWithoutTeamInput, TeamMemberUncheckedUpdateWithoutTeamInput>
+  }
+
+  export type TeamMemberUpdateManyWithWhereWithoutTeamInput = {
+    where: TeamMemberScalarWhereInput
+    data: XOR<TeamMemberUpdateManyMutationInput, TeamMemberUncheckedUpdateManyWithoutTeamInput>
+  }
+
+  export type TeamInviteUpsertWithWhereUniqueWithoutTeamInput = {
+    where: TeamInviteWhereUniqueInput
+    update: XOR<TeamInviteUpdateWithoutTeamInput, TeamInviteUncheckedUpdateWithoutTeamInput>
+    create: XOR<TeamInviteCreateWithoutTeamInput, TeamInviteUncheckedCreateWithoutTeamInput>
+  }
+
+  export type TeamInviteUpdateWithWhereUniqueWithoutTeamInput = {
+    where: TeamInviteWhereUniqueInput
+    data: XOR<TeamInviteUpdateWithoutTeamInput, TeamInviteUncheckedUpdateWithoutTeamInput>
+  }
+
+  export type TeamInviteUpdateManyWithWhereWithoutTeamInput = {
+    where: TeamInviteScalarWhereInput
+    data: XOR<TeamInviteUpdateManyMutationInput, TeamInviteUncheckedUpdateManyWithoutTeamInput>
+  }
+
+  export type TeamInviteScalarWhereInput = {
+    AND?: TeamInviteScalarWhereInput | TeamInviteScalarWhereInput[]
+    OR?: TeamInviteScalarWhereInput[]
+    NOT?: TeamInviteScalarWhereInput | TeamInviteScalarWhereInput[]
+    id?: StringFilter<"TeamInvite"> | string
+    teamId?: StringFilter<"TeamInvite"> | string
+    email?: StringFilter<"TeamInvite"> | string
+    role?: EnumTeamRoleFilter<"TeamInvite"> | $Enums.TeamRole
+    token?: StringFilter<"TeamInvite"> | string
+    expiresAt?: DateTimeFilter<"TeamInvite"> | Date | string
+    acceptedAt?: DateTimeNullableFilter<"TeamInvite"> | Date | string | null
+    createdAt?: DateTimeFilter<"TeamInvite"> | Date | string
+  }
+
+  export type TeamGenerationUpsertWithWhereUniqueWithoutTeamInput = {
+    where: TeamGenerationWhereUniqueInput
+    update: XOR<TeamGenerationUpdateWithoutTeamInput, TeamGenerationUncheckedUpdateWithoutTeamInput>
+    create: XOR<TeamGenerationCreateWithoutTeamInput, TeamGenerationUncheckedCreateWithoutTeamInput>
+  }
+
+  export type TeamGenerationUpdateWithWhereUniqueWithoutTeamInput = {
+    where: TeamGenerationWhereUniqueInput
+    data: XOR<TeamGenerationUpdateWithoutTeamInput, TeamGenerationUncheckedUpdateWithoutTeamInput>
+  }
+
+  export type TeamGenerationUpdateManyWithWhereWithoutTeamInput = {
+    where: TeamGenerationScalarWhereInput
+    data: XOR<TeamGenerationUpdateManyMutationInput, TeamGenerationUncheckedUpdateManyWithoutTeamInput>
+  }
+
+  export type TeamCreateWithoutMembersInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    logo?: string | null
+    credits?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    invites?: TeamInviteCreateNestedManyWithoutTeamInput
+    generations?: TeamGenerationCreateNestedManyWithoutTeamInput
+  }
+
+  export type TeamUncheckedCreateWithoutMembersInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    logo?: string | null
+    credits?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    invites?: TeamInviteUncheckedCreateNestedManyWithoutTeamInput
+    generations?: TeamGenerationUncheckedCreateNestedManyWithoutTeamInput
+  }
+
+  export type TeamCreateOrConnectWithoutMembersInput = {
+    where: TeamWhereUniqueInput
+    create: XOR<TeamCreateWithoutMembersInput, TeamUncheckedCreateWithoutMembersInput>
+  }
+
+  export type UserCreateWithoutTeamMembershipsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    password?: string | null
+    credits?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    usageHistory?: UsageCreateNestedManyWithoutUserInput
+    synthesisHistory?: SynthesisUsageCreateNestedManyWithoutUserInput
+    savedGenerations?: SavedGenerationCreateNestedManyWithoutUserInput
+    batchJobs?: BatchJobCreateNestedManyWithoutUserInput
+    payments?: PaymentCreateNestedManyWithoutUserInput
+    createdTemplates?: TemplateCreateNestedManyWithoutCreatedByInput
+    templateDocuments?: TemplateDocumentCreateNestedManyWithoutUserInput
+    bulkJobs?: BulkJobCreateNestedManyWithoutUserInput
+    teamGenerations?: TeamGenerationCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutTeamMembershipsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    password?: string | null
+    credits?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    usageHistory?: UsageUncheckedCreateNestedManyWithoutUserInput
+    synthesisHistory?: SynthesisUsageUncheckedCreateNestedManyWithoutUserInput
+    savedGenerations?: SavedGenerationUncheckedCreateNestedManyWithoutUserInput
+    batchJobs?: BatchJobUncheckedCreateNestedManyWithoutUserInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    createdTemplates?: TemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    templateDocuments?: TemplateDocumentUncheckedCreateNestedManyWithoutUserInput
+    bulkJobs?: BulkJobUncheckedCreateNestedManyWithoutUserInput
+    teamGenerations?: TeamGenerationUncheckedCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutTeamMembershipsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTeamMembershipsInput, UserUncheckedCreateWithoutTeamMembershipsInput>
+  }
+
+  export type TeamUpsertWithoutMembersInput = {
+    update: XOR<TeamUpdateWithoutMembersInput, TeamUncheckedUpdateWithoutMembersInput>
+    create: XOR<TeamCreateWithoutMembersInput, TeamUncheckedCreateWithoutMembersInput>
+    where?: TeamWhereInput
+  }
+
+  export type TeamUpdateToOneWithWhereWithoutMembersInput = {
+    where?: TeamWhereInput
+    data: XOR<TeamUpdateWithoutMembersInput, TeamUncheckedUpdateWithoutMembersInput>
+  }
+
+  export type TeamUpdateWithoutMembersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    credits?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    invites?: TeamInviteUpdateManyWithoutTeamNestedInput
+    generations?: TeamGenerationUpdateManyWithoutTeamNestedInput
+  }
+
+  export type TeamUncheckedUpdateWithoutMembersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    credits?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    invites?: TeamInviteUncheckedUpdateManyWithoutTeamNestedInput
+    generations?: TeamGenerationUncheckedUpdateManyWithoutTeamNestedInput
+  }
+
+  export type UserUpsertWithoutTeamMembershipsInput = {
+    update: XOR<UserUpdateWithoutTeamMembershipsInput, UserUncheckedUpdateWithoutTeamMembershipsInput>
+    create: XOR<UserCreateWithoutTeamMembershipsInput, UserUncheckedCreateWithoutTeamMembershipsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutTeamMembershipsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutTeamMembershipsInput, UserUncheckedUpdateWithoutTeamMembershipsInput>
+  }
+
+  export type UserUpdateWithoutTeamMembershipsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    credits?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    usageHistory?: UsageUpdateManyWithoutUserNestedInput
+    synthesisHistory?: SynthesisUsageUpdateManyWithoutUserNestedInput
+    savedGenerations?: SavedGenerationUpdateManyWithoutUserNestedInput
+    batchJobs?: BatchJobUpdateManyWithoutUserNestedInput
+    payments?: PaymentUpdateManyWithoutUserNestedInput
+    createdTemplates?: TemplateUpdateManyWithoutCreatedByNestedInput
+    templateDocuments?: TemplateDocumentUpdateManyWithoutUserNestedInput
+    bulkJobs?: BulkJobUpdateManyWithoutUserNestedInput
+    teamGenerations?: TeamGenerationUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutTeamMembershipsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    credits?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    usageHistory?: UsageUncheckedUpdateManyWithoutUserNestedInput
+    synthesisHistory?: SynthesisUsageUncheckedUpdateManyWithoutUserNestedInput
+    savedGenerations?: SavedGenerationUncheckedUpdateManyWithoutUserNestedInput
+    batchJobs?: BatchJobUncheckedUpdateManyWithoutUserNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    createdTemplates?: TemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    templateDocuments?: TemplateDocumentUncheckedUpdateManyWithoutUserNestedInput
+    bulkJobs?: BulkJobUncheckedUpdateManyWithoutUserNestedInput
+    teamGenerations?: TeamGenerationUncheckedUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type TeamCreateWithoutInvitesInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    logo?: string | null
+    credits?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: TeamMemberCreateNestedManyWithoutTeamInput
+    generations?: TeamGenerationCreateNestedManyWithoutTeamInput
+  }
+
+  export type TeamUncheckedCreateWithoutInvitesInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    logo?: string | null
+    credits?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: TeamMemberUncheckedCreateNestedManyWithoutTeamInput
+    generations?: TeamGenerationUncheckedCreateNestedManyWithoutTeamInput
+  }
+
+  export type TeamCreateOrConnectWithoutInvitesInput = {
+    where: TeamWhereUniqueInput
+    create: XOR<TeamCreateWithoutInvitesInput, TeamUncheckedCreateWithoutInvitesInput>
+  }
+
+  export type TeamUpsertWithoutInvitesInput = {
+    update: XOR<TeamUpdateWithoutInvitesInput, TeamUncheckedUpdateWithoutInvitesInput>
+    create: XOR<TeamCreateWithoutInvitesInput, TeamUncheckedCreateWithoutInvitesInput>
+    where?: TeamWhereInput
+  }
+
+  export type TeamUpdateToOneWithWhereWithoutInvitesInput = {
+    where?: TeamWhereInput
+    data: XOR<TeamUpdateWithoutInvitesInput, TeamUncheckedUpdateWithoutInvitesInput>
+  }
+
+  export type TeamUpdateWithoutInvitesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    credits?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: TeamMemberUpdateManyWithoutTeamNestedInput
+    generations?: TeamGenerationUpdateManyWithoutTeamNestedInput
+  }
+
+  export type TeamUncheckedUpdateWithoutInvitesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    credits?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: TeamMemberUncheckedUpdateManyWithoutTeamNestedInput
+    generations?: TeamGenerationUncheckedUpdateManyWithoutTeamNestedInput
+  }
+
+  export type TeamCreateWithoutGenerationsInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    logo?: string | null
+    credits?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: TeamMemberCreateNestedManyWithoutTeamInput
+    invites?: TeamInviteCreateNestedManyWithoutTeamInput
+  }
+
+  export type TeamUncheckedCreateWithoutGenerationsInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    logo?: string | null
+    credits?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: TeamMemberUncheckedCreateNestedManyWithoutTeamInput
+    invites?: TeamInviteUncheckedCreateNestedManyWithoutTeamInput
+  }
+
+  export type TeamCreateOrConnectWithoutGenerationsInput = {
+    where: TeamWhereUniqueInput
+    create: XOR<TeamCreateWithoutGenerationsInput, TeamUncheckedCreateWithoutGenerationsInput>
+  }
+
+  export type UserCreateWithoutTeamGenerationsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    password?: string | null
+    credits?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    usageHistory?: UsageCreateNestedManyWithoutUserInput
+    synthesisHistory?: SynthesisUsageCreateNestedManyWithoutUserInput
+    savedGenerations?: SavedGenerationCreateNestedManyWithoutUserInput
+    batchJobs?: BatchJobCreateNestedManyWithoutUserInput
+    payments?: PaymentCreateNestedManyWithoutUserInput
+    createdTemplates?: TemplateCreateNestedManyWithoutCreatedByInput
+    templateDocuments?: TemplateDocumentCreateNestedManyWithoutUserInput
+    bulkJobs?: BulkJobCreateNestedManyWithoutUserInput
+    teamMemberships?: TeamMemberCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutTeamGenerationsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    password?: string | null
+    credits?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    usageHistory?: UsageUncheckedCreateNestedManyWithoutUserInput
+    synthesisHistory?: SynthesisUsageUncheckedCreateNestedManyWithoutUserInput
+    savedGenerations?: SavedGenerationUncheckedCreateNestedManyWithoutUserInput
+    batchJobs?: BatchJobUncheckedCreateNestedManyWithoutUserInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    createdTemplates?: TemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    templateDocuments?: TemplateDocumentUncheckedCreateNestedManyWithoutUserInput
+    bulkJobs?: BulkJobUncheckedCreateNestedManyWithoutUserInput
+    teamMemberships?: TeamMemberUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutTeamGenerationsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTeamGenerationsInput, UserUncheckedCreateWithoutTeamGenerationsInput>
+  }
+
+  export type TeamUpsertWithoutGenerationsInput = {
+    update: XOR<TeamUpdateWithoutGenerationsInput, TeamUncheckedUpdateWithoutGenerationsInput>
+    create: XOR<TeamCreateWithoutGenerationsInput, TeamUncheckedCreateWithoutGenerationsInput>
+    where?: TeamWhereInput
+  }
+
+  export type TeamUpdateToOneWithWhereWithoutGenerationsInput = {
+    where?: TeamWhereInput
+    data: XOR<TeamUpdateWithoutGenerationsInput, TeamUncheckedUpdateWithoutGenerationsInput>
+  }
+
+  export type TeamUpdateWithoutGenerationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    credits?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: TeamMemberUpdateManyWithoutTeamNestedInput
+    invites?: TeamInviteUpdateManyWithoutTeamNestedInput
+  }
+
+  export type TeamUncheckedUpdateWithoutGenerationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    credits?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: TeamMemberUncheckedUpdateManyWithoutTeamNestedInput
+    invites?: TeamInviteUncheckedUpdateManyWithoutTeamNestedInput
+  }
+
+  export type UserUpsertWithoutTeamGenerationsInput = {
+    update: XOR<UserUpdateWithoutTeamGenerationsInput, UserUncheckedUpdateWithoutTeamGenerationsInput>
+    create: XOR<UserCreateWithoutTeamGenerationsInput, UserUncheckedCreateWithoutTeamGenerationsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutTeamGenerationsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutTeamGenerationsInput, UserUncheckedUpdateWithoutTeamGenerationsInput>
+  }
+
+  export type UserUpdateWithoutTeamGenerationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    credits?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    usageHistory?: UsageUpdateManyWithoutUserNestedInput
+    synthesisHistory?: SynthesisUsageUpdateManyWithoutUserNestedInput
+    savedGenerations?: SavedGenerationUpdateManyWithoutUserNestedInput
+    batchJobs?: BatchJobUpdateManyWithoutUserNestedInput
+    payments?: PaymentUpdateManyWithoutUserNestedInput
+    createdTemplates?: TemplateUpdateManyWithoutCreatedByNestedInput
+    templateDocuments?: TemplateDocumentUpdateManyWithoutUserNestedInput
+    bulkJobs?: BulkJobUpdateManyWithoutUserNestedInput
+    teamMemberships?: TeamMemberUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutTeamGenerationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    credits?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    usageHistory?: UsageUncheckedUpdateManyWithoutUserNestedInput
+    synthesisHistory?: SynthesisUsageUncheckedUpdateManyWithoutUserNestedInput
+    savedGenerations?: SavedGenerationUncheckedUpdateManyWithoutUserNestedInput
+    batchJobs?: BatchJobUncheckedUpdateManyWithoutUserNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    createdTemplates?: TemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    templateDocuments?: TemplateDocumentUncheckedUpdateManyWithoutUserNestedInput
+    bulkJobs?: BulkJobUncheckedUpdateManyWithoutUserNestedInput
+    teamMemberships?: TeamMemberUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AccountCreateManyUserInput = {
@@ -18944,10 +34367,89 @@ export namespace Prisma {
     amount: number
     credits: number
     status?: $Enums.PaymentStatus
+    razorpayOrderId?: string | null
+    razorpayPaymentId?: string | null
     stripePaymentId?: string | null
     stripeSessionId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type TemplateCreateManyCreatedByInput = {
+    id?: string
+    name: string
+    description?: string | null
+    category: $Enums.TemplateCategory
+    thumbnail?: string | null
+    config: JsonNullValueInput | InputJsonValue
+    isSystem?: boolean
+    usageCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TemplateDocumentCreateManyUserInput = {
+    id?: string
+    templateId: string
+    name?: string
+    content: JsonNullValueInput | InputJsonValue
+    style?: number
+    bias?: number
+    strokeColor?: string
+    strokeWidth?: number
+    status?: $Enums.GenerationStatus
+    outputUrl?: string | null
+    outputKey?: string | null
+    previewSvg?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BulkJobCreateManyUserInput = {
+    id?: string
+    name?: string | null
+    sourceFileName: string
+    sourceFileUrl?: string | null
+    sourceFileKey?: string | null
+    textColumn: string
+    filenameColumn?: string | null
+    totalRows: number
+    style?: number
+    bias?: number
+    strokeColor?: string
+    strokeWidth?: number
+    status?: $Enums.BatchStatus
+    processedCount?: number
+    failedCount?: number
+    creditsUsed?: number
+    outputZipUrl?: string | null
+    outputZipKey?: string | null
+    errorLog?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TeamMemberCreateManyUserInput = {
+    id?: string
+    teamId: string
+    role?: $Enums.TeamRole
+    joinedAt?: Date | string
+  }
+
+  export type TeamGenerationCreateManyCreatedByInput = {
+    id?: string
+    teamId: string
+    text: string
+    style: number
+    bias: number
+    strokeColor?: string
+    strokeWidth?: number
+    svgContent?: string | null
+    fileUrl?: string | null
+    fileKey?: string | null
+    linesCount?: number
+    charactersCount?: number
+    createdAt?: Date | string
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -19221,6 +34723,8 @@ export namespace Prisma {
     amount?: FloatFieldUpdateOperationsInput | number
     credits?: IntFieldUpdateOperationsInput | number
     status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    razorpayOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    razorpayPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     stripePaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     stripeSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19232,6 +34736,8 @@ export namespace Prisma {
     amount?: FloatFieldUpdateOperationsInput | number
     credits?: IntFieldUpdateOperationsInput | number
     status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    razorpayOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    razorpayPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     stripePaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     stripeSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19243,10 +34749,247 @@ export namespace Prisma {
     amount?: FloatFieldUpdateOperationsInput | number
     credits?: IntFieldUpdateOperationsInput | number
     status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    razorpayOrderId?: NullableStringFieldUpdateOperationsInput | string | null
+    razorpayPaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     stripePaymentId?: NullableStringFieldUpdateOperationsInput | string | null
     stripeSessionId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TemplateUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
+    config?: JsonNullValueInput | InputJsonValue
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    usageCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    documents?: TemplateDocumentUpdateManyWithoutTemplateNestedInput
+  }
+
+  export type TemplateUncheckedUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
+    config?: JsonNullValueInput | InputJsonValue
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    usageCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    documents?: TemplateDocumentUncheckedUpdateManyWithoutTemplateNestedInput
+  }
+
+  export type TemplateUncheckedUpdateManyWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumTemplateCategoryFieldUpdateOperationsInput | $Enums.TemplateCategory
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
+    config?: JsonNullValueInput | InputJsonValue
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    usageCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TemplateDocumentUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    content?: JsonNullValueInput | InputJsonValue
+    style?: IntFieldUpdateOperationsInput | number
+    bias?: FloatFieldUpdateOperationsInput | number
+    strokeColor?: StringFieldUpdateOperationsInput | string
+    strokeWidth?: IntFieldUpdateOperationsInput | number
+    status?: EnumGenerationStatusFieldUpdateOperationsInput | $Enums.GenerationStatus
+    outputUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    outputKey?: NullableStringFieldUpdateOperationsInput | string | null
+    previewSvg?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    template?: TemplateUpdateOneRequiredWithoutDocumentsNestedInput
+  }
+
+  export type TemplateDocumentUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    templateId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    content?: JsonNullValueInput | InputJsonValue
+    style?: IntFieldUpdateOperationsInput | number
+    bias?: FloatFieldUpdateOperationsInput | number
+    strokeColor?: StringFieldUpdateOperationsInput | string
+    strokeWidth?: IntFieldUpdateOperationsInput | number
+    status?: EnumGenerationStatusFieldUpdateOperationsInput | $Enums.GenerationStatus
+    outputUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    outputKey?: NullableStringFieldUpdateOperationsInput | string | null
+    previewSvg?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TemplateDocumentUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    templateId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    content?: JsonNullValueInput | InputJsonValue
+    style?: IntFieldUpdateOperationsInput | number
+    bias?: FloatFieldUpdateOperationsInput | number
+    strokeColor?: StringFieldUpdateOperationsInput | string
+    strokeWidth?: IntFieldUpdateOperationsInput | number
+    status?: EnumGenerationStatusFieldUpdateOperationsInput | $Enums.GenerationStatus
+    outputUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    outputKey?: NullableStringFieldUpdateOperationsInput | string | null
+    previewSvg?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BulkJobUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceFileName?: StringFieldUpdateOperationsInput | string
+    sourceFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceFileKey?: NullableStringFieldUpdateOperationsInput | string | null
+    textColumn?: StringFieldUpdateOperationsInput | string
+    filenameColumn?: NullableStringFieldUpdateOperationsInput | string | null
+    totalRows?: IntFieldUpdateOperationsInput | number
+    style?: IntFieldUpdateOperationsInput | number
+    bias?: FloatFieldUpdateOperationsInput | number
+    strokeColor?: StringFieldUpdateOperationsInput | string
+    strokeWidth?: IntFieldUpdateOperationsInput | number
+    status?: EnumBatchStatusFieldUpdateOperationsInput | $Enums.BatchStatus
+    processedCount?: IntFieldUpdateOperationsInput | number
+    failedCount?: IntFieldUpdateOperationsInput | number
+    creditsUsed?: IntFieldUpdateOperationsInput | number
+    outputZipUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    outputZipKey?: NullableStringFieldUpdateOperationsInput | string | null
+    errorLog?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: BulkJobItemUpdateManyWithoutBulkJobNestedInput
+  }
+
+  export type BulkJobUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceFileName?: StringFieldUpdateOperationsInput | string
+    sourceFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceFileKey?: NullableStringFieldUpdateOperationsInput | string | null
+    textColumn?: StringFieldUpdateOperationsInput | string
+    filenameColumn?: NullableStringFieldUpdateOperationsInput | string | null
+    totalRows?: IntFieldUpdateOperationsInput | number
+    style?: IntFieldUpdateOperationsInput | number
+    bias?: FloatFieldUpdateOperationsInput | number
+    strokeColor?: StringFieldUpdateOperationsInput | string
+    strokeWidth?: IntFieldUpdateOperationsInput | number
+    status?: EnumBatchStatusFieldUpdateOperationsInput | $Enums.BatchStatus
+    processedCount?: IntFieldUpdateOperationsInput | number
+    failedCount?: IntFieldUpdateOperationsInput | number
+    creditsUsed?: IntFieldUpdateOperationsInput | number
+    outputZipUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    outputZipKey?: NullableStringFieldUpdateOperationsInput | string | null
+    errorLog?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: BulkJobItemUncheckedUpdateManyWithoutBulkJobNestedInput
+  }
+
+  export type BulkJobUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceFileName?: StringFieldUpdateOperationsInput | string
+    sourceFileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceFileKey?: NullableStringFieldUpdateOperationsInput | string | null
+    textColumn?: StringFieldUpdateOperationsInput | string
+    filenameColumn?: NullableStringFieldUpdateOperationsInput | string | null
+    totalRows?: IntFieldUpdateOperationsInput | number
+    style?: IntFieldUpdateOperationsInput | number
+    bias?: FloatFieldUpdateOperationsInput | number
+    strokeColor?: StringFieldUpdateOperationsInput | string
+    strokeWidth?: IntFieldUpdateOperationsInput | number
+    status?: EnumBatchStatusFieldUpdateOperationsInput | $Enums.BatchStatus
+    processedCount?: IntFieldUpdateOperationsInput | number
+    failedCount?: IntFieldUpdateOperationsInput | number
+    creditsUsed?: IntFieldUpdateOperationsInput | number
+    outputZipUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    outputZipKey?: NullableStringFieldUpdateOperationsInput | string | null
+    errorLog?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TeamMemberUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: EnumTeamRoleFieldUpdateOperationsInput | $Enums.TeamRole
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    team?: TeamUpdateOneRequiredWithoutMembersNestedInput
+  }
+
+  export type TeamMemberUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    teamId?: StringFieldUpdateOperationsInput | string
+    role?: EnumTeamRoleFieldUpdateOperationsInput | $Enums.TeamRole
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TeamMemberUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    teamId?: StringFieldUpdateOperationsInput | string
+    role?: EnumTeamRoleFieldUpdateOperationsInput | $Enums.TeamRole
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TeamGenerationUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    text?: StringFieldUpdateOperationsInput | string
+    style?: IntFieldUpdateOperationsInput | number
+    bias?: FloatFieldUpdateOperationsInput | number
+    strokeColor?: StringFieldUpdateOperationsInput | string
+    strokeWidth?: IntFieldUpdateOperationsInput | number
+    svgContent?: NullableStringFieldUpdateOperationsInput | string | null
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    fileKey?: NullableStringFieldUpdateOperationsInput | string | null
+    linesCount?: IntFieldUpdateOperationsInput | number
+    charactersCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    team?: TeamUpdateOneRequiredWithoutGenerationsNestedInput
+  }
+
+  export type TeamGenerationUncheckedUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    teamId?: StringFieldUpdateOperationsInput | string
+    text?: StringFieldUpdateOperationsInput | string
+    style?: IntFieldUpdateOperationsInput | number
+    bias?: FloatFieldUpdateOperationsInput | number
+    strokeColor?: StringFieldUpdateOperationsInput | string
+    strokeWidth?: IntFieldUpdateOperationsInput | number
+    svgContent?: NullableStringFieldUpdateOperationsInput | string | null
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    fileKey?: NullableStringFieldUpdateOperationsInput | string | null
+    linesCount?: IntFieldUpdateOperationsInput | number
+    charactersCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TeamGenerationUncheckedUpdateManyWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    teamId?: StringFieldUpdateOperationsInput | string
+    text?: StringFieldUpdateOperationsInput | string
+    style?: IntFieldUpdateOperationsInput | number
+    bias?: FloatFieldUpdateOperationsInput | number
+    strokeColor?: StringFieldUpdateOperationsInput | string
+    strokeWidth?: IntFieldUpdateOperationsInput | number
+    svgContent?: NullableStringFieldUpdateOperationsInput | string | null
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    fileKey?: NullableStringFieldUpdateOperationsInput | string | null
+    linesCount?: IntFieldUpdateOperationsInput | number
+    charactersCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SavedGenerationCreateManyBatchJobInput = {
@@ -19359,6 +35102,254 @@ export namespace Prisma {
     tags?: SavedGenerationUpdatetagsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TemplateDocumentCreateManyTemplateInput = {
+    id?: string
+    userId: string
+    name?: string
+    content: JsonNullValueInput | InputJsonValue
+    style?: number
+    bias?: number
+    strokeColor?: string
+    strokeWidth?: number
+    status?: $Enums.GenerationStatus
+    outputUrl?: string | null
+    outputKey?: string | null
+    previewSvg?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TemplateDocumentUpdateWithoutTemplateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    content?: JsonNullValueInput | InputJsonValue
+    style?: IntFieldUpdateOperationsInput | number
+    bias?: FloatFieldUpdateOperationsInput | number
+    strokeColor?: StringFieldUpdateOperationsInput | string
+    strokeWidth?: IntFieldUpdateOperationsInput | number
+    status?: EnumGenerationStatusFieldUpdateOperationsInput | $Enums.GenerationStatus
+    outputUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    outputKey?: NullableStringFieldUpdateOperationsInput | string | null
+    previewSvg?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutTemplateDocumentsNestedInput
+  }
+
+  export type TemplateDocumentUncheckedUpdateWithoutTemplateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    content?: JsonNullValueInput | InputJsonValue
+    style?: IntFieldUpdateOperationsInput | number
+    bias?: FloatFieldUpdateOperationsInput | number
+    strokeColor?: StringFieldUpdateOperationsInput | string
+    strokeWidth?: IntFieldUpdateOperationsInput | number
+    status?: EnumGenerationStatusFieldUpdateOperationsInput | $Enums.GenerationStatus
+    outputUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    outputKey?: NullableStringFieldUpdateOperationsInput | string | null
+    previewSvg?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TemplateDocumentUncheckedUpdateManyWithoutTemplateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    content?: JsonNullValueInput | InputJsonValue
+    style?: IntFieldUpdateOperationsInput | number
+    bias?: FloatFieldUpdateOperationsInput | number
+    strokeColor?: StringFieldUpdateOperationsInput | string
+    strokeWidth?: IntFieldUpdateOperationsInput | number
+    status?: EnumGenerationStatusFieldUpdateOperationsInput | $Enums.GenerationStatus
+    outputUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    outputKey?: NullableStringFieldUpdateOperationsInput | string | null
+    previewSvg?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BulkJobItemCreateManyBulkJobInput = {
+    id?: string
+    rowIndex: number
+    text: string
+    outputFilename?: string | null
+    status?: $Enums.GenerationStatus
+    svgContent?: string | null
+    outputUrl?: string | null
+    errorMessage?: string | null
+    createdAt?: Date | string
+  }
+
+  export type BulkJobItemUpdateWithoutBulkJobInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rowIndex?: IntFieldUpdateOperationsInput | number
+    text?: StringFieldUpdateOperationsInput | string
+    outputFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumGenerationStatusFieldUpdateOperationsInput | $Enums.GenerationStatus
+    svgContent?: NullableStringFieldUpdateOperationsInput | string | null
+    outputUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BulkJobItemUncheckedUpdateWithoutBulkJobInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rowIndex?: IntFieldUpdateOperationsInput | number
+    text?: StringFieldUpdateOperationsInput | string
+    outputFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumGenerationStatusFieldUpdateOperationsInput | $Enums.GenerationStatus
+    svgContent?: NullableStringFieldUpdateOperationsInput | string | null
+    outputUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BulkJobItemUncheckedUpdateManyWithoutBulkJobInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rowIndex?: IntFieldUpdateOperationsInput | number
+    text?: StringFieldUpdateOperationsInput | string
+    outputFilename?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumGenerationStatusFieldUpdateOperationsInput | $Enums.GenerationStatus
+    svgContent?: NullableStringFieldUpdateOperationsInput | string | null
+    outputUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TeamMemberCreateManyTeamInput = {
+    id?: string
+    userId: string
+    role?: $Enums.TeamRole
+    joinedAt?: Date | string
+  }
+
+  export type TeamInviteCreateManyTeamInput = {
+    id?: string
+    email: string
+    role?: $Enums.TeamRole
+    token?: string
+    expiresAt: Date | string
+    acceptedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type TeamGenerationCreateManyTeamInput = {
+    id?: string
+    createdById: string
+    text: string
+    style: number
+    bias: number
+    strokeColor?: string
+    strokeWidth?: number
+    svgContent?: string | null
+    fileUrl?: string | null
+    fileKey?: string | null
+    linesCount?: number
+    charactersCount?: number
+    createdAt?: Date | string
+  }
+
+  export type TeamMemberUpdateWithoutTeamInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: EnumTeamRoleFieldUpdateOperationsInput | $Enums.TeamRole
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutTeamMembershipsNestedInput
+  }
+
+  export type TeamMemberUncheckedUpdateWithoutTeamInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: EnumTeamRoleFieldUpdateOperationsInput | $Enums.TeamRole
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TeamMemberUncheckedUpdateManyWithoutTeamInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: EnumTeamRoleFieldUpdateOperationsInput | $Enums.TeamRole
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TeamInviteUpdateWithoutTeamInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    role?: EnumTeamRoleFieldUpdateOperationsInput | $Enums.TeamRole
+    token?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    acceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TeamInviteUncheckedUpdateWithoutTeamInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    role?: EnumTeamRoleFieldUpdateOperationsInput | $Enums.TeamRole
+    token?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    acceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TeamInviteUncheckedUpdateManyWithoutTeamInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    role?: EnumTeamRoleFieldUpdateOperationsInput | $Enums.TeamRole
+    token?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    acceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TeamGenerationUpdateWithoutTeamInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    text?: StringFieldUpdateOperationsInput | string
+    style?: IntFieldUpdateOperationsInput | number
+    bias?: FloatFieldUpdateOperationsInput | number
+    strokeColor?: StringFieldUpdateOperationsInput | string
+    strokeWidth?: IntFieldUpdateOperationsInput | number
+    svgContent?: NullableStringFieldUpdateOperationsInput | string | null
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    fileKey?: NullableStringFieldUpdateOperationsInput | string | null
+    linesCount?: IntFieldUpdateOperationsInput | number
+    charactersCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneRequiredWithoutTeamGenerationsNestedInput
+  }
+
+  export type TeamGenerationUncheckedUpdateWithoutTeamInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdById?: StringFieldUpdateOperationsInput | string
+    text?: StringFieldUpdateOperationsInput | string
+    style?: IntFieldUpdateOperationsInput | number
+    bias?: FloatFieldUpdateOperationsInput | number
+    strokeColor?: StringFieldUpdateOperationsInput | string
+    strokeWidth?: IntFieldUpdateOperationsInput | number
+    svgContent?: NullableStringFieldUpdateOperationsInput | string | null
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    fileKey?: NullableStringFieldUpdateOperationsInput | string | null
+    linesCount?: IntFieldUpdateOperationsInput | number
+    charactersCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TeamGenerationUncheckedUpdateManyWithoutTeamInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdById?: StringFieldUpdateOperationsInput | string
+    text?: StringFieldUpdateOperationsInput | string
+    style?: IntFieldUpdateOperationsInput | number
+    bias?: FloatFieldUpdateOperationsInput | number
+    strokeColor?: StringFieldUpdateOperationsInput | string
+    strokeWidth?: IntFieldUpdateOperationsInput | number
+    svgContent?: NullableStringFieldUpdateOperationsInput | string | null
+    fileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    fileKey?: NullableStringFieldUpdateOperationsInput | string | null
+    linesCount?: IntFieldUpdateOperationsInput | number
+    charactersCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

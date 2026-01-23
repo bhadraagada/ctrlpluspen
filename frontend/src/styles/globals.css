@@ -20,17 +20,26 @@
 @theme {
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    
+  --animate-fade-in-up: fadeInUp 0.8s ease-out forwards;
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }
 
 * { box-sizing: border-box; }
 
 body {
   margin: 0;
-  background:
-    radial-gradient(1200px circle at 15% 18%, rgba(34, 211, 238, 0.10), transparent 42%),
-    radial-gradient(1000px circle at 85% 12%, rgba(249, 115, 22, 0.12), transparent 38%),
-    radial-gradient(900px circle at 70% 80%, rgba(79, 70, 229, 0.08), transparent 36%),
-    linear-gradient(180deg, #030712 0%, #050914 50%, #04060f 100%);
+  background-color: #030303;
   color: var(--foreground);
   font-family: var(--font-geist-sans, "Inter"), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   min-height: 100vh;

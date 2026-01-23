@@ -195,6 +195,8 @@ exports.Prisma.PaymentScalarFieldEnum = {
   amount: 'amount',
   credits: 'credits',
   status: 'status',
+  razorpayOrderId: 'razorpayOrderId',
+  razorpayPaymentId: 'razorpayPaymentId',
   stripePaymentId: 'stripePaymentId',
   stripeSessionId: 'stripeSessionId',
   createdAt: 'createdAt',
@@ -257,6 +259,123 @@ exports.Prisma.BatchJobScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.TemplateScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  category: 'category',
+  thumbnail: 'thumbnail',
+  config: 'config',
+  isSystem: 'isSystem',
+  createdById: 'createdById',
+  usageCount: 'usageCount',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TemplateDocumentScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  templateId: 'templateId',
+  name: 'name',
+  content: 'content',
+  style: 'style',
+  bias: 'bias',
+  strokeColor: 'strokeColor',
+  strokeWidth: 'strokeWidth',
+  status: 'status',
+  outputUrl: 'outputUrl',
+  outputKey: 'outputKey',
+  previewSvg: 'previewSvg',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.BulkJobScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  name: 'name',
+  sourceFileName: 'sourceFileName',
+  sourceFileUrl: 'sourceFileUrl',
+  sourceFileKey: 'sourceFileKey',
+  textColumn: 'textColumn',
+  filenameColumn: 'filenameColumn',
+  totalRows: 'totalRows',
+  style: 'style',
+  bias: 'bias',
+  strokeColor: 'strokeColor',
+  strokeWidth: 'strokeWidth',
+  status: 'status',
+  processedCount: 'processedCount',
+  failedCount: 'failedCount',
+  creditsUsed: 'creditsUsed',
+  outputZipUrl: 'outputZipUrl',
+  outputZipKey: 'outputZipKey',
+  errorLog: 'errorLog',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.BulkJobItemScalarFieldEnum = {
+  id: 'id',
+  bulkJobId: 'bulkJobId',
+  rowIndex: 'rowIndex',
+  text: 'text',
+  outputFilename: 'outputFilename',
+  status: 'status',
+  svgContent: 'svgContent',
+  outputUrl: 'outputUrl',
+  errorMessage: 'errorMessage',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.TeamScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  description: 'description',
+  logo: 'logo',
+  credits: 'credits',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TeamMemberScalarFieldEnum = {
+  id: 'id',
+  teamId: 'teamId',
+  userId: 'userId',
+  role: 'role',
+  joinedAt: 'joinedAt'
+};
+
+exports.Prisma.TeamInviteScalarFieldEnum = {
+  id: 'id',
+  teamId: 'teamId',
+  email: 'email',
+  role: 'role',
+  token: 'token',
+  expiresAt: 'expiresAt',
+  acceptedAt: 'acceptedAt',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.TeamGenerationScalarFieldEnum = {
+  id: 'id',
+  teamId: 'teamId',
+  createdById: 'createdById',
+  text: 'text',
+  style: 'style',
+  bias: 'bias',
+  strokeColor: 'strokeColor',
+  strokeWidth: 'strokeWidth',
+  svgContent: 'svgContent',
+  fileUrl: 'fileUrl',
+  fileKey: 'fileKey',
+  linesCount: 'linesCount',
+  charactersCount: 'charactersCount',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -264,6 +383,10 @@ exports.Prisma.SortOrder = {
 
 exports.Prisma.NullableJsonNullValueInput = {
   DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
+};
+
+exports.Prisma.JsonNullValueInput = {
   JsonNull: Prisma.JsonNull
 };
 
@@ -304,6 +427,21 @@ exports.BatchStatus = exports.$Enums.BatchStatus = {
   CANCELLED: 'CANCELLED'
 };
 
+exports.TemplateCategory = exports.$Enums.TemplateCategory = {
+  LETTER: 'LETTER',
+  NOTE: 'NOTE',
+  JOURNAL: 'JOURNAL',
+  INVITATION: 'INVITATION',
+  CERTIFICATE: 'CERTIFICATE',
+  CUSTOM: 'CUSTOM'
+};
+
+exports.TeamRole = exports.$Enums.TeamRole = {
+  OWNER: 'OWNER',
+  ADMIN: 'ADMIN',
+  MEMBER: 'MEMBER'
+};
+
 exports.Prisma.ModelName = {
   Account: 'Account',
   Session: 'Session',
@@ -314,7 +452,15 @@ exports.Prisma.ModelName = {
   Payment: 'Payment',
   CreditPackage: 'CreditPackage',
   SavedGeneration: 'SavedGeneration',
-  BatchJob: 'BatchJob'
+  BatchJob: 'BatchJob',
+  Template: 'Template',
+  TemplateDocument: 'TemplateDocument',
+  BulkJob: 'BulkJob',
+  BulkJobItem: 'BulkJobItem',
+  Team: 'Team',
+  TeamMember: 'TeamMember',
+  TeamInvite: 'TeamInvite',
+  TeamGeneration: 'TeamGeneration'
 };
 
 /**
