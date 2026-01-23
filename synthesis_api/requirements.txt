@@ -8,8 +8,11 @@ pydantic>=2.0.0
 python-multipart>=0.0.6
 
 # Handwriting synthesis core dependencies (from ref2)
-tensorflow>=2.13.0
-tensorflow-probability>=0.21.0
+# Use TensorFlow 2.15 with Keras 2 (last version before Keras 3)
+tensorflow==2.15.0
+# Set Keras 2 environment variable before import
+tf-keras==2.15.0
+tensorflow-probability==0.23.0
 svgwrite>=1.4.3
 scipy>=1.10.0
 numpy>=1.23.0,<2.0.0

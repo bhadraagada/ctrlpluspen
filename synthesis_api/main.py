@@ -3,9 +3,13 @@ FastAPI backend for Handwriting Synthesis
 Converts typed text to realistic handwritten SVG images
 """
 
+# IMPORTANT: Set Keras 2 mode before any TensorFlow imports
+import os
+
+os.environ["TF_USE_LEGACY_KERAS"] = "1"
+
 import base64
 import io
-import os
 import sys
 import tempfile
 from pathlib import Path
