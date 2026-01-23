@@ -111,7 +111,7 @@ export const templatesRouter = createTRPCRouter({
     .input(
       z.object({
         category: z.enum(["LETTER", "NOTE", "JOURNAL", "INVITATION", "CERTIFICATE", "CUSTOM"]).optional(),
-      }).optional()
+      }).default({})
     )
     .query(async ({ ctx, input }) => {
       const templates = await ctx.db.template.findMany({
@@ -120,7 +120,7 @@ export const templatesRouter = createTRPCRouter({
             { isSystem: true },
             { createdById: ctx.session.user.id },
           ],
-          ...(input?.category && { category: input.category }),
+          ...(input.category && { category: input.category }),
         },
         orderBy: [{ isSystem: "desc" }, { usageCount: "desc" }, { createdAt: "desc" }],
       });
@@ -129,6 +129,7 @@ export const templatesRouter = createTRPCRouter({
       if (templates.length === 0) {
         return SYSTEM_TEMPLATES.map((t) => ({
           ...t,
+          thumbnail: null,
           isSystem: true,
           usageCount: 0,
           createdById: null,
@@ -149,6 +150,7 @@ export const templatesRouter = createTRPCRouter({
       if (systemTemplate) {
         return {
           ...systemTemplate,
+          thumbnail: null,
           isSystem: true,
           usageCount: 0,
           createdById: null,
@@ -367,6 +369,7 @@ export const templatesRouter = createTRPCRouter({
             ...document,
             template: {
               ...systemTemplate,
+              thumbnail: null,
               isSystem: true,
               usageCount: 0,
               createdById: null,

@@ -27,7 +27,7 @@ export function TemplatesDashboard() {
   const [view, setView] = useState<"templates" | "documents">("templates");
 
   const templatesQuery = api.templates.getAll.useQuery(
-    activeCategory ? { category: activeCategory as any } : undefined
+    activeCategory ? { category: activeCategory as any } : {}
   );
   const documentsQuery = api.templates.getDocuments.useQuery({ limit: 20 });
 
