@@ -1,0 +1,77 @@
+==============================================
+MONOREPO VALIDATION REPORT
+==============================================
+
+Date: $(date)
+Location: C:\Users\LENOVO\Desktop\handwriting\monorepo
+
+==============================================
+STRUCTURE VERIFICATION
+==============================================
+apps/:
+frontend
+ref2
+synthesis-api
+
+apps/frontend:
+README.md
+generated
+next-env.d.ts
+next.config.js
+node_modules
+package-lock.json
+package.json
+postcss.config.js
+prisma
+public
+src
+start-database.sh
+tsconfig.json
+tsconfig.tsbuildinfo
+
+apps/frontend/generated:
+prisma
+
+apps/frontend/generated/prisma:
+client.d.ts
+client.js
+default.d.ts
+default.js
+edge.d.ts
+edge.js
+index-browser.js
+index.d.ts
+index.js
+package.json
+query_engine-windows.dll.node
+query_engine-windows.dll.node.tmp12940
+query_engine-windows.dll.node.tmp19132
+query_engine-windows.dll.node.tmp21796
+query_engine-windows.dll.node.tmp22348
+query_engine-windows.dll.node.tmp6844
+query_engine-windows.dll.node.tmp7896
+query_engine_bg.js
+query_engine_bg.wasm
+runtime
+schema.prisma
+wasm-edge-light-loader.mjs
+wasm-worker-loader.mjs
+wasm.d.ts
+wasm.js
+
+==============================================
+WORKSPACE SYMLINK CHECK
+==============================================
+lrwxrwxrwx 1 LENOVO 197609 34 Feb  2 09:33 apps/frontend/node_modules/@monorepo/shared -> ../../../../packages/shared-config
+
+==============================================
+PACKAGE FILES CHECK
+==============================================
+Frontend package.json exists:
+✅ YES
+Synthesis-api requirements.txt exists:
+✅ YES
+Ref2 requirements.txt exists:
+✅ YES
+Shared package index.ts exists:
+✅ YES

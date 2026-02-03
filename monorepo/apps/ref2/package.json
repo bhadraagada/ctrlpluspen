@@ -1,0 +1,12 @@
+{
+  "name": "@handwriting/ref2",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Handwriting synthesis reference implementation",
+  "scripts": {
+    "dev": "powershell -ExecutionPolicy Bypass -File ./run-dev.ps1",
+    "check": "echo '[ref2] Python app - check skipped'"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

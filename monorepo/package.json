@@ -1,0 +1,25 @@
+{
+  "name": "@handwriting/monorepo",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo dev --ui tui",
+    "dev:stream": "turbo dev --ui stream",
+    "dev:frontend": "turbo dev --filter=@handwriting/frontend --ui stream",
+    "dev:inngest": "cd apps/frontend && bun run dev:inngest",
+    "build": "turbo build",
+    "check": "turbo check",
+    "clean": "turbo clean"
+  },
+  "devDependencies": {
+    "turbo": "^2.8.1"
+  },
+  "packageManager": "bun@1.0.0",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
