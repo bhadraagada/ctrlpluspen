@@ -395,18 +395,24 @@ export function GalleryDashboard() {
                      
                      {/* Actions */}
                      <div className="flex gap-2">
-                       <button
-                         onClick={() => {
-                           if (selectedItem.svgContent) {
-                             const blob = new Blob([selectedItem.svgContent], { type: "image/svg+xml" });
-                             const url = URL.createObjectURL(blob);
-                             const a = document.createElement("a");
-                             a.href = url;
-                             a.download = `handwriting-${selectedItem.id}.svg`;
-                             a.click();
-                             URL.revokeObjectURL(url);
-                           }
-                         }}
+                        <button
+                          onClick={() => {
+                            if (selectedItem.svgContent) {
+                              const blob = new Blob([selectedItem.svgContent], { type: "image/svg+xml" });
+                              const url = URL.createObjectURL(blob);
+                              const a = document.createElement("a");
+                              a.href = url;
+                              a.download = `handwriting-${selectedItem.id}.svg`;
+                              a.click();
+                              URL.revokeObjectURL(url);
+                            } else if (selectedItem.fileUrl) {
+                              const a = document.createElement("a");
+                              a.href = selectedItem.fileUrl;
+                              a.target = "_blank";
+                              a.rel = "noreferrer";
+                              a.click();
+                            }
+                          }}
                          className="rounded-full border border-white/10 bg-white/5 p-2 text-white/60 hover:bg-white hover:text-black"
                          title="Download SVG"
                        >
@@ -437,7 +443,16 @@ export function GalleryDashboard() {
                    <div className="flex flex-1 items-center justify-center p-8">
                      <div className="w-full overflow-hidden rounded-xl bg-white shadow-2xl">
                         {viewMode === "svg" ? (
-                           <div className="w-full p-4" dangerouslySetInnerHTML={{ __html: selectedItem.svgContent || "" }} />
+                           selectedItem.svgContent ? (
+                             <div className="w-full p-4" dangerouslySetInnerHTML={{ __html: selectedItem.svgContent }} />
+                           ) : selectedItem.fileUrl ? (
+                             // eslint-disable-next-line @next/next/no-img-element
+                             <img src={selectedItem.fileUrl} alt="Vector preview" className="w-full" />
+                           ) : (
+                             <div className="flex aspect-video items-center justify-center bg-gray-50 text-sm text-gray-400">
+                               No SVG preview available.
+                             </div>
+                           )
                         ) : selectedItem.realisticPng ? (
                            // eslint-disable-next-line @next/next/no-img-element
                            <img src={`data:image/png;base64,${selectedItem.realisticPng}`} alt="Realistic" className="w-full" />

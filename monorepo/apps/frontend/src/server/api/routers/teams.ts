@@ -283,6 +283,48 @@ export const teamsRouter = createTRPCRouter({
       return { success: true, team: invite.team };
     }),
 
+  // Join a team directly using team code (team slug)
+  joinByCode: protectedProcedure
+    .input(
+      z.object({
+        code: z.string().min(2).max(30),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const normalizedCode = input.code.trim().toLowerCase();
+
+      const team = await ctx.db.team.findUnique({
+        where: { slug: normalizedCode },
+      });
+
+      if (!team) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Team code is invalid" });
+      }
+
+      const existingMember = await ctx.db.teamMember.findUnique({
+        where: {
+          teamId_userId: {
+            teamId: team.id,
+            userId: ctx.session.user.id,
+          },
+        },
+      });
+
+      if (existingMember) {
+        throw new TRPCError({ code: "CONFLICT", message: "You are already a member of this team" });
+      }
+
+      await ctx.db.teamMember.create({
+        data: {
+          teamId: team.id,
+          userId: ctx.session.user.id,
+          role: "MEMBER",
+        },
+      });
+
+      return { success: true, teamSlug: team.slug, teamName: team.name };
+    }),
+
   // Cancel an invite
   cancelInvite: protectedProcedure
     .input(z.object({ inviteId: z.string() }))

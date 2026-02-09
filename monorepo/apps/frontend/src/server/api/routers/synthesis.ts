@@ -165,6 +165,7 @@ export const synthesisRouter = createTRPCRouter({
         bias: z.number().min(0).max(1.5).default(0.75),
         strokeColor: z.string().default("black"),
         strokeWidth: z.number().min(1).max(5).default(2),
+        teamId: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -179,17 +180,53 @@ export const synthesisRouter = createTRPCRouter({
         });
       }
 
-      // Check if user has enough credits
-      const user = await ctx.db.user.findUnique({
-        where: { id: userId },
-        select: { credits: true },
-      });
+      let creditsRemaining = 0;
 
-      if (!user || user.credits < 1) {
-        throw new TRPCError({
-          code: "FORBIDDEN",
-          message: "Insufficient credits. Please purchase more credits to continue.",
+      if (input.teamId) {
+        const member = await ctx.db.teamMember.findUnique({
+          where: {
+            teamId_userId: {
+              teamId: input.teamId,
+              userId,
+            },
+          },
         });
+
+        if (!member) {
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message: "You are not a member of this team.",
+          });
+        }
+
+        const team = await ctx.db.team.findUnique({
+          where: { id: input.teamId },
+          select: { credits: true },
+        });
+
+        if (!team || team.credits < 1) {
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message: "This team does not have enough credits.",
+          });
+        }
+
+        creditsRemaining = team.credits - 1;
+      } else {
+        // Check if user has enough personal credits
+        const user = await ctx.db.user.findUnique({
+          where: { id: userId },
+          select: { credits: true },
+        });
+
+        if (!user || user.credits < 1) {
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message: "Insufficient credits. Please purchase more credits to continue.",
+          });
+        }
+
+        creditsRemaining = user.credits - 1;
       }
 
       const startTime = Date.now();
@@ -237,24 +274,59 @@ export const synthesisRouter = createTRPCRouter({
         const processingTime = Date.now() - startTime;
 
         // Deduct credit and log usage in a transaction
-        await ctx.db.$transaction([
-          ctx.db.user.update({
-            where: { id: userId },
-            data: { credits: { decrement: 1 } },
-          }),
-          ctx.db.synthesisUsage.create({
-            data: {
-              userId,
-              creditsUsed: 1,
-              linesCount: data.lines_count,
-              charactersCount: data.characters_count,
-              style: data.style,
-              bias: data.bias,
-              processingTimeMs: processingTime,
-              success: true,
-            },
-          }),
-        ]);
+        if (input.teamId) {
+          await ctx.db.$transaction([
+            ctx.db.team.update({
+              where: { id: input.teamId },
+              data: { credits: { decrement: 1 } },
+            }),
+            ctx.db.teamGeneration.create({
+              data: {
+                teamId: input.teamId,
+                createdById: userId,
+                text: input.text,
+                style: data.style,
+                bias: data.bias,
+                strokeColor: input.strokeColor,
+                strokeWidth: input.strokeWidth,
+                svgContent: data.svg_raw,
+                linesCount: data.lines_count,
+                charactersCount: data.characters_count,
+              },
+            }),
+            ctx.db.synthesisUsage.create({
+              data: {
+                userId,
+                creditsUsed: 1,
+                linesCount: data.lines_count,
+                charactersCount: data.characters_count,
+                style: data.style,
+                bias: data.bias,
+                processingTimeMs: processingTime,
+                success: true,
+              },
+            }),
+          ]);
+        } else {
+          await ctx.db.$transaction([
+            ctx.db.user.update({
+              where: { id: userId },
+              data: { credits: { decrement: 1 } },
+            }),
+            ctx.db.synthesisUsage.create({
+              data: {
+                userId,
+                creditsUsed: 1,
+                linesCount: data.lines_count,
+                charactersCount: data.characters_count,
+                style: data.style,
+                bias: data.bias,
+                processingTimeMs: processingTime,
+                success: true,
+              },
+            }),
+          ]);
+        }
 
         return {
           svg: data.svg,
@@ -263,7 +335,7 @@ export const synthesisRouter = createTRPCRouter({
           charactersCount: data.characters_count,
           style: data.style,
           bias: data.bias,
-          creditsRemaining: user.credits - 1,
+          creditsRemaining,
         };
       } catch (error) {
         if (error instanceof TRPCError) throw error;
@@ -533,14 +605,48 @@ export const synthesisRouter = createTRPCRouter({
         fileUrl: z.string().url(),
         fileKey: z.string(),
         fileName: z.string().optional(),
+        svgContent: z.string().optional(),
         linesCount: z.number(),
         charactersCount: z.number(),
         tags: z.array(z.string()).default([]),
         batchJobId: z.string().optional(),
+        teamId: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const savedGeneration = await ctx.db.savedGeneration.create({
+      if (input.teamId) {
+        const member = await ctx.db.teamMember.findUnique({
+          where: {
+            teamId_userId: {
+              teamId: input.teamId,
+              userId: ctx.session.user.id,
+            },
+          },
+        });
+
+        if (!member) {
+          throw new TRPCError({ code: "FORBIDDEN", message: "Not a member of this team" });
+        }
+
+        return ctx.db.teamGeneration.create({
+          data: {
+            teamId: input.teamId,
+            createdById: ctx.session.user.id,
+            text: input.text,
+            style: input.style,
+            bias: input.bias,
+            strokeColor: input.strokeColor,
+            strokeWidth: input.strokeWidth,
+            svgContent: input.svgContent,
+            fileUrl: input.fileUrl,
+            fileKey: input.fileKey,
+            linesCount: input.linesCount,
+            charactersCount: input.charactersCount,
+          },
+        });
+      }
+
+      return ctx.db.savedGeneration.create({
         data: {
           userId: ctx.session.user.id,
           text: input.text,
@@ -548,6 +654,7 @@ export const synthesisRouter = createTRPCRouter({
           bias: input.bias,
           strokeColor: input.strokeColor,
           strokeWidth: input.strokeWidth,
+          svgContent: input.svgContent,
           fileUrl: input.fileUrl,
           fileKey: input.fileKey,
           fileName: input.fileName,
@@ -557,8 +664,6 @@ export const synthesisRouter = createTRPCRouter({
           batchJobId: input.batchJobId,
         },
       });
-
-      return savedGeneration;
     }),
 
   // Get paginated gallery of saved generations

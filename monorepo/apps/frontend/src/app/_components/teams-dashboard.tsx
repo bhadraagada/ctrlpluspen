@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { api } from "~/trpc/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 type TeamRole = "OWNER" | "ADMIN" | "MEMBER";
 
@@ -13,7 +14,9 @@ const ROLE_STYLES: Record<TeamRole, { bg: string; text: string }> = {
 };
 
 export function TeamsDashboard() {
+  const router = useRouter();
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showJoinModal, setShowJoinModal] = useState(false);
   const [showInviteModal, setShowInviteModal] = useState<string | null>(null);
   const [showAddCreditsModal, setShowAddCreditsModal] = useState<string | null>(null);
   
@@ -21,10 +24,12 @@ export function TeamsDashboard() {
   const [teamName, setTeamName] = useState("");
   const [teamSlug, setTeamSlug] = useState("");
   const [teamDescription, setTeamDescription] = useState("");
+  const [joinCode, setJoinCode] = useState("");
   
   // Invite form
   const [inviteEmail, setInviteEmail] = useState("");
   const [inviteRole, setInviteRole] = useState<"ADMIN" | "MEMBER">("MEMBER");
+  const [inviteLink, setInviteLink] = useState<string | null>(null);
   
   // Add credits form
   const [creditsAmount, setCreditsAmount] = useState(100);
@@ -44,11 +49,9 @@ export function TeamsDashboard() {
   });
 
   const inviteMutation = api.teams.invite.useMutation({
-    onSuccess: () => {
+    onSuccess: (invite) => {
       utils.teams.getMyTeams.invalidate();
-      setShowInviteModal(null);
-      setInviteEmail("");
-      setInviteRole("MEMBER");
+      setInviteLink(`/teams/invite/${invite.token}`);
     },
   });
 
@@ -67,6 +70,15 @@ export function TeamsDashboard() {
     },
   });
 
+  const joinByCodeMutation = api.teams.joinByCode.useMutation({
+    onSuccess: (data) => {
+      void utils.teams.getMyTeams.invalidate();
+      setShowJoinModal(false);
+      setJoinCode("");
+      router.push(`/teams/${data.teamSlug}`);
+    },
+  });
+
   const generateSlug = (name: string) => {
     return name
       .toLowerCase()
@@ -75,22 +87,63 @@ export function TeamsDashboard() {
       .slice(0, 30);
   };
 
+  const summary = useMemo(() => {
+    const teams = teamsQuery.data ?? [];
+    return teams.reduce(
+      (acc, team) => {
+        acc.totalCredits += team.credits;
+        acc.totalMembers += team._count.members;
+        return acc;
+      },
+      { totalCredits: 0, totalMembers: 0 },
+    );
+  }, [teamsQuery.data]);
+
   return (
     <div className="space-y-8">
       {/* Header Actions */}
-      <div className="flex items-center justify-between">
-        <div className="text-sm text-white/50">
-          {teamsQuery.data?.length ?? 0} team{teamsQuery.data?.length !== 1 ? "s" : ""}
+      <div className="rounded-3xl border border-white/10 bg-white/[0.02] p-5 sm:p-6">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <p className="text-xs uppercase tracking-[0.2em] text-white/40">Workspace</p>
+            <div className="mt-2 text-sm text-white/60">
+              {teamsQuery.data?.length ?? 0} team{teamsQuery.data?.length !== 1 ? "s" : ""} connected
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setShowJoinModal(true)}
+              className="flex items-center gap-2 rounded-lg border border-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/5"
+            >
+              Join with Code
+            </button>
+            <button
+              onClick={() => setShowCreateModal(true)}
+              className="flex items-center gap-2 rounded-lg bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-white/90"
+            >
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+              Create Team
+            </button>
+          </div>
         </div>
-        <button
-          onClick={() => setShowCreateModal(true)}
-          className="flex items-center gap-2 rounded-lg bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-white/90"
-        >
-          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-          </svg>
-          Create Team
-        </button>
+
+        <div className="mt-5 grid gap-3 sm:grid-cols-3">
+          <div className="rounded-xl border border-white/10 bg-white/[0.02] px-4 py-3">
+            <p className="text-xs text-white/40">Total Teams</p>
+            <p className="mt-1 text-xl font-semibold text-white">{teamsQuery.data?.length ?? 0}</p>
+          </div>
+          <div className="rounded-xl border border-white/10 bg-white/[0.02] px-4 py-3">
+            <p className="text-xs text-white/40">Team Credits</p>
+            <p className="mt-1 text-xl font-semibold text-white">{summary.totalCredits}</p>
+          </div>
+          <div className="rounded-xl border border-white/10 bg-white/[0.02] px-4 py-3">
+            <p className="text-xs text-white/40">Members Across Teams</p>
+            <p className="mt-1 text-xl font-semibold text-white">{summary.totalMembers}</p>
+          </div>
+        </div>
       </div>
 
       {/* Teams Grid */}
@@ -114,6 +167,12 @@ export function TeamsDashboard() {
             className="mt-6 rounded-full bg-white px-6 py-2 text-sm font-medium text-black transition hover:scale-[1.02]"
           >
             Create Your First Team
+          </button>
+          <button
+            onClick={() => setShowJoinModal(true)}
+            className="mt-3 rounded-full border border-white/10 px-6 py-2 text-sm font-medium text-white/70 transition hover:bg-white/5 hover:text-white"
+          >
+            Join with Team Code
           </button>
         </div>
       ) : (
@@ -171,7 +230,10 @@ export function TeamsDashboard() {
                   {(team.role === "OWNER" || team.role === "ADMIN") && (
                     <>
                       <button
-                        onClick={() => setShowInviteModal(team.id)}
+                        onClick={() => {
+                          setShowInviteModal(team.id);
+                          setInviteLink(null);
+                        }}
                         className="flex-1 rounded-lg border border-white/10 px-3 py-2 text-xs font-medium text-white/60 transition hover:bg-white/5 hover:text-white"
                       >
                         Invite
@@ -298,6 +360,65 @@ export function TeamsDashboard() {
         </div>
       )}
 
+      {/* Join Team Modal */}
+      {showJoinModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="w-full max-w-md rounded-2xl border border-white/10 bg-[#0a0a0a] p-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-semibold text-white">Join Team</h2>
+              <button
+                onClick={() => {
+                  setShowJoinModal(false);
+                  setJoinCode("");
+                }}
+                className="text-white/40 hover:text-white"
+              >
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="mt-6 space-y-3">
+              <label className="text-sm font-medium text-white/70">Team Code</label>
+              <input
+                type="text"
+                value={joinCode}
+                onChange={(e) => setJoinCode(e.target.value)}
+                placeholder="example-team-code"
+                className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-white/30 outline-none focus:border-white/30"
+              />
+              <p className="text-xs text-white/40">Ask your team admin for the team code.</p>
+            </div>
+
+            {joinByCodeMutation.error && (
+              <div className="mt-4 rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+                {joinByCodeMutation.error.message}
+              </div>
+            )}
+
+            <div className="mt-6 flex justify-end gap-3">
+              <button
+                onClick={() => {
+                  setShowJoinModal(false);
+                  setJoinCode("");
+                }}
+                className="rounded-lg border border-white/10 px-4 py-2 text-sm font-medium text-white/60 transition hover:bg-white/5 hover:text-white"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => joinByCodeMutation.mutate({ code: joinCode })}
+                disabled={joinByCodeMutation.isPending || !joinCode.trim()}
+                className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-white/90 disabled:opacity-50"
+              >
+                {joinByCodeMutation.isPending ? "Joining..." : "Join Team"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Invite Modal */}
       {showInviteModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
@@ -349,6 +470,25 @@ export function TeamsDashboard() {
               </div>
             </div>
 
+            {inviteLink && (
+              <div className="mt-4 rounded-lg border border-emerald-500/20 bg-emerald-500/10 p-4">
+                <p className="text-xs text-emerald-300">Invite link created. Share this with your teammate:</p>
+                <div className="mt-2 flex items-center gap-2">
+                  <code className="flex-1 truncate rounded bg-black/30 px-2 py-1 text-xs text-emerald-200">
+                    {inviteLink}
+                  </code>
+                  <button
+                    onClick={async () => {
+                      await navigator.clipboard.writeText(`${window.location.origin}${inviteLink}`);
+                    }}
+                    className="rounded-md border border-emerald-400/30 px-2 py-1 text-xs text-emerald-200 transition hover:bg-emerald-400/10"
+                  >
+                    Copy
+                  </button>
+                </div>
+              </div>
+            )}
+
             {inviteMutation.error && (
               <div className="mt-4 rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400">
                 {inviteMutation.error.message}
@@ -357,7 +497,12 @@ export function TeamsDashboard() {
 
             <div className="mt-6 flex justify-end gap-3">
               <button
-                onClick={() => setShowInviteModal(null)}
+                onClick={() => {
+                  setShowInviteModal(null);
+                  setInviteEmail("");
+                  setInviteRole("MEMBER");
+                  setInviteLink(null);
+                }}
                 className="rounded-lg border border-white/10 px-4 py-2 text-sm font-medium text-white/60 transition hover:bg-white/5 hover:text-white"
               >
                 Cancel
@@ -377,7 +522,7 @@ export function TeamsDashboard() {
                     Sending...
                   </>
                 ) : (
-                  "Send Invite"
+                  "Create Invite Link"
                 )}
               </button>
             </div>

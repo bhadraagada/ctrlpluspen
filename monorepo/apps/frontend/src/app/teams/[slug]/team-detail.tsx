@@ -26,6 +26,7 @@ export function TeamDetail({ slug }: TeamDetailProps) {
   // Invite form
   const [inviteEmail, setInviteEmail] = useState("");
   const [inviteRole, setInviteRole] = useState<"ADMIN" | "MEMBER">("MEMBER");
+  const [inviteLink, setInviteLink] = useState<string | null>(null);
   
   // Add credits form
   const [creditsAmount, setCreditsAmount] = useState(100);
@@ -33,6 +34,7 @@ export function TeamDetail({ slug }: TeamDetailProps) {
   // Settings form
   const [editName, setEditName] = useState("");
   const [editDescription, setEditDescription] = useState("");
+  const [expandedGenerationId, setExpandedGenerationId] = useState<string | null>(null);
 
   const utils = api.useUtils();
   const teamQuery = api.teams.getBySlug.useQuery({ slug });
@@ -43,11 +45,9 @@ export function TeamDetail({ slug }: TeamDetailProps) {
   const creditsQuery = api.credits.getBalance.useQuery();
 
   const inviteMutation = api.teams.invite.useMutation({
-    onSuccess: () => {
+    onSuccess: (invite) => {
       utils.teams.getBySlug.invalidate({ slug });
-      setShowInviteModal(false);
-      setInviteEmail("");
-      setInviteRole("MEMBER");
+      setInviteLink(`/teams/invite/${invite.token}`);
     },
   });
 
@@ -164,6 +164,28 @@ export function TeamDetail({ slug }: TeamDetailProps) {
             <div className="text-lg font-semibold text-white">{team.credits}</div>
             <div className="text-xs text-white/40">Team Credits</div>
           </div>
+
+          <div className="rounded-xl border border-white/10 bg-white/[0.02] px-4 py-2">
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-white/40">Team Code</span>
+              <button
+                onClick={async () => {
+                  await navigator.clipboard.writeText(team.slug);
+                }}
+                className="rounded border border-white/10 px-1.5 py-0.5 text-[10px] text-white/60 transition hover:bg-white/5 hover:text-white"
+              >
+                Copy
+              </button>
+            </div>
+            <div className="text-sm font-semibold uppercase tracking-wide text-white">{team.slug}</div>
+          </div>
+
+          <Link
+            href={`/synthesis?team=${team.id}`}
+            className="rounded-lg border border-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/10"
+          >
+            Generate for Team
+          </Link>
           
           {isAdmin && (
             <button
@@ -203,7 +225,10 @@ export function TeamDetail({ slug }: TeamDetailProps) {
             <h2 className="text-lg font-medium text-white">Team Members</h2>
             {isAdmin && (
               <button
-                onClick={() => setShowInviteModal(true)}
+                onClick={() => {
+                  setInviteLink(null);
+                  setShowInviteModal(true);
+                }}
                 className="flex items-center gap-2 rounded-lg border border-white/10 px-4 py-2 text-sm font-medium text-white/60 transition hover:bg-white/5 hover:text-white"
               >
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -281,7 +306,10 @@ export function TeamDetail({ slug }: TeamDetailProps) {
             <h2 className="text-lg font-medium text-white">Pending Invites</h2>
             {isAdmin && (
               <button
-                onClick={() => setShowInviteModal(true)}
+                onClick={() => {
+                  setInviteLink(null);
+                  setShowInviteModal(true);
+                }}
                 className="flex items-center gap-2 rounded-lg border border-white/10 px-4 py-2 text-sm font-medium text-white/60 transition hover:bg-white/5 hover:text-white"
               >
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -355,28 +383,86 @@ export function TeamDetail({ slug }: TeamDetailProps) {
           ) : (
             <div className="divide-y divide-white/5 rounded-2xl border border-white/10 bg-white/[0.02]">
               {generationsQuery.data?.items.map((gen) => (
-                <div key={gen.id} className="flex items-center justify-between p-4">
-                  <div className="flex items-center gap-3">
-                    {gen.createdBy.image ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={gen.createdBy.image}
-                        alt={gen.createdBy.name ?? ""}
-                        className="h-8 w-8 rounded-full object-cover"
-                      />
-                    ) : (
-                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-xs font-medium text-white">
-                        {gen.createdBy.name?.[0] ?? "?"}
-                      </div>
-                    )}
-                    <div>
-                      <div className="text-sm text-white line-clamp-1">{gen.text}</div>
-                      <div className="text-xs text-white/40">
-                        {gen.createdBy.name} - {new Date(gen.createdAt).toLocaleString()}
+                <div key={gen.id}>
+                  <div
+                    onClick={() => {
+                      if (!gen.svgContent && !gen.fileUrl) return;
+                      setExpandedGenerationId((current) => (current === gen.id ? null : gen.id));
+                    }}
+                    className={`flex items-center justify-between p-4 ${gen.svgContent || gen.fileUrl ? "cursor-pointer hover:bg-white/[0.03]" : ""}`}
+                  >
+                    <div className="flex items-center gap-3">
+                      {gen.createdBy.image ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={gen.createdBy.image}
+                          alt={gen.createdBy.name ?? ""}
+                          className="h-8 w-8 rounded-full object-cover"
+                        />
+                      ) : (
+                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-xs font-medium text-white">
+                          {gen.createdBy.name?.[0] ?? "?"}
+                        </div>
+                      )}
+                      <div>
+                        <div className="text-sm text-white line-clamp-1">{gen.text}</div>
+                        <div className="text-xs text-white/40">
+                          {gen.createdBy.name} - {new Date(gen.createdAt).toLocaleString()}
+                        </div>
                       </div>
                     </div>
-                   </div>
-                 </div>
+
+                    <div className="flex items-center gap-2">
+                      {(gen.svgContent || gen.fileUrl) && (
+                        <span className="text-xs text-white/50">
+                          {expandedGenerationId === gen.id ? "Hide" : "Preview"}
+                        </span>
+                      )}
+
+                      {gen.fileUrl ? (
+                        <a
+                          href={gen.fileUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="rounded-lg border border-white/10 px-3 py-1.5 text-sm text-white/70 transition hover:bg-white/5 hover:text-white"
+                        >
+                          Open
+                        </a>
+                      ) : gen.svgContent ? (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            const svgMarkup = gen.svgContent;
+                            if (!svgMarkup) return;
+                            const blob = new Blob([svgMarkup], { type: "image/svg+xml" });
+                            const url = URL.createObjectURL(blob);
+                            window.open(url, "_blank", "noopener,noreferrer");
+                            setTimeout(() => URL.revokeObjectURL(url), 1000);
+                          }}
+                          className="rounded-lg border border-white/10 px-3 py-1.5 text-sm text-white/70 transition hover:bg-white/5 hover:text-white"
+                        >
+                          Open SVG
+                        </button>
+                      ) : (
+                        <span className="text-xs text-white/40">Not saved as file</span>
+                      )}
+                    </div>
+                  </div>
+
+                  {expandedGenerationId === gen.id && (gen.svgContent || gen.fileUrl) && (
+                    <div className="px-4 pb-4">
+                      <div className="overflow-hidden rounded-xl border border-white/10 bg-white p-3">
+                        {gen.svgContent ? (
+                          <div className="max-h-72 overflow-auto" dangerouslySetInnerHTML={{ __html: gen.svgContent }} />
+                        ) : (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={gen.fileUrl!} alt="Team generation preview" className="max-h-72 w-full object-contain" />
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
               ))}
             </div>
           )}
@@ -491,6 +577,25 @@ export function TeamDetail({ slug }: TeamDetailProps) {
               </div>
             </div>
 
+            {inviteLink && (
+              <div className="mt-4 rounded-lg border border-emerald-500/20 bg-emerald-500/10 p-4">
+                <p className="text-xs text-emerald-300">Invite link created. Share this with your teammate:</p>
+                <div className="mt-2 flex items-center gap-2">
+                  <code className="flex-1 truncate rounded bg-black/30 px-2 py-1 text-xs text-emerald-200">
+                    {inviteLink}
+                  </code>
+                  <button
+                    onClick={async () => {
+                      await navigator.clipboard.writeText(`${window.location.origin}${inviteLink}`);
+                    }}
+                    className="rounded-md border border-emerald-400/30 px-2 py-1 text-xs text-emerald-200 transition hover:bg-emerald-400/10"
+                  >
+                    Copy
+                  </button>
+                </div>
+              </div>
+            )}
+
             {inviteMutation.error && (
               <div className="mt-4 rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400">
                 {inviteMutation.error.message}
@@ -499,7 +604,12 @@ export function TeamDetail({ slug }: TeamDetailProps) {
 
             <div className="mt-6 flex justify-end gap-3">
               <button
-                onClick={() => setShowInviteModal(false)}
+                onClick={() => {
+                  setShowInviteModal(false);
+                  setInviteEmail("");
+                  setInviteRole("MEMBER");
+                  setInviteLink(null);
+                }}
                 className="rounded-lg border border-white/10 px-4 py-2 text-sm font-medium text-white/60 transition hover:bg-white/5 hover:text-white"
               >
                 Cancel
@@ -513,7 +623,7 @@ export function TeamDetail({ slug }: TeamDetailProps) {
                 disabled={inviteMutation.isPending || !inviteEmail}
                 className="flex items-center gap-2 rounded-lg bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-white/90 disabled:opacity-50"
               >
-                {inviteMutation.isPending ? "Sending..." : "Send Invite"}
+                {inviteMutation.isPending ? "Creating..." : "Create Invite Link"}
               </button>
             </div>
           </div>

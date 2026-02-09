@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { api } from "~/trpc/react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useUploadThing } from "~/lib/uploadthing";
 import { BatchGenerator } from "./batch-generator";
 
@@ -44,6 +45,8 @@ interface VerificationResult {
 
 export function SynthesisDashboard() {
   const { data: session } = useSession();
+  const searchParams = useSearchParams();
+  const teamParam = searchParams.get("team");
   const [text, setText] = useState("Hello World!");
   const [style, setStyle] = useState(9);
   const [bias, setBias] = useState(0.75);
@@ -61,6 +64,7 @@ export function SynthesisDashboard() {
   const [showBatchMode, setShowBatchMode] = useState(false);
   const [verificationResult, setVerificationResult] = useState<VerificationResult | null>(null);
   const [isVerifying, setIsVerifying] = useState(false);
+  const [generationScope, setGenerationScope] = useState<string>(teamParam ?? "PERSONAL");
 
   const utils = api.useUtils();
   const { startUpload } = useUploadThing("handwritingSvg");
@@ -68,15 +72,38 @@ export function SynthesisDashboard() {
   const healthQuery = api.synthesis.health.useQuery(undefined, { refetchInterval: 30000 });
   const stylesQuery = api.synthesis.getStyles.useQuery();
   const statsQuery = api.synthesis.getUsageStats.useQuery(undefined, { enabled: !!session });
+  const teamsQuery = api.teams.getMyTeams.useQuery(undefined, { enabled: !!session });
+
+  const selectedTeam = useMemo(
+    () => teamsQuery.data?.find((team) => team.id === generationScope),
+    [teamsQuery.data, generationScope],
+  );
+
+  const availableCredits = selectedTeam ? selectedTeam.credits : (statsQuery.data?.credits ?? 0);
+  const hasNoPersonalCredits = (statsQuery.data?.credits ?? 0) < 1;
+
+  useEffect(() => {
+    if (
+      generationScope !== "PERSONAL" &&
+      teamsQuery.data &&
+      !teamsQuery.data.some((team) => team.id === generationScope)
+    ) {
+      setGenerationScope("PERSONAL");
+    }
+  }, [generationScope, teamsQuery.data]);
 
   const generateMutation = api.synthesis.generate.useMutation({
-    onSuccess: (data) => {
+    onSuccess: (data, variables) => {
       setResult(data);
       setError(null);
       setSaveSuccess(false);
       setVerificationResult(null);
       void utils.credits.getBalance.invalidate();
       void utils.synthesis.getUsageStats.invalidate();
+      void utils.teams.getMyTeams.invalidate();
+      if (variables.teamId) {
+        void utils.teams.getGenerations.invalidate({ teamId: variables.teamId });
+      }
     },
     onError: (err) => {
       setError(err.message);
@@ -85,9 +112,12 @@ export function SynthesisDashboard() {
   });
 
   const saveGenerationMutation = api.synthesis.saveGeneration.useMutation({
-    onSuccess: () => {
+    onSuccess: (_data, variables) => {
       setSaveSuccess(true);
       void utils.synthesis.getGalleryStats.invalidate();
+      if (variables.teamId) {
+        void utils.teams.getGenerations.invalidate({ teamId: variables.teamId });
+      }
     },
     onError: (err) => {
       setError(`Failed to save: ${err.message}`);
@@ -135,8 +165,15 @@ export function SynthesisDashboard() {
 
   const handleGenerate = useCallback(() => {
     if (!textValidation.valid) return;
-    generateMutation.mutate({ text, style, bias, strokeColor, strokeWidth });
-  }, [text, style, bias, strokeColor, strokeWidth, textValidation.valid, generateMutation]);
+    generateMutation.mutate({
+      text,
+      style,
+      bias,
+      strokeColor,
+      strokeWidth,
+      teamId: selectedTeam?.id,
+    });
+  }, [text, style, bias, strokeColor, strokeWidth, selectedTeam, textValidation.valid, generateMutation]);
 
   const handleDownload = useCallback(() => {
     if (!result?.svgRaw) return;
@@ -171,15 +208,17 @@ export function SynthesisDashboard() {
         fileUrl: uploadedFile.ufsUrl,
         fileKey: uploadedFile.key,
         fileName: uploadedFile.name,
+        svgContent: result.svgRaw,
         linesCount: result.linesCount,
         charactersCount: result.charactersCount,
+        teamId: selectedTeam?.id,
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to save to gallery");
     } finally {
       setIsSaving(false);
     }
-  }, [result, text, style, bias, strokeColor, strokeWidth, startUpload, saveGenerationMutation]);
+  }, [result, text, style, bias, strokeColor, strokeWidth, startUpload, saveGenerationMutation, selectedTeam]);
 
   const handleVerifyWithOcr = useCallback(async () => {
     if (!result?.svgRaw) return;
@@ -230,7 +269,7 @@ export function SynthesisDashboard() {
   }, [result, recognizeMutation]);
 
   const isBackendHealthy = healthQuery.data?.status === "healthy";
-  const hasNoCredits = (statsQuery.data?.credits ?? 0) < 1;
+  const hasNoCredits = availableCredits < 1;
 
   return (
     <div className="space-y-8">
@@ -253,7 +292,7 @@ export function SynthesisDashboard() {
                 <div className="mt-4 text-3xl font-semibold tracking-tight text-white tabular-nums">
                   {stat.value}
                 </div>
-                {stat.label === "Available Credits" && hasNoCredits && (
+                {stat.label === "Available Credits" && hasNoPersonalCredits && (
                   <Link href="/credits" className="mt-2 block text-xs text-red-400 hover:text-red-300">
                     Get more credits →
                   </Link>
@@ -393,6 +432,32 @@ export function SynthesisDashboard() {
             </div>
           </div>
 
+          <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6">
+            <div className="mb-2 flex items-center justify-between">
+              <h3 className="text-xs font-medium uppercase tracking-wider text-white/40">Generation Scope</h3>
+              <span className="text-xs text-white/50">{availableCredits} credits</span>
+            </div>
+            <select
+              value={generationScope}
+              onChange={(e) => setGenerationScope(e.target.value)}
+              className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-white outline-none"
+            >
+              <option value="PERSONAL" className="bg-[#0a0a0a]">
+                Personal workspace
+              </option>
+              {teamsQuery.data?.map((team) => (
+                <option key={team.id} value={team.id} className="bg-[#0a0a0a]">
+                  {team.name} (team, {team.credits} credits)
+                </option>
+              ))}
+            </select>
+            <p className="mt-2 text-xs text-white/40">
+              {selectedTeam
+                ? "This generation will be visible in the selected team for team members only."
+                : "This generation is private to your personal workspace."}
+            </p>
+          </div>
+
           {/* Action Buttons */}
           <div className="flex gap-4">
              <button
@@ -405,14 +470,14 @@ export function SynthesisDashboard() {
                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-black/30 border-t-black" />
                    Generating...
                  </span>
-               ) : hasNoCredits ? (
-                 "Top up Credits"
-               ) : (
-                 "Generate Output"
-               )}
+                ) : hasNoCredits ? (
+                  selectedTeam ? "Team has no credits" : "Top up Credits"
+                ) : (
+                  "Generate Output"
+                )}
              </button>
              
-             <button
+             {/* <button
                 onClick={() => setShowBatchMode(true)}
                 disabled={!textValidation.valid || !isBackendHealthy || hasNoCredits}
                 className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-6 py-4 text-sm font-medium text-white transition-colors hover:bg-white/10 disabled:opacity-50"
@@ -421,7 +486,7 @@ export function SynthesisDashboard() {
                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                </svg>
                Batch
-             </button>
+             </button> */}
           </div>
 
           {!isBackendHealthy && !healthQuery.isLoading && (
