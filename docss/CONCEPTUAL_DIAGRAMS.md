@@ -63,28 +63,92 @@ The proposed system is a stroke-based handwriting generator:
 
 ## 3.3 Planning and Scheduling
 
-An implementation-ready plan aligned to this repository’s workflow:
+An implementation-ready schedule aligned to the production monorepo workflow:
 
-1. **Dataset setup**
+1. **Core setup (Weeks 1-2)**
+- Initialize Turborepo apps and shared configs.
+- Configure auth, base schema, and synthesis UI shell.
 
-- Collect raw handwriting strokes + transcripts (or use provided processed data)
-- Run preprocessing to produce `x.npy`, `x_len.npy`, `c.npy`, `c_len.npy`
+2. **Synthesis API integration (Weeks 3-4)**
+- Integrate FastAPI synthesis/realistic/ocr routes.
+- Add style, bias, and preview pipeline.
 
-2. **Model training**
+3. **Gallery and credits (Weeks 5-6)**
+- Implement saved generations, search, tags, favorites.
+- Add payment flow and credit consumption tracking.
 
-- Run `train_model.py` for a fixed number of steps
-- Monitor logs; periodically save checkpoints
+4. **Batch/Bulk and teams (Weeks 7-8)**
+- Add Inngest batch/bulk orchestration.
+- Implement team workspace, invitations, and roles.
 
-3. **Sampling & demo**
+5. **Hardening and release (Weeks 9-10)**
+- Add test coverage, performance checks, and deployment tuning.
 
-- Restore a checkpoint
-- Generate samples with/without priming; tune bias
-- Render SVG outputs
+### 3.3.1 PERT Chart
 
-4. **Testing & validation**
+```plantuml
+@startuml
+skinparam monochrome true
+skinparam shadowing false
 
-- Visual inspection of SVGs
-- Sanity checks on data shapes and lengths
+left to right direction
+
+rectangle "A\nMonorepo Setup\n(5d)" as A
+rectangle "B\nAuth + Prisma Base\n(5d)" as B
+rectangle "C\nSynthesis API Wiring\n(6d)" as C
+rectangle "D\nWeb Synthesis UI\n(4d)" as D
+rectangle "E\nGallery + Credits\n(6d)" as E
+rectangle "F\nBatch/Bulk (Inngest)\n(5d)" as F
+rectangle "G\nTeams + Roles\n(4d)" as G
+rectangle "H\nTesting + Perf + Deploy\n(5d)" as H
+
+A --> B
+A --> C
+B --> D
+C --> D
+D --> E
+E --> F
+E --> G
+F --> H
+G --> H
+@enduml
+```
+
+### 3.3.2 Gantt Chart
+
+```plantuml
+@startgantt
+Project starts 2026-02-16
+printscale weekly
+saturday are closed
+sunday are closed
+
+[Phase 1: Core setup] lasts 10 days
+[Monorepo setup] lasts 5 days
+[Auth + Prisma base] lasts 5 days
+[Auth + Prisma base] starts at [Monorepo setup]'s end
+
+[Phase 2: Synthesis integration] lasts 10 days
+[Synthesis API wiring] lasts 6 days
+[Web synthesis UI] lasts 4 days
+[Synthesis API wiring] starts at [Phase 1: Core setup]'s end
+[Web synthesis UI] starts at [Synthesis API wiring]'s end
+
+[Phase 3: Gallery + credits] lasts 10 days
+[Gallery + credits] lasts 6 days
+[Gallery + credits] starts at [Phase 2: Synthesis integration]'s end
+
+[Phase 4: Batch/Bulk + teams] lasts 10 days
+[Batch/Bulk (Inngest)] lasts 5 days
+[Teams + roles] lasts 4 days
+[Batch/Bulk (Inngest)] starts at [Gallery + credits]'s end
+[Teams + roles] starts at [Gallery + credits]'s end
+
+[Phase 5: Hardening + release] lasts 10 days
+[Testing + perf + deploy] lasts 5 days
+[Testing + perf + deploy] starts at [Batch/Bulk (Inngest)]'s end
+@endgantt
+```
 
 ---
 
@@ -122,7 +186,7 @@ The output is a set of SVG files containing realistic stroke paths suitable for 
 
 ---
 
-# 3.6 Conceptual Diagrams (Ref Project)
+# 3.6 Conceptual Diagrams (Monorepo)
 
 The following diagrams describe the same system visually.
 
@@ -148,31 +212,38 @@ skinparam monochrome true
 skinparam shadowing false
 
 actor "User" as User
-actor "Dataset Provider" as Provider
+actor "Team Owner" as Owner
+actor "Team Member" as Member
+actor "Admin" as Admin
+actor "Payment Gateway" as PG
 
-rectangle "Handwriting Synthesis System (ref/)" {
-  usecase "Generate / Prepare Data" as UC1
-  usecase "Train RNN+Attention Model" as UC2
-  usecase "Restore Checkpoint" as UC3
-  usecase "Generate Handwriting (Sample)" as UC4
-  usecase "Prime Style (Few-shot)" as UC5
-  usecase "Set Bias (Neatness Control)" as UC6
-  usecase "Render & Export SVG" as UC7
-  usecase "View Logs" as UC8
+rectangle "Handwriting Platform (Monorepo)" {
+  usecase "Authenticate (OAuth/Credentials)" as UC1
+  usecase "Generate Handwriting" as UC2
+  usecase "Apply Realistic Effects" as UC3
+  usecase "Save / Search Gallery" as UC4
+  usecase "Batch / Bulk Processing" as UC5
+  usecase "Manage Team Workspace" as UC6
+  usecase "Purchase Credits" as UC7
+  usecase "Run OCR Recognition" as UC8
 }
 
-Provider --> UC1
 User --> UC1
 User --> UC2
 User --> UC3
 User --> UC4
+User --> UC5
 User --> UC7
 User --> UC8
+Owner --> UC6
+Member --> UC4
+Member --> UC5
+Admin --> UC6
+PG --> UC7
 
-UC5 .> UC4 : <<extend>>
-UC6 .> UC4 : <<extend>>
-UC3 .> UC2 : <<include>>
-UC7 .> UC4 : <<include>>
+UC3 .> UC2 : <<extend>>
+UC5 .> UC2 : <<extend>>
+UC4 .> UC2 : <<include>>
 @enduml
 ```
 
@@ -185,63 +256,84 @@ UC7 .> UC4 : <<include>>
 skinparam monochrome true
 skinparam shadowing false
 
-' Conceptual ER diagram (storage is filesystem-based)
-entity "ProcessedDataset" as Dataset {
-  * dataset_id
+entity "User" as User {
+  * id
   --
-  x.npy
-  x_len.npy
-  c.npy
-  c_len.npy
+  email
+  name
+  credits
 }
 
-entity "StrokeSequence" as Stroke {
-  * sample_id
+entity "SavedGeneration" as Gen {
+  * id
   --
-  x: (t,3)
-  y: (t,3)
-  pen_state
+  user_id
+  text
+  style
+  bias
+  svg_url
+  png_url
 }
 
-entity "TextSequence" as Text {
-  * sample_id
+entity "Team" as Team {
+  * id
   --
-  c: int[]
-  c_len
+  owner_id
+  name
+  slug
+  credits
 }
 
-entity "StyleSample" as Style {
-  * style_id
+entity "TeamMember" as TeamMember {
+  * team_id
+  * user_id
   --
-  style-*-strokes.npy
-  style-*-chars.npy
+  role
 }
 
-entity "Checkpoint" as Ckpt {
-  * step
+entity "TeamInvite" as Invite {
+  * id
   --
-  model-*.index
-  model-*.data
-  model-*.meta
+  team_id
+  email
+  role
+  token
 }
 
-entity "LogFile" as Log {
-  * run_id
+entity "Payment" as Payment {
+  * id
   --
-  log_*.txt
+  user_id
+  order_id
+  amount
+  credits_added
+  status
 }
 
-entity "OutputSVG" as Out {
-  * output_id
+entity "BatchJob" as Batch {
+  * id
   --
-  *.svg
+  user_id
+  status
+  total_items
 }
 
-Dataset ||--o{ Stroke : contains
-Dataset ||--o{ Text : contains
-Style ||--o{ Out : influences
-Ckpt ||--o{ Out : used_for_generation
-Log }o--|| Ckpt : "records"
+entity "BulkJob" as Bulk {
+  * id
+  --
+  user_id
+  status
+  total_rows
+}
+
+User ||--o{ Gen : creates
+User ||--o{ Payment : makes
+User ||--o{ Batch : runs
+User ||--o{ Bulk : runs
+User ||--o{ Team : owns
+Team ||--o{ TeamMember : has
+User ||--o{ TeamMember : joins
+Team ||--o{ Invite : sends
 @enduml
 ```
 
@@ -255,44 +347,64 @@ skinparam monochrome true
 skinparam shadowing false
 skinparam classAttributeIconSize 0
 
-abstract class TFBaseModel {
-  + fit()
-  + {abstract} calculate_loss()
-  + save_checkpoint()
-  + restore()
+class WebApp {
+  + renderSynthesisPage()
+  + renderGalleryPage()
+  + callTrpc()
 }
 
-class rnn {
-  + calculate_loss()
-  + parse_parameters()
-  + NLL()
+class TRPCRouter {
+  + generate()
+  + saveToGallery()
+  + batchGenerate()
+  + purchaseCredits()
 }
 
-class DataReader {
-  + train_batch_generator()
-  + val_batch_generator()
-  + test_batch_generator()
+class SynthesisAPI {
+  + synthesize()
+  + realistic()
+  + ocr()
 }
 
-class DataFrame {
-  + batch_generator()
-  + train_test_split()
+class HandwritingModel {
+  + loadStyle()
+  + sampleStrokes()
 }
 
-class LSTMAttentionCell {
-  + zero_state()
-  + __call__()
+class PostProcessor {
+  + applyPaper()
+  + applyInk()
+  + applyWear()
 }
 
-class Hand {
-  + write(filename, lines, biases, styles)
+class OCRService {
+  + recognize()
 }
 
-TFBaseModel <|-- rnn
-rnn --> DataReader
-rnn --> LSTMAttentionCell
-DataReader --> DataFrame
-Hand --> rnn
+class PrismaService {
+  + createGeneration()
+  + createBatchJob()
+  + updateCredits()
+}
+
+class InngestWorker {
+  + processBatch()
+  + processBulk()
+}
+
+class RazorpayService {
+  + createOrder()
+  + verifyPayment()
+}
+
+WebApp --> TRPCRouter
+TRPCRouter --> PrismaService
+TRPCRouter --> SynthesisAPI
+TRPCRouter --> InngestWorker
+TRPCRouter --> RazorpayService
+SynthesisAPI --> HandwritingModel
+SynthesisAPI --> PostProcessor
+SynthesisAPI --> OCRService
 @enduml
 ```
 
@@ -305,23 +417,29 @@ Hand --> rnn
 skinparam monochrome true
 skinparam shadowing false
 
-object ":Hand" as hand
-object ":rnn" as model {
-  lstm_size = 400
-  output_mixtures = 20
-  attn_mixtures = 10
+object ":WebApp" as web
+object ":SynthesisRouter" as router
+object ":FastAPIService" as api
+object ":HandwritingModel" as model {
+  style = 7
+  bias = 0.8
 }
-object ":DataReader" as reader
-object ":tf.Session" as session
-object "batch" as batch {
-  x[bs,t,3]
-  c[bs,k]
+object ":PrismaClient" as prisma
+object ":InngestWorker" as inngest
+object ":RazorpayClient" as rzpay
+object "GenerationRequest" as req {
+  text = "Hello World"
+  style = 7
+  bias = 0.8
 }
 
-hand --> model
-model --> reader
-model --> session
-reader ..> batch
+web --> router
+router --> api
+router --> prisma
+router --> inngest
+router --> rzpay
+api --> model
+router ..> req
 @enduml
 ```
 
@@ -329,7 +447,7 @@ reader ..> batch
 
 ## 3.6.6 Activity Diagrams
 
-### 3.6.6.1 Training Activity
+### 3.6.6.1 Generation Activity
 
 ```plantuml
 @startuml
@@ -337,35 +455,27 @@ skinparam monochrome true
 skinparam shadowing false
 
 start
-:Check processed data exists;
-if (data/processed/*.npy present?) then (yes)
-else (no)
-  :Run synthesize_training_data.py;
-  :Run prepare_data.py;
-endif
-
-:Initialize DataReader;
-:Initialize rnn model;
-:Build TF graph + session;
-
-repeat
-  :Fetch train batch;
-  :Run train step (forward + NLL + backprop);
-  :Fetch val batch;
-  :Compute validation loss;
-
-  if (checkpoint interval reached?) then (yes)
-    :Save checkpoint;
+:User enters text + style + bias;
+:Validate text and credits;
+if (valid request?) then (yes)
+  :Call tRPC generate();
+  :Call FastAPI /synthesize;
+  :Run LSTM+MDN sampling;
+  :Build SVG response;
+  if (realistic mode?) then (yes)
+    :Call /realistic;
+    :Apply paper/ink/wear effects;
   endif
-
-repeat while (step < max_steps and no early-stop)
-
-:Training complete;
+  :Save result to gallery;
+  :Deduct credits and log usage;
+else (no)
+  :Return validation error;
+endif
 stop
 @enduml
 ```
 
-### 3.6.6.2 Inference Activity (Handwriting Generation)
+### 3.6.6.2 Batch/Bulk Activity
 
 ```plantuml
 @startuml
@@ -373,25 +483,19 @@ skinparam monochrome true
 skinparam shadowing false
 
 start
-:User provides text lines;
-:Initialize Hand / rnn model;
-:Restore latest checkpoint;
+:User starts batch or bulk job;
+:Create BatchJob/BulkJob record;
+:Publish Inngest event;
 
 repeat
-  :Encode text line to ASCII IDs;
-  if (Style priming requested?) then (yes)
-    :Load style strokes/chars;
-    :Run primed_sample();
-  else (no)
-    :Run sample();
-  endif
-  :Get stroke offsets from session;
-  :Convert offsets to coordinates;
-  :Apply denoising & alignment;
-  :Render to SVG path;
-repeat while (more lines?)
+  :Worker picks next item;
+  :Call synthesis API;
+  :Persist SVG/PNG output;
+  :Update item status;
+repeat while (items remaining?)
 
-:Save SVG file;
+:Finalize job status;
+:Notify user in UI;
 stop
 @enduml
 ```
@@ -406,38 +510,34 @@ skinparam monochrome true
 skinparam shadowing false
 
 actor "User / Developer" as Actor
-participant "Entry Script\n(train_model.py / demo.py)" as Script
-participant "DataReader" as DR
-participant "rnn (Model)" as Model
-participant "tf.Session" as Sess
-participant "drawing.py" as Render
-participant "Filesystem" as FS
+participant "apps/web (Next.js)" as Web
+participant "tRPC Router" as Trpc
+participant "apps/synthesis-api (FastAPI)" as Api
+participant "Inngest Worker" as Worker
+participant "Prisma + PostgreSQL" as DB
+participant "UploadThing CDN" as CDN
 
-alt Training Mode (Developer Flow)
-    Actor -> Script : python train_model.py --num_steps N
-    Script -> DR : DataReader(data_dir)
-    Script -> Model : rnn(reader=DR, ...)
-    Model -> Sess : Session(graph)
-    loop each step
-        Model -> DR : next(train_batch)
-        DR --> Model : feed_dict data
-        Model -> Sess : run([loss, train_op])
-        Sess --> Model : loss
-        alt checkpoint interval
-            Model -> FS : save checkpoints/model-STEP.*
-        end
+alt Single Generation
+    Actor -> Web : Submit text/style/bias
+    Web -> Trpc : synthesis.generate()
+    Trpc -> Api : POST /synthesize
+    Api --> Trpc : SVG (or SVG+PNG)
+    Trpc -> DB : Save generation + consume credits
+    Trpc -> CDN : Upload artifacts
+    Trpc --> Web : Result + metadata
+else Batch / Bulk
+    Actor -> Web : Start batch/bulk
+    Web -> Trpc : synthesis.batch()/bulk()
+    Trpc -> DB : Create job record
+    Trpc -> Worker : Dispatch event
+    loop per item
+      Worker -> Api : POST /synthesize
+      Api --> Worker : SVG/PNG
+      Worker -> DB : Update item status
+      Worker -> CDN : Upload item output
     end
-else Generation Mode (End-User Flow)
-    Actor -> Script : python demo.py --text "Hello"
-    Script -> Model : rnn(checkpoint_dir)
-    Model -> FS : read latest checkpoint
-    Model -> Sess : restore(checkpoint)
-    Script -> Model : sample(text, bias, style)
-    Model -> Sess : run(sampled_sequence)
-    Sess --> Script : stroke offsets
-    Script -> Render : draw(offsets)
-    Render -> FS : save output.svg
-    Actor <-- Script : "Saved to img/*.svg"
+    Worker -> DB : Mark job completed
+    Web <- Trpc : Poll/read job status
 end
 @enduml
 ```
@@ -452,32 +552,34 @@ skinparam monochrome true
 skinparam shadowing false
 
 state "Training Flow" as TrainingFlow {
-  [*] --> Uninitialized
-  Uninitialized --> GraphBuilt : build_graph()
-  GraphBuilt --> Training : fit()
-
-  Training --> Validating : evaluate batch
-  Validating --> Training : continue
-
-  Training --> Checkpointing : min_steps_to_checkpoint
-  Checkpointing --> Training
-
-  Training --> EarlyStopped : patience exhausted
-  Training --> FinishedTraining : reached max_steps
+  [*] --> Idle
+  Idle --> Validating : request submitted
+  Validating --> Processing : input + credits valid
+  Validating --> Failed : validation error
+  Processing --> Rendering : strokes generated
+  Rendering --> ApplyingEffects : realistic mode on
+  Rendering --> Persisting : realistic mode off
+  ApplyingEffects --> Persisting
+  Persisting --> Completed : saved + credits consumed
+  Processing --> Failed : synthesis error
+  ApplyingEffects --> Failed : rendering error
 }
 
 state "Inference Flow" as InferenceFlow {
-  [*] --> LoadingModel
-  LoadingModel --> ModelReady : restore(checkpoint)
-  ModelReady --> Sampling : sample(text)
-  Sampling --> Rendering : draw(strokes)
-  Rendering --> ModelReady : next line
-  Rendering --> FinishedInference : all lines done
+  [*] --> Queued
+  Queued --> Running : worker picked item
+  Running --> Retrying : transient failure
+  Retrying --> Running
+  Running --> ItemCompleted : item done
+  ItemCompleted --> Running : next item
+  ItemCompleted --> JobCompleted : all items done
+  Running --> JobFailed : permanent failure threshold
 }
 
-FinishedTraining --> [*]
-FinishedInference --> [*]
-Error --> [*]
+Completed --> [*]
+Failed --> [*]
+JobCompleted --> [*]
+JobFailed --> [*]
 @enduml
 ```
 
@@ -491,18 +593,22 @@ skinparam monochrome true
 skinparam shadowing false
 
 rectangle "User" as User
-rectangle "Handwriting Synthesis System (ref/)" as Sys
-rectangle "Online Handwriting Dataset\n(IAM-OnDB / similar)" as Data
-rectangle "Local Filesystem\n(data/, checkpoints/, logs/, styles/, img/)" as FS
-rectangle "TensorFlow Runtime" as TF
-rectangle "GPU / CPU" as HW
+rectangle "Monorepo Platform\n(apps/web + apps/synthesis-api + apps/marketing)" as Sys
+rectangle "Neon PostgreSQL" as DB
+rectangle "UploadThing CDN" as Storage
+rectangle "Inngest Jobs" as Jobs
+rectangle "Razorpay" as Pay
+rectangle "OAuth Providers\n(Google / Discord)" as OAuth
+rectangle "Compute Runtime\n(Vercel + Python host)" as Runtime
 
-User --> Sys : commands (train / demo)
-Data --> Sys : raw strokes + ascii
-Sys --> FS : save processed data, checkpoints, outputs
-Sys --> TF : build & run graph
-TF --> HW : compute
-Sys --> User : generated SVG output
+User --> Sys : generate, save, batch, OCR
+Sys --> DB : users, teams, jobs, credits
+Sys --> Storage : SVG/PNG assets
+Sys --> Jobs : batch/bulk events
+Sys --> Pay : orders + payment verification
+Sys --> OAuth : sign-in flow
+Sys --> Runtime : execute APIs/workers
+Sys --> User : previews, gallery, exports
 @enduml
 ```
 
@@ -515,22 +621,24 @@ Sys --> User : generated SVG output
 skinparam monochrome true
 skinparam shadowing false
 
-rectangle "Raw Data\n(strokes + ascii)" as Raw
-rectangle "Preprocessing\nprepare_data.py" as Prep
-rectangle "Processed Dataset\n(data/processed/*.npy)" as Proc
-rectangle "Batching\nDataReader" as Batch
-rectangle "Model\nrnn + Attention + MDN" as Model
-rectangle "Sampled Strokes\n(x,y,pen_state)" as Strokes
-rectangle "Renderer\ndrawing.py + svgwrite" as Render
-rectangle "Outputs\nSVG/Images" as Out
+rectangle "Text Input\n(Frontend UI)" as Input
+rectangle "Validation + Auth\n(tRPC + NextAuth)" as Validate
+rectangle "Synthesis API\n(FastAPI LSTM/MDN)" as Synthesize
+rectangle "Realistic Processing\n(OpenCV/Pillow/CairoSVG)" as Effects
+rectangle "Persistence\n(Prisma + PostgreSQL)" as Persist
+rectangle "Storage\n(UploadThing)" as Store
+rectangle "Async Jobs\n(Inngest)" as Async
+rectangle "Client Output\n(SVG/PNG/PDF/JSON)" as Output
 
-Raw --> Prep
-Prep --> Proc
-Proc --> Batch
-Batch --> Model
-Model --> Strokes
-Strokes --> Render
-Render --> Out
+Input --> Validate
+Validate --> Synthesize
+Synthesize --> Effects
+Effects --> Persist
+Persist --> Store
+Store --> Output
+Validate --> Async
+Async --> Synthesize
+Async --> Persist
 @enduml
 ```
 
@@ -543,45 +651,45 @@ Render --> Out
 skinparam monochrome true
 skinparam shadowing false
 
-component "Data Prep" as C1 {
-  [synthesize_training_data.py]
-  [prepare_data.py]
+component "Frontend App" as C1 {
+  [apps/web]
+  [tRPC + NextAuth]
 }
 
-component "Training" as C2 {
-  [train_model.py]
-  [tf_base_model.py]
-  [rnn.py]
+component "Synthesis Service" as C2 {
+  [apps/synthesis-api]
+  [FastAPI routes]
+  [LSTM + TrOCR + rendering]
 }
 
-component "Model Cells" as C3 {
-  [rnn_cell.py]
-  [rnn_ops.py]
-  [tf_utils.py]
+component "Marketing App" as C3 {
+  [apps/marketing]
+  [Vite + React Router]
 }
 
-component "Generation/Demo" as C4 {
-  [demo.py]
+component "Shared Packages" as C4 {
+  [packages/shared-config]
+  [eslint + tsconfig]
 }
 
-component "Rendering" as C5 {
-  [drawing.py]
+component "Integrations & Jobs" as C5 {
+  [Inngest Workers]
+  [Razorpay Integration]
+  [UploadThing Integration]
 }
 
 database "Filesystem" as FS {
-  folder "data/processed"
-  folder "checkpoints"
-  folder "logs"
-  folder "styles"
-  folder "img"
+  folder "PostgreSQL (Neon)"
+  folder "CDN Object Storage"
 }
 
 C1 --> FS
 C2 --> FS
-C4 --> FS
-C2 --> C3
-C4 --> C2
-C4 --> C5
+C5 --> FS
+C1 --> C2
+C1 --> C4
+C2 --> C4
+C1 --> C5
 @enduml
 ```
 
@@ -594,29 +702,31 @@ C4 --> C5
 skinparam monochrome true
 skinparam shadowing false
 
-package "ref" {
-  package "data" {
-    [data_frame.py]
-    [prepare_data.py]
-    [synthesize_training_data.py]
+package "monorepo" as mono {
+  package "apps" as apps {
+    [web]
+    [synthesis-api]
+    [marketing]
   }
 
-  package "model" {
-    [tf_base_model.py]
-    [rnn.py]
-    [rnn_cell.py]
-    [rnn_ops.py]
-    [tf_utils.py]
+  package "packages" as pkgs {
+    [shared-config]
   }
 
-  package "rendering" {
-    [drawing.py]
-    [demo.py]
+  package "infra" as infra {
+    [PostgreSQL/Prisma]
+    [Inngest]
+    [UploadThing]
+    [Razorpay]
   }
 }
 
-"data" ..> "model" : provides batches
-"model" ..> "rendering" : provides sampled strokes
+"web" ..> "synthesis-api" : synthesis/ocr/realistic calls
+"web" ..> "PostgreSQL/Prisma" : reads/writes app data
+"web" ..> "Inngest" : dispatch batch/bulk jobs
+"synthesis-api" ..> "UploadThing" : stores generated files
+"web" ..> "Razorpay" : payment workflows
+apps ..> [shared-config] : lint/build config
 @enduml
 ```
 
@@ -630,30 +740,37 @@ skinparam monochrome true
 skinparam shadowing false
 
 node "Local PC (Windows)" as PC {
-  node "Python Environment" as PY {
-    artifact "ref/*.py" as Code
-    artifact "TensorFlow 1.x" as TF
+ node "Client Devices" as Client {
+    artifact "Web Browser" as Browser
   }
 
-  node "Compute" as HW {
-    node "CPU" as CPU
-    node "GPU (optional)" as GPU
+  node "Vercel" as Vercel {
+    artifact "apps/web (Next.js)" as Web
+    artifact "apps/marketing (Vite static)" as Mkt
   }
 
-  folder "data/" as Data
-  folder "checkpoints/" as Ckpt
-  folder "logs/" as Logs
-  folder "styles/" as Styles
-  folder "img/" as Img
+  node "Python Host" as PyHost {
+    artifact "apps/synthesis-api (FastAPI)" as Api
+    node "CPU/GPU Runtime" as Compute
+  }
+
+  database "Neon PostgreSQL" as DB
+  cloud "UploadThing CDN" as CDN
+  queue "Inngest" as Inngest
+  cloud "Razorpay" as Razorpay
+  cloud "OAuth Providers" as OAuth
 }
 
-Code --> TF
-TF --> CPU
-TF --> GPU
-Code --> Data
-Code --> Ckpt
-Code --> Logs
-Code --> Styles
-Code --> Img
+Browser --> Web
+Browser --> Mkt
+Web --> Api
+Web --> DB
+Web --> Inngest
+Web --> Razorpay
+Web --> OAuth
+Api --> CDN
+Api --> Compute
+Inngest --> Api
 @enduml
 ```
+

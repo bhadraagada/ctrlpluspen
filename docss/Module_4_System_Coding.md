@@ -1,135 +1,269 @@
 # Module 4: System Coding
 
----
-
 ## 4.1 Code
 
-### 4.1.1 Frontend Code (Next.js / TypeScript)
+### prisma/schema.prisma
 
-#### Synthesis Dashboard Component
-**File:** `frontend/src/app/_components/synthesis-dashboard.tsx`
+```prisma
+generator client {
+  provider = "prisma-client-js"
+}
 
-```tsx
-"use client";
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
 
-import { useState, useCallback, useMemo } from "react";
-import { useSession } from "next-auth/react";
-import { api } from "~/trpc/react";
+// User model with authentication and credits
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  credits       Int       @default(10)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
-// Valid characters for synthesis
-const VALID_CHARS = new Set([
-  " ", "!", '"', "#", "'", "(", ")", ",", "-", ".",
-  "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
-  ":", ";", "?",
-  "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
-  "N", "O", "P", "R", "S", "T", "U", "V", "W", "Y",
-  "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
-  "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
-  "\n",
-]);
+  // Relations
+  accounts          Account[]
+  sessions          Session[]
+  savedGenerations  SavedGeneration[]
+  batchJobs         BatchJob[]
+  bulkJobs          BulkJob[]
+  payments          Payment[]
+  usage             Usage[]
+  synthesisUsage    SynthesisUsage[]
+  teamMemberships   TeamMember[]
+  ownedTeams        Team[]              @relation("TeamOwner")
+  templates         Template[]          @relation("UserTemplates")
+}
 
-const MAX_CHARS_PER_LINE = 75;
-const MAX_LINES = 20;
+// SavedGeneration model for gallery management
+model SavedGeneration {
+  id              String           @id @default(cuid())
+  userId          String
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-export function SynthesisDashboard() {
-  const { data: session } = useSession();
-  const [text, setText] = useState("Hello World!");
-  const [style, setStyle] = useState(9);
-  const [bias, setBias] = useState(0.75);
-  const [strokeColor, setStrokeColor] = useState("#000000");
-  const [strokeWidth, setStrokeWidth] = useState(2);
-  const [result, setResult] = useState(null);
-  const [error, setError] = useState(null);
+  status          GenerationStatus @default(COMPLETED)
+  text            String           @db.Text
+  style           Int
+  bias            Float
+  strokeColor     String           @default("black")
+  strokeWidth     Int              @default(2)
 
-  const generateMutation = api.synthesis.generate.useMutation({
-    onSuccess: (data) => {
-      setResult(data);
-      setError(null);
-    },
-    onError: (err) => {
-      setError(err.message);
-      setResult(null);
-    },
-  });
+  svgContent      String?          @db.Text
+  uploadUrl       String?
+  uploadKey       String?
 
-  const handleGenerate = () => {
-    generateMutation.mutate({
-      text,
-      style,
-      bias,
-      strokeColor,
-      strokeWidth,
-    });
-  };
+  realisticPng    String?          @db.Text
+  paperType       String?
+  inkType         String?
+  wearLevel       Float?
 
-  return (
-    <div className="space-y-6">
-      <textarea
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        placeholder="Enter text to convert to handwriting..."
-        className="w-full h-32 p-3 border rounded"
-      />
-      
-      <div className="flex gap-4">
-        <select value={style} onChange={(e) => setStyle(Number(e.target.value))}>
-          {[...Array(13)].map((_, i) => (
-            <option key={i} value={i}>Style {i}</option>
-          ))}
-        </select>
-        
-        <input
-          type="range"
-          min="0" max="1.5" step="0.05"
-          value={bias}
-          onChange={(e) => setBias(Number(e.target.value))}
-        />
-      </div>
-      
-      <button onClick={handleGenerate} disabled={generateMutation.isPending}>
-        {generateMutation.isPending ? "Generating..." : "Generate Handwriting"}
-      </button>
-      
-      {result && (
-        <div dangerouslySetInnerHTML={{ __html: result.svgRaw }} />
-      )}
-    </div>
-  );
+  linesCount      Int?
+  charactersCount Int?
+  processingTime  Float?
+
+  isFavorite      Boolean          @default(false)
+  tags            String[]         @default([])
+
+  teamId          String?
+  team            Team?            @relation("TeamGenerations", fields: [teamId], references: [id], onDelete: SetNull)
+
+  batchJobId      String?
+  batchJob        BatchJob?        @relation(fields: [batchJobId], references: [id])
+
+  bulkJobItemId   String?          @unique
+  bulkJobItem     BulkJobItem?     @relation(fields: [bulkJobItemId], references: [id])
+
+  createdAt       DateTime         @default(now())
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([teamId, createdAt(sort: Desc)])
+  @@index([status])
+}
+
+// Team model for collaboration
+model Team {
+  id              String        @id @default(cuid())
+  name            String
+  slug            String        @unique
+  description     String?
+  credits         Int           @default(0)
+
+  ownerId         String
+  owner           User          @relation("TeamOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+
+  members         TeamMember[]
+  invites         TeamInvite[]
+  generations     SavedGeneration[] @relation("TeamGenerations")
+  templates       Template[]    @relation("TeamTemplates")
+
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([ownerId])
+  @@index([slug])
+}
+
+// TeamMember model for role-based access
+model TeamMember {
+  id        String     @id @default(cuid())
+  teamId    String
+  team      Team       @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      TeamRole   @default(MEMBER)
+  joinedAt  DateTime   @default(now())
+
+  @@unique([teamId, userId])
+  @@index([userId])
+  @@index([teamId])
+}
+
+// Payment model for credit purchases
+model Payment {
+  id              String        @id @default(cuid())
+  userId          String
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  orderId         String        @unique
+  paymentId       String?       @unique
+  amount          Int
+  currency        String        @default("INR")
+  credits         Int
+  status          PaymentStatus @default(PENDING)
+
+  razorpaySignature String?
+  errorMessage    String?
+
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([userId])
+  @@index([status])
+}
+
+// BatchJob model for parallel style generation
+model BatchJob {
+  id              String      @id @default(cuid())
+  userId          String
+  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  text            String      @db.Text
+  selectedStyles  Int[]
+  totalItems      Int
+  status          BatchStatus @default(PENDING)
+
+  items           SavedGeneration[]
+
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@index([userId, status])
+}
+
+// BulkJob model for CSV processing
+model BulkJob {
+  id              String      @id @default(cuid())
+  userId          String
+  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  fileName        String
+  totalRows       Int
+  processedRows   Int         @default(0)
+  successRows     Int         @default(0)
+  failedRows      Int         @default(0)
+  status          BulkStatus  @default(PENDING)
+
+  items           BulkJobItem[]
+
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@index([userId, status])
+}
+
+model BulkJobItem {
+  id              String           @id @default(cuid())
+  bulkJobId       String
+  bulkJob         BulkJob          @relation(fields: [bulkJobId], references: [id], onDelete: Cascade)
+
+  rowNumber       Int
+  text            String           @db.Text
+  style           Int
+  bias            Float
+  status          GenerationStatus @default(PENDING)
+  errorMessage    String?
+
+  generation      SavedGeneration?
+
+  createdAt       DateTime         @default(now())
+
+  @@index([bulkJobId])
+}
+
+enum GenerationStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum BatchStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum BulkStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum TeamRole {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
 }
 ```
 
-#### tRPC Synthesis Router
-**File:** `frontend/src/server/api/routers/synthesis.ts`
+### src/server/api/routers/synthesis.ts
 
 ```typescript
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
-const API_URL = process.env.SYNTHESIS_API_URL;
+const SYNTHESIS_API_URL = process.env.SYNTHESIS_API_URL ?? "http://localhost:8001";
 
 export const synthesisRouter = createTRPCRouter({
-  // Health check
-  health: publicProcedure.query(async () => {
-    const response = await fetch(`${API_URL}/health`);
-    return await response.json();
-  }),
-
   // Generate handwriting
   generate: protectedProcedure
     .input(z.object({
-      text: z.string().min(1).max(1600),
+      text: z.string().min(1).max(1500),
       style: z.number().min(0).max(12).default(9),
       bias: z.number().min(0).max(1.5).default(0.75),
       strokeColor: z.string().default("black"),
       strokeWidth: z.number().min(1).max(5).default(2),
     }))
     .mutation(async ({ ctx, input }) => {
-      const userId = ctx.session.user.id;
-
       // Check credits
       const user = await ctx.db.user.findUnique({
-        where: { id: userId },
+        where: { id: ctx.session.user.id },
         select: { credits: true },
       });
 
@@ -141,7 +275,7 @@ export const synthesisRouter = createTRPCRouter({
       }
 
       // Call synthesis API
-      const response = await fetch(`${API_URL}/synthesize`, {
+      const response = await fetch(`${SYNTHESIS_API_URL}/synthesize`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -162,71 +296,38 @@ export const synthesisRouter = createTRPCRouter({
 
       const data = await response.json();
 
-      // Deduct credit
-      await ctx.db.user.update({
-        where: { id: userId },
-        data: { credits: { decrement: 1 } },
-      });
+      // Deduct credit and log usage
+      await ctx.db.$transaction([
+        ctx.db.user.update({
+          where: { id: ctx.session.user.id },
+          data: { credits: { decrement: 1 } },
+        }),
+        ctx.db.synthesisUsage.create({
+          data: {
+            userId: ctx.session.user.id,
+            creditsUsed: 1,
+            linesCount: data.lines_count,
+            charactersCount: data.characters_count,
+            style: input.style,
+            bias: input.bias,
+            success: true,
+          },
+        }),
+      ]);
 
       return {
-        svg: data.svg,
-        svgRaw: data.svg_raw,
+        svg: data.svg_raw,
         linesCount: data.lines_count,
         charactersCount: data.characters_count,
       };
     }),
 
-  // Save generation to gallery
-  saveGeneration: protectedProcedure
-    .input(z.object({
-      text: z.string(),
-      style: z.number(),
-      bias: z.number(),
-      fileUrl: z.string().url(),
-      fileKey: z.string(),
-    }))
-    .mutation(async ({ ctx, input }) => {
-      return await ctx.db.savedGeneration.create({
-        data: {
-          userId: ctx.session.user.id,
-          text: input.text,
-          style: input.style,
-          bias: input.bias,
-          fileUrl: input.fileUrl,
-          fileKey: input.fileKey,
-          status: "COMPLETED",
-        },
-      });
-    }),
-
-  // Get gallery
-  getGallery: protectedProcedure
-    .input(z.object({
-      limit: z.number().min(1).max(50).default(20),
-      cursor: z.string().optional(),
-    }))
-    .query(async ({ ctx, input }) => {
-      const items = await ctx.db.savedGeneration.findMany({
-        where: { userId: ctx.session.user.id },
-        take: input.limit + 1,
-        cursor: input.cursor ? { id: input.cursor } : undefined,
-        orderBy: { createdAt: "desc" },
-      });
-
-      let nextCursor = undefined;
-      if (items.length > input.limit) {
-        nextCursor = items.pop()!.id;
-      }
-
-      return { items, nextCursor };
-    }),
-
-  // Make realistic
+  // Apply realistic effects
   makeRealistic: protectedProcedure
     .input(z.object({
       generationId: z.string(),
-      paperType: z.string().default("white"),
-      inkType: z.string().default("ballpoint"),
+      paperType: z.enum(["white", "cream", "aged", "lined", "grid", "recycled"]).default("white"),
+      inkType: z.enum(["ballpoint", "gel", "fountain", "marker", "pencil"]).default("ballpoint"),
       wearLevel: z.number().min(0).max(1).default(0.3),
     }))
     .mutation(async ({ ctx, input }) => {
@@ -238,7 +339,20 @@ export const synthesisRouter = createTRPCRouter({
         throw new TRPCError({ code: "NOT_FOUND" });
       }
 
-      const response = await fetch(`${API_URL}/process/realistic`, {
+      // Check credits
+      const user = await ctx.db.user.findUnique({
+        where: { id: ctx.session.user.id },
+        select: { credits: true },
+      });
+
+      if (!user || user.credits < 1) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Insufficient credits for realistic rendering",
+        });
+      }
+
+      const response = await fetch(`${SYNTHESIS_API_URL}/process/realistic`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -251,117 +365,27 @@ export const synthesisRouter = createTRPCRouter({
 
       const data = await response.json();
 
-      return await ctx.db.savedGeneration.update({
-        where: { id: input.generationId },
-        data: {
-          realisticPng: data.realistic_png,
-          paperType: data.paper_type,
-          inkType: data.ink_type,
-          wearLevel: data.wear_level,
-        },
-      });
+      // Update generation and deduct credit
+      return await ctx.db.$transaction([
+        ctx.db.savedGeneration.update({
+          where: { id: input.generationId },
+          data: {
+            realisticPng: data.realistic_png,
+            paperType: data.paper_type,
+            inkType: data.ink_type,
+            wearLevel: data.wear_level,
+          },
+        }),
+        ctx.db.user.update({
+          where: { id: ctx.session.user.id },
+          data: { credits: { decrement: 1 } },
+        }),
+      ]);
     }),
 });
 ```
 
-#### Inngest Batch Processing Function
-**File:** `frontend/src/inngest/functions.ts`
-
-```typescript
-import { inngest } from "./client";
-import { db } from "~/server/db";
-
-const SYNTHESIS_API_URL = process.env.SYNTHESIS_API_URL ?? "http://localhost:8001";
-
-export const processBatchSynthesis = inngest.createFunction(
-  {
-    id: "process-batch-synthesis",
-    retries: 3,
-    concurrency: { limit: 2, key: "event.data.userId" },
-  },
-  { event: "synthesis/batch.requested" },
-  async ({ event, step }) => {
-    const { batchJobId, userId, text, variants, generationIds } = event.data;
-
-    // Update status to PROCESSING
-    await step.run("update-status", async () => {
-      await db.batchJob.update({
-        where: { id: batchJobId },
-        data: { status: "PROCESSING" },
-      });
-    });
-
-    let successCount = 0;
-
-    // Process each variant
-    for (let i = 0; i < variants.length; i++) {
-      const variant = variants[i];
-      const generationId = generationIds[i];
-
-      const result = await step.run(`generate-${i}`, async () => {
-        const response = await fetch(`${SYNTHESIS_API_URL}/synthesize`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            text,
-            style: variant.style,
-            bias: variant.bias,
-            stroke_color: variant.strokeColor,
-            stroke_width: variant.strokeWidth,
-          }),
-        });
-
-        if (!response.ok) {
-          return { success: false, error: await response.text() };
-        }
-
-        const data = await response.json();
-        return { success: true, svgRaw: data.svg_raw };
-      });
-
-      // Save result
-      await step.run(`save-${i}`, async () => {
-        await db.savedGeneration.update({
-          where: { id: generationId },
-          data: {
-            status: result.success ? "COMPLETED" : "FAILED",
-            svgContent: result.success ? result.svgRaw : null,
-            errorMessage: result.success ? null : result.error,
-          },
-        });
-
-        if (result.success) {
-          successCount++;
-          await db.user.update({
-            where: { id: userId },
-            data: { credits: { decrement: 1 } },
-          });
-        }
-      });
-    }
-
-    // Finalize
-    await step.run("finalize", async () => {
-      await db.batchJob.update({
-        where: { id: batchJobId },
-        data: {
-          status: successCount > 0 ? "COMPLETED" : "FAILED",
-          creditsUsed: successCount,
-        },
-      });
-    });
-
-    return { batchJobId, successCount };
-  }
-);
-```
-
----
-
-### 4.1.2 Backend Code (Python / FastAPI)
-
-#### Main API Application
-**File:** `synthesis_api/main.py`
+### apps/synthesis-api/main.py
 
 ```python
 from fastapi import FastAPI, HTTPException
@@ -415,19 +439,19 @@ class SynthesisRequest(BaseModel):
     def validate_text(cls, v: str) -> str:
         if not v.strip():
             raise ValueError("Text cannot be empty")
-        
+
         lines = v.split("\n")
         if len(lines) > MAX_LINES:
             raise ValueError(f"Maximum {MAX_LINES} lines allowed")
-        
+
         for i, line in enumerate(lines):
             if len(line) > MAX_CHARS_PER_LINE:
                 raise ValueError(f"Line {i+1} exceeds {MAX_CHARS_PER_LINE} chars")
-            
+
             invalid = [c for c in line if c not in VALID_CHARS]
             if invalid:
                 raise ValueError(f"Invalid characters: {invalid}")
-        
+
         return v
 
 
@@ -477,15 +501,9 @@ async def synthesize_handwriting(request: SynthesisRequest):
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8001)
 ```
 
-#### Post-Processing Module
-**File:** `synthesis_api/post_processing.py`
+### apps/synthesis-api/post_processing.py
 
 ```python
 import numpy as np
@@ -517,18 +535,18 @@ class InkType(str, Enum):
 def generate_perlin_noise(width, height, scale=50.0, octaves=4):
     """Generate paper texture noise"""
     noise = np.zeros((height, width), dtype=np.float32)
-    
+
     for octave in range(octaves):
         freq = 2 ** octave
         amplitude = 1 / freq
-        
+
         grid_h = max(2, int(height / (scale / freq)))
         grid_w = max(2, int(width / (scale / freq)))
-        
+
         grid = np.random.rand(grid_h, grid_w).astype(np.float32)
         resized = cv2.resize(grid, (width, height), interpolation=cv2.INTER_CUBIC)
         noise += resized * amplitude
-    
+
     return (noise - noise.min()) / (noise.max() - noise.min())
 
 
@@ -540,17 +558,17 @@ def generate_paper_texture(width, height, paper_type):
         PaperType.AGED: (245, 235, 210),
         PaperType.RECYCLED: (240, 238, 230),
     }
-    
+
     base_color = colors.get(paper_type, (252, 252, 250))
     img = np.full((height, width, 3), base_color, dtype=np.float32)
-    
+
     # Add texture
     noise = generate_perlin_noise(width, height, scale=20.0, octaves=3)
     noise = (noise - 0.5) * 8  # Subtle variation
-    
+
     for c in range(3):
         img[:, :, c] += noise
-    
+
     return np.clip(img, 0, 255).astype(np.uint8)
 
 
@@ -558,14 +576,14 @@ def svg_to_alpha_mask(svg_content):
     """Convert SVG to grayscale mask"""
     png_data = cairosvg.svg2png(bytestring=svg_content.encode("utf-8"))
     img = Image.open(io.BytesIO(png_data)).convert("RGBA")
-    
+
     rgb = np.array(img.convert("RGB"), dtype=np.float32)
     luminance = 0.299 * rgb[:,:,0] + 0.587 * rgb[:,:,1] + 0.114 * rgb[:,:,2]
     darkness = 255 - luminance
-    
+
     alpha = np.array(img.split()[3], dtype=np.float32)
     mask = (darkness * alpha / 255).astype(np.uint8)
-    
+
     return mask, img.size[0], img.size[1]
 
 
@@ -573,80 +591,64 @@ def apply_edge_roughness(mask, intensity=0.25):
     """Add micro-perturbations to edges"""
     if intensity <= 0:
         return mask
-    
+
     height, width = mask.shape
     dx = generate_perlin_noise(width, height, scale=20) - 0.5
     dy = generate_perlin_noise(width, height, scale=20) - 0.5
-    
+
     dx *= intensity * 2
     dy *= intensity * 2
-    
+
     y, x = np.meshgrid(np.arange(height), np.arange(width), indexing="ij")
     new_x = np.clip(x + dx, 0, width - 1).astype(np.float32)
     new_y = np.clip(y + dy, 0, height - 1).astype(np.float32)
-    
-    return cv2.remap(mask.astype(np.float32), new_x, new_y, 
+
+    return cv2.remap(mask.astype(np.float32), new_x, new_y,
                      interpolation=cv2.INTER_LINEAR).astype(np.uint8)
-
-
-def apply_pressure_variation(mask, intensity=0.4):
-    """Modulate stroke darkness"""
-    if intensity <= 0:
-        return mask
-    
-    height, width = mask.shape
-    noise = generate_perlin_noise(width, height, scale=80.0, octaves=2)
-    
-    min_mult = 1.0 - intensity * 0.4
-    multiplier = min_mult + noise * (1.0 - min_mult)
-    
-    return (mask.astype(np.float32) * multiplier).astype(np.uint8)
 
 
 def composite_ink_on_paper(ink_mask, paper, ink_color=(20, 20, 40)):
     """Blend ink onto paper"""
     height, width = ink_mask.shape
     ink_alpha = ink_mask.astype(np.float32) / 255
-    
+
     result = paper.astype(np.float32)
-    
+
     for c in range(3):
         result[:,:,c] = (
-            result[:,:,c] * (1 - ink_alpha * 0.9) + 
+            result[:,:,c] * (1 - ink_alpha * 0.9) +
             ink_color[c] * ink_alpha * 0.9
         )
-    
+
     return np.clip(result, 0, 255).astype(np.uint8)
 
 
-def process_realistic_base64(svg_content, paper_type="white", 
-                              ink_type="ballpoint", wear_level=0.3,
-                              stroke_color="black"):
+def process_realistic_base64(svg_content, paper_type="white",
+                              ink_type="ballpoint", wear_level=0.3):
     """Main processing function - returns base64 PNG"""
-    
+
     # Convert SVG to mask
     mask, width, height = svg_to_alpha_mask(svg_content)
-    
+
     # Generate paper
     paper = generate_paper_texture(width, height, PaperType(paper_type))
-    
+
     # Apply effects
     mask = apply_edge_roughness(mask, intensity=0.25)
-    mask = apply_pressure_variation(mask, intensity=0.4)
-    
+
     # Composite
     result = composite_ink_on_paper(mask, paper)
-    
+
     # Add subtle noise
     noise = np.random.randn(*result.shape) * (wear_level * 3)
     result = np.clip(result + noise, 0, 255).astype(np.uint8)
-    
+
     # Convert to base64
     img = Image.fromarray(result)
     buffer = io.BytesIO()
     img.save(buffer, format="PNG")
     png_base64 = base64.b64encode(buffer.getvalue()).decode("utf-8")
-    
+
     return {
         "realistic_png": png_base64,
         "width": width,
@@ -657,304 +659,685 @@ def process_realistic_base64(svg_content, paper_type="white",
     }
 ```
 
----
+### src/server/auth.ts
 
-### 4.1.3 Database Schema
-**File:** `frontend/prisma/schema.prisma`
+```typescript
+import NextAuth from "next-auth";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import GoogleProvider from "next-auth/providers/google";
+import DiscordProvider from "next-auth/providers/discord";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { db } from "~/server/db";
+import bcrypt from "bcryptjs";
 
-```prisma
-generator client {
-    provider = "prisma-client-js"
-    output   = "../generated/prisma"
-}
+export const { handlers, signIn, signOut, auth } = NextAuth({
+  adapter: PrismaAdapter(db),
+  session: {
+    strategy: "jwt",
+    maxAge: 7 * 24 * 60 * 60, // 7 days
+  },
+  pages: {
+    signIn: "/auth/signin",
+    error: "/auth/error",
+  },
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      allowDangerousEmailAccountLinking: true,
+    }),
+    DiscordProvider({
+      clientId: process.env.DISCORD_CLIENT_ID!,
+      clientSecret: process.env.DISCORD_CLIENT_SECRET!,
+      allowDangerousEmailAccountLinking: true,
+    }),
+    CredentialsProvider({
+      name: "credentials",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error("Invalid credentials");
+        }
 
-datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
-}
+        const user = await db.user.findUnique({
+          where: { email: credentials.email },
+        });
 
-model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    password      String?
-    credits       Int       @default(10)
-    
-    savedGenerations SavedGeneration[]
-    batchJobs        BatchJob[]
-    synthesisUsage   SynthesisUsage[]
-    
-    createdAt     DateTime  @default(now())
-    updatedAt     DateTime  @updatedAt
-}
+        if (!user || !user.password) {
+          throw new Error("Invalid credentials");
+        }
 
-model SavedGeneration {
-    id              String   @id @default(cuid())
-    userId          String
-    user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    
-    status          GenerationStatus @default(COMPLETED)
-    text            String   @db.Text
-    style           Int
-    bias            Float
-    strokeColor     String   @default("black")
-    strokeWidth     Int      @default(2)
-    
-    fileUrl         String?
-    fileKey         String?  @unique
-    svgContent      String?  @db.Text
-    
-    realisticPng    String?  @db.Text
-    paperType       String?
-    inkType         String?
-    wearLevel       Float?
-    
-    isFavorite      Boolean  @default(false)
-    tags            String[] @default([])
-    
-    batchJobId      String?
-    batchJob        BatchJob? @relation(fields: [batchJobId], references: [id])
-    
-    createdAt       DateTime @default(now())
-    
-    @@index([userId])
-    @@index([status])
-}
+        const isValid = await bcrypt.compare(
+          credentials.password,
+          user.password
+        );
 
-model BatchJob {
-    id              String   @id @default(cuid())
-    userId          String
-    user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    
-    name            String?
-    text            String   @db.Text
-    totalVariants   Int
-    creditsUsed     Int      @default(0)
-    status          BatchStatus @default(PENDING)
-    completedCount  Int      @default(0)
-    
-    generations     SavedGeneration[]
-    
-    createdAt       DateTime @default(now())
-    
-    @@index([userId])
-}
+        if (!isValid) {
+          throw new Error("Invalid credentials");
+        }
 
-model SynthesisUsage {
-    id              String   @id @default(cuid())
-    userId          String
-    user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    
-    creditsUsed     Int
-    linesCount      Int
-    charactersCount Int
-    style           Int
-    bias            Float
-    success         Boolean  @default(true)
-    
-    createdAt       DateTime @default(now())
-    
-    @@index([userId])
-}
+        return {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          image: user.image,
+        };
+      },
+    }),
+  ],
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (token && session.user) {
+        session.user.id = token.id as string;
+      }
+      return session;
+    },
+  },
+});
+```
 
-enum GenerationStatus {
-    PENDING
-    GENERATING
-    COMPLETED
-    FAILED
-}
+### src/inngest/functions.ts
 
-enum BatchStatus {
-    PENDING
-    PROCESSING
-    COMPLETED
-    FAILED
-}
+```typescript
+import { inngest } from "./client";
+import { db } from "~/server/db";
+
+const SYNTHESIS_API_URL = process.env.SYNTHESIS_API_URL ?? "http://localhost:8001";
+
+export const processBatchSynthesis = inngest.createFunction(
+  {
+    id: "process-batch-synthesis",
+    retries: 3,
+    concurrency: { limit: 2, key: "event.data.userId" },
+  },
+  { event: "synthesis/batch.requested" },
+  async ({ event, step }) => {
+    const { batchJobId, userId, text, selectedStyles } = event.data;
+
+    // Update status to PROCESSING
+    await step.run("update-status", async () => {
+      await db.batchJob.update({
+        where: { id: batchJobId },
+        data: { status: "PROCESSING" },
+      });
+    });
+
+    let successCount = 0;
+
+    // Process each style variant
+    for (let i = 0; i < selectedStyles.length; i++) {
+      const style = selectedStyles[i];
+
+      const result = await step.run(`generate-style-${style}`, async () => {
+        const response = await fetch(`${SYNTHESIS_API_URL}/synthesize`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            text,
+            style,
+            bias: 0.75,
+            stroke_color: "black",
+            stroke_width: 2,
+          }),
+        });
+
+        if (!response.ok) {
+          return { success: false, error: await response.text() };
+        }
+
+        const data = await response.json();
+        return { success: true, svgContent: data.svg_raw };
+      });
+
+      // Save result
+      await step.run(`save-style-${style}`, async () => {
+        await db.savedGeneration.create({
+          data: {
+            userId,
+            batchJobId,
+            text,
+            style,
+            bias: 0.75,
+            strokeColor: "black",
+            strokeWidth: 2,
+            status: result.success ? "COMPLETED" : "FAILED",
+            svgContent: result.success ? result.svgContent : null,
+          },
+        });
+
+        if (result.success) {
+          successCount++;
+          await db.user.update({
+            where: { id: userId },
+            data: { credits: { decrement: 1 } },
+          });
+        }
+      });
+    }
+
+    // Finalize
+    await step.run("finalize", async () => {
+      await db.batchJob.update({
+        where: { id: batchJobId },
+        data: {
+          status: successCount > 0 ? "COMPLETED" : "FAILED",
+        },
+      });
+    });
+
+    return { batchJobId, successCount, total: selectedStyles.length };
+  }
+);
 ```
 
 ---
 
 ## 4.2 Data Dictionary
 
-### 4.2.1 User Table
+### User
 
-| Field | Data Type | Size | Description |
-|-------|-----------|------|-------------|
-| id | VARCHAR | 25 | Primary key (CUID) |
-| name | VARCHAR | 255 | User display name |
-| email | VARCHAR | 255 | Unique email address |
-| password | VARCHAR | 255 | Bcrypt hashed password |
-| credits | INTEGER | 4 bytes | Available credits (default: 10) |
-| createdAt | TIMESTAMP | 8 bytes | Account creation date |
-| updatedAt | TIMESTAMP | 8 bytes | Last modification date |
+| Data Attribute | Description | Data Type |
+|----------------|-------------|-----------|
+| id | Unique user identifier (primary key) | String (cuid) |
+| email | User's email address (unique) | String? |
+| name | Full name of the user | String? |
+| password | Bcrypt hashed password (for credentials auth) | String? |
+| image | User avatar URL | String? |
+| credits | Available credits for synthesis operations | Int (@default(10)) |
+| emailVerified | Email verification timestamp | DateTime? |
+| createdAt | Account creation timestamp | DateTime (@default(now())) |
+| updatedAt | Last modification timestamp | DateTime (@updatedAt) |
 
-### 4.2.2 SavedGeneration Table
+### SavedGeneration
 
-| Field | Data Type | Size | Description |
-|-------|-----------|------|-------------|
-| id | VARCHAR | 25 | Primary key (CUID) |
-| userId | VARCHAR | 25 | Foreign key to User |
-| status | ENUM | - | PENDING, GENERATING, COMPLETED, FAILED |
-| text | TEXT | Variable | Input text content |
-| style | INTEGER | 4 bytes | Style index (0-12) |
-| bias | FLOAT | 8 bytes | Neatness value (0.0-1.5) |
-| strokeColor | VARCHAR | 50 | CSS color value |
-| strokeWidth | INTEGER | 4 bytes | Stroke width (1-5) |
-| fileUrl | VARCHAR | 500 | UploadThing URL |
-| fileKey | VARCHAR | 100 | UploadThing file key (unique) |
-| svgContent | TEXT | Variable | Raw SVG markup |
-| realisticPng | TEXT | Variable | Base64 encoded PNG |
-| paperType | VARCHAR | 20 | Paper type identifier |
-| inkType | VARCHAR | 20 | Ink type identifier |
-| wearLevel | FLOAT | 8 bytes | Degradation (0.0-1.0) |
-| isFavorite | BOOLEAN | 1 byte | Favorite flag |
-| tags | TEXT[] | Variable | Array of tag strings |
-| batchJobId | VARCHAR | 25 | Foreign key to BatchJob |
-| createdAt | TIMESTAMP | 8 bytes | Creation timestamp |
+| Data Attribute | Description | Data Type |
+|----------------|-------------|-----------|
+| id | Unique generation identifier (primary key) | String (cuid) |
+| userId | Reference to user who created generation | String (FK) |
+| teamId | Reference to team (if team generation) | String? (FK) |
+| status | Generation status (PENDING, PROCESSING, COMPLETED, FAILED) | GenerationStatus (enum) |
+| text | Input text content | String (@db.Text) |
+| style | Handwriting style index (0-12) | Int |
+| bias | Neatness/randomness parameter (0.0-1.5) | Float |
+| strokeColor | CSS color value for strokes | String (@default("black")) |
+| strokeWidth | Stroke width in pixels (1-5) | Int (@default(2)) |
+| svgContent | Generated SVG markup | String? (@db.Text) |
+| uploadUrl | UploadThing CDN URL | String? |
+| uploadKey | UploadThing file key (unique) | String? |
+| realisticPng | Base64 encoded realistic PNG | String? (@db.Text) |
+| paperType | Paper type identifier (white, cream, aged, etc.) | String? |
+| inkType | Ink type identifier (ballpoint, gel, etc.) | String? |
+| wearLevel | Degradation intensity (0.0-1.0) | Float? |
+| linesCount | Number of lines in text | Int? |
+| charactersCount | Total character count | Int? |
+| processingTime | Time taken for synthesis (seconds) | Float? |
+| isFavorite | Favorite flag for quick access | Boolean (@default(false)) |
+| tags | Array of custom tag strings | String[] (@default([])) |
+| batchJobId | Reference to batch job (if part of batch) | String? (FK) |
+| bulkJobItemId | Reference to bulk job item (if part of bulk) | String? (FK) |
+| createdAt | Generation creation timestamp | DateTime (@default(now())) |
 
-### 4.2.3 BatchJob Table
+### Team
 
-| Field | Data Type | Size | Description |
-|-------|-----------|------|-------------|
-| id | VARCHAR | 25 | Primary key (CUID) |
-| userId | VARCHAR | 25 | Foreign key to User |
-| name | VARCHAR | 255 | Job display name |
-| text | TEXT | Variable | Source text |
-| totalVariants | INTEGER | 4 bytes | Number of variants |
-| creditsUsed | INTEGER | 4 bytes | Credits consumed |
-| status | ENUM | - | PENDING, PROCESSING, COMPLETED, FAILED |
-| completedCount | INTEGER | 4 bytes | Completed count |
-| createdAt | TIMESTAMP | 8 bytes | Creation timestamp |
+| Data Attribute | Description | Data Type |
+|----------------|-------------|-----------|
+| id | Unique team identifier (primary key) | String (cuid) |
+| name | Team display name | String |
+| slug | Unique URL-friendly team identifier | String (@unique) |
+| description | Team description (optional) | String? |
+| credits | Shared team credit pool | Int (@default(0)) |
+| ownerId | Reference to team owner user | String (FK) |
+| createdAt | Team creation timestamp | DateTime (@default(now())) |
+| updatedAt | Last modification timestamp | DateTime (@updatedAt) |
 
-### 4.2.4 SynthesisUsage Table
+### TeamMember
 
-| Field | Data Type | Size | Description |
-|-------|-----------|------|-------------|
-| id | VARCHAR | 25 | Primary key (CUID) |
-| userId | VARCHAR | 25 | Foreign key to User |
-| creditsUsed | INTEGER | 4 bytes | Credits consumed |
-| linesCount | INTEGER | 4 bytes | Lines generated |
-| charactersCount | INTEGER | 4 bytes | Characters processed |
-| style | INTEGER | 4 bytes | Style used |
-| bias | FLOAT | 8 bytes | Bias value |
-| success | BOOLEAN | 1 byte | Success status |
-| createdAt | TIMESTAMP | 8 bytes | Usage timestamp |
+| Data Attribute | Description | Data Type |
+|----------------|-------------|-----------|
+| id | Unique team member identifier (primary key) | String (cuid) |
+| teamId | Reference to team | String (FK) |
+| userId | Reference to user | String (FK) |
+| role | Member role (OWNER, ADMIN, MEMBER) | TeamRole (enum) |
+| joinedAt | Timestamp when member joined team | DateTime (@default(now())) |
+
+### Payment
+
+| Data Attribute | Description | Data Type |
+|----------------|-------------|-----------|
+| id | Unique payment identifier (primary key) | String (cuid) |
+| userId | Reference to user making payment | String (FK) |
+| orderId | Razorpay order ID (unique) | String (@unique) |
+| paymentId | Razorpay payment ID (unique, nullable until paid) | String? (@unique) |
+| amount | Payment amount in smallest currency unit (paise) | Int |
+| currency | Currency code (default INR) | String (@default("INR")) |
+| credits | Number of credits purchased | Int |
+| status | Payment status (PENDING, SUCCESS, FAILED) | PaymentStatus (enum) |
+| razorpaySignature | Razorpay signature for verification | String? |
+| errorMessage | Error message if payment failed | String? |
+| createdAt | Payment initiation timestamp | DateTime (@default(now())) |
+| updatedAt | Last status update timestamp | DateTime (@updatedAt) |
+
+### BatchJob
+
+| Data Attribute | Description | Data Type |
+|----------------|-------------|-----------|
+| id | Unique batch job identifier (primary key) | String (cuid) |
+| userId | Reference to user who created batch job | String (FK) |
+| text | Source text for batch generation | String (@db.Text) |
+| selectedStyles | Array of style indices to generate | Int[] |
+| totalItems | Total number of variants to generate | Int |
+| status | Batch job status (PENDING, PROCESSING, COMPLETED, FAILED, CANCELLED) | BatchStatus (enum) |
+| createdAt | Batch job creation timestamp | DateTime (@default(now())) |
+| updatedAt | Last status update timestamp | DateTime (@updatedAt) |
+
+### BulkJob
+
+| Data Attribute | Description | Data Type |
+|----------------|-------------|-----------|
+| id | Unique bulk job identifier (primary key) | String (cuid) |
+| userId | Reference to user who uploaded CSV | String (FK) |
+| fileName | Original CSV file name | String |
+| totalRows | Total rows in CSV file | Int |
+| processedRows | Number of rows processed so far | Int (@default(0)) |
+| successRows | Number of successfully processed rows | Int (@default(0)) |
+| failedRows | Number of failed rows | Int (@default(0)) |
+| status | Bulk job status (PENDING, PROCESSING, COMPLETED, FAILED, CANCELLED) | BulkStatus (enum) |
+| createdAt | Bulk job creation timestamp | DateTime (@default(now())) |
+| updatedAt | Last status update timestamp | DateTime (@updatedAt) |
+
+### BulkJobItem
+
+| Data Attribute | Description | Data Type |
+|----------------|-------------|-----------|
+| id | Unique bulk job item identifier (primary key) | String (cuid) |
+| bulkJobId | Reference to parent bulk job | String (FK) |
+| rowNumber | Row number in CSV file (1-indexed) | Int |
+| text | Text from CSV row | String (@db.Text) |
+| style | Style index from CSV | Int |
+| bias | Bias parameter from CSV | Float |
+| status | Item processing status (PENDING, PROCESSING, COMPLETED, FAILED) | GenerationStatus (enum) |
+| errorMessage | Error message if processing failed | String? |
+| createdAt | Item creation timestamp | DateTime (@default(now())) |
 
 ---
 
 ## 4.3 Program Description
 
-### 4.3.1 Frontend Programs
+### 1. Introduction
 
-| Program | File | Description |
-|---------|------|-------------|
-| SynthesisDashboard | `synthesis-dashboard.tsx` | Main handwriting generation interface. Handles text input, style selection, bias adjustment, color picking, and displays generated SVG output. |
-| GalleryDashboard | `gallery-dashboard.tsx` | Displays saved generations in grid view. Supports filtering, favorites, tags, and realistic rendering conversion. |
-| BatchGenerator | `batch-generator.tsx` | Interface for generating multiple variants. Allows selecting multiple styles, tracks progress, and displays results. |
-| Navbar | `navbar.tsx` | Navigation component with authentication state, credit balance display, and page links. |
+**Purpose:**
 
-### 4.3.2 Backend Programs
+The purpose of the Handwriting Synthesis project is to create a comprehensive AI-powered web platform that transforms digital text into authentic, personalized handwritten output through neural network-based stroke generation. The platform enables individuals, teams, and organizations to generate realistic handwriting for documents, communications, creative projects, and assistive applications with production-ready quality and scalability.
 
-| Program | File | Description |
-|---------|------|-------------|
-| FastAPI App | `main.py` | REST API server handling synthesis requests. Lazy-loads TensorFlow model, validates input, generates SVG. |
-| Post-Processing | `post_processing.py` | Image processing pipeline. Converts SVG to realistic PNG with paper texture, ink effects, and artifacts. |
-| Hand Model | `handwriting_synthesis/` | TensorFlow LSTM model for stroke generation. Uses MDN output layer for continuous coordinates. |
+**Key Features:**
 
-### 4.3.3 tRPC Routers
+1. **User Authentication & Credit System:** Secure login with Google OAuth, Discord OAuth, and email/password credentials. Credit-based usage model with 10 free credits on signup, Razorpay payment integration for credit packages (Starter/Pro/Enterprise tiers), and detailed usage tracking.
 
-| Router | Procedures | Description |
-|--------|------------|-------------|
-| synthesis | generate, batchGenerate, getGallery, saveGeneration, makeRealistic | Handles all synthesis and gallery operations |
-| credits | getBalance, purchase | Credit balance and purchase operations |
-| auth | signIn, signUp | User authentication |
+2. **AI-Powered Handwriting Synthesis:** LSTM neural network with Mixture Density Network (MDN) output generates stroke sequences from text input. Support for 13 unique handwriting styles with adjustable bias parameter (0-1.5) controlling randomness vs. style adherence, customizable stroke colors and widths.
 
-### 4.3.4 Background Jobs
+3. **Realistic Post-Processing:** Transform clean SVG output into authentic scanned handwriting with 6 paper types (white, cream, aged, lined, grid, recycled), 5 ink types (ballpoint, gel, fountain, marker, pencil), wear level simulation (0-1), and advanced effects including texture injection, edge roughness, and pressure variation.
 
-| Function | Trigger Event | Description |
-|----------|---------------|-------------|
-| processBatchSynthesis | `synthesis/batch.requested` | Processes batch jobs asynchronously. Iterates through variants, calls API, updates status, deducts credits. |
+4. **Gallery Management:** Persistent storage for all generated handwriting with full-text search, custom tagging, favorites marking, and paginated browsing. Filter by style, view detailed metadata (text, parameters, processing time), and batch delete capabilities.
+
+5. **Team Collaboration:** Create team workspaces with unique slugs, invite members via email with role-based access (OWNER/ADMIN/MEMBER), manage shared credit pools, and maintain team-specific galleries for collaborative handwriting asset management.
+
+6. **Batch & Bulk Processing:** Generate multiple style variants in parallel via Inngest background jobs. Upload CSV files for high-volume text processing with custom column mapping, track job progress with success/error counts, and export results as ZIP files containing all generated outputs.
+
+7. **OCR/Handwriting Recognition:** Upload handwritten images for text extraction using TrOCR transformer models. Preprocessing includes grayscale conversion, adaptive thresholding, line segmentation, with fallback OCR (EasyOCR) and spell correction.
+
+8. **Template System:** Pre-built templates (formal letter, sticky note, journal, invitation, certificate) with WYSIWYG editor for customizable text areas, positioning, and styling. Apply handwriting styles to template regions and export as PDF.
+
+9. **Multi-Format Export:** SVG vector export for infinite scalability, PNG raster export with realistic effects, PDF export for print-ready documents, base64 encoding for inline transmission, and UploadThing CDN for permanent storage.
+
+10. **Real-time Monitoring & Analytics:** Dashboard with generation history, credit consumption trends, style usage statistics, team activity logs, export format preferences, batch/bulk job status, and performance insights.
+
+### 2. Overview
+
+**Project Purpose:**
+
+Handwriting Synthesis revolutionizes digital handwriting creation by providing an AI-powered platform that generates authentic, natural-looking handwriting indistinguishable from human writing. The system eliminates the time-consuming manual process of handwriting while preserving the personal touch and authenticity that make handwritten content valuable for personal communications, business applications, creative projects, and assistive technology use cases.
+
+**Target Audience:**
+
+This platform is designed for individuals, creative professionals, businesses, and organizations requiring authentic handwritten content. Primary users include content creators needing personalized handwriting for videos/graphics, marketing teams creating handwritten campaigns, individuals with motor impairments requiring assistive handwriting technology, agencies producing handwritten content at scale, educators creating personalized materials, and hobbyists exploring creative typography.
+
+### 3. Functionality
+
+**Key Features and Their Working:**
+
+**1. User Authentication & Credit System**
+
+**Working:** Users authenticate through NextAuth.js with Google OAuth, Discord OAuth, or email/password credentials. System assigns 10 free credits on registration. Credit-based operations (synthesis, realistic rendering, OCR) consume 1 credit each. Users purchase additional credits via Razorpay with three tiers: Starter (₹399/100 credits), Pro (₹1199/350 credits), Enterprise (₹3999/1500 credits). All credit transactions logged in Usage and SynthesisUsage tables.
+
+**Validations:**
+- Email format validation (z.string().email())
+- Password minimum 8 characters with bcrypt hashing
+- Credit balance check before any operation (throws FORBIDDEN if insufficient)
+- Payment signature verification using Razorpay webhook validation
+
+**2. Handwriting Synthesis Generation**
+
+**Working:**
+- **Input Validation:** Text limited to 20 lines × 75 chars/line. Character whitelist excludes Q, X, Z (uppercase) due to training data limitations.
+- **API Call:** tRPC procedure calls Python FastAPI synthesis API with validated parameters (text, style 0-12, bias 0-1.5, strokeColor, strokeWidth 1-5).
+- **Model Inference:** FastAPI lazy-loads TensorFlow LSTM model (400 units), performs attention-based character-stroke alignment, samples from 20-component MDN for stroke coordinates.
+- **SVG Generation:** Stroke sequences converted to SVG paths with pen-up/pen-down handling, color and width application.
+- **Credit Deduction:** Transaction atomically decrements user credits and logs SynthesisUsage record with metadata.
+
+**Validations:**
+- Text non-empty, within length limits (z.string().min(1).max(1500))
+- Character whitelist check (Pydantic @field_validator)
+- Style index 0-12 (z.number().min(0).max(12))
+- Bias 0.0-1.5 (z.number().min(0).max(1.5))
+- Stroke width 1-5px (z.number().min(1).max(5))
+
+**3. Realistic Post-Processing**
+
+**Working:**
+- **SVG to Mask:** CairoSVG converts SVG to PNG, luminance extraction creates alpha mask representing ink darkness.
+- **Paper Generation:** Perlin noise generates paper texture (4 octaves, configurable scale), base colors vary by paper type (white: #FCFCFA, cream: #FFFDF0, aged: #F5EBD2).
+- **Effect Application:** Edge roughness adds micro-perturbations using noise displacement, pressure variation modulates stroke darkness via low-frequency noise.
+- **Compositing:** Ink mask blended onto paper with 90% alpha, simulating ink absorption.
+- **Wear Simulation:** Gaussian noise injection (scaled by wear_level 0-1), edge degradation via erosion/dilation.
+- **Export:** Final result converted to base64 PNG and stored in SavedGeneration.realisticPng field.
+
+**Validations:**
+- Generation ownership verification (userId filter in query)
+- Credit check before processing
+- Paper type enum (z.enum(["white", "cream", "aged", "lined", "grid", "recycled"]))
+- Ink type enum (z.enum(["ballpoint", "gel", "fountain", "marker", "pencil"]))
+- Wear level 0.0-1.0 (z.number().min(0).max(1))
+
+**4. Gallery Management**
+
+**Working:** All SavedGeneration records displayed with pagination (20 items default, cursor-based). Full-text search on text field, tag filtering via array contains operator, favorites filtering via isFavorite boolean. Users can add custom tags (String[] array), mark favorites, view detailed metadata (style, bias, processing time), and batch delete selected items.
+
+**Validations:**
+- Ownership check on all operations (WHERE userId = session.user.id)
+- Unique fileKey constraint prevents duplicate uploads
+- Pagination limit 1-50 (z.number().min(1).max(50))
+
+**5. Team Collaboration**
+
+**Working:**
+- **Team Creation:** User creates team with unique slug (validated against existing teams), becomes OWNER with full permissions.
+- **Invitations:** OWNER/ADMIN sends email invitation with unique token (7-day expiry). Recipient accepts invitation → TeamMember record created with assigned role.
+- **Shared Credits:** Team.credits field stores shared credit pool. Team members can use team credits for synthesis operations instead of personal credits.
+- **Team Galleries:** Generations created within team context linked via SavedGeneration.teamId, viewable by all team members.
+- **Role Management:** OWNER can promote/demote members (ADMIN ↔ MEMBER), remove members (deletes TeamMember record).
+
+**Validations:**
+- Unique team slug (z.string().regex(/^[a-z0-9-]+$/))
+- Invitation email validity check
+- Role permission checks before actions (OWNER/ADMIN required for invites)
+- Cannot remove self from team
+- @@unique constraint on [teamId, userId] prevents duplicate memberships
+
+**6. Batch Processing**
+
+**Working:**
+- **Job Creation:** User selects multiple styles (1-13), single text input. BatchJob record created with PENDING status.
+- **Inngest Trigger:** Event "synthesis/batch.requested" fired with batchJobId, userId, text, selectedStyles.
+- **Parallel Generation:** Inngest worker fans out synthesis requests, one per style. Each synthesis processed in parallel (concurrency limit: 2 per user).
+- **Result Storage:** Each successful synthesis creates SavedGeneration record linked to batchJobId, credits deducted per item.
+- **Status Updates:** Job status transitions: PENDING → PROCESSING → COMPLETED/FAILED. Individual item statuses tracked separately.
+
+**Validations:**
+- Style array 1-13 items (z.array(z.number()).min(1).max(13))
+- Credit pre-check (user.credits >= selectedStyles.length)
+- Text validation same as single generation
+
+**7. Bulk CSV Processing**
+
+**Working:**
+- **CSV Upload:** User uploads CSV with columns for text, style, bias (optional). System parses CSV, validates format.
+- **BulkJob Creation:** BulkJob record created with totalRows count, PENDING status. BulkJobItem records created for each row.
+- **Sequential Processing:** Inngest worker processes rows sequentially (prevents API overload). Each row generates handwriting, links to BulkJobItem.
+- **Progress Tracking:** processedRows, successRows, failedRows updated in real-time. Errors logged in BulkJobItem.errorMessage.
+- **ZIP Export:** On completion, system generates ZIP containing all SVG/PNG files, downloadable via temporary URL.
+
+**Validations:**
+- CSV format validation (must have 'text' column minimum)
+- Row limit (e.g., max 100 rows per job)
+- Per-row text/style/bias validation same as single generation
+- Credit check: user.credits >= totalRows
+
+**8. OCR/Handwriting Recognition**
+
+**Working:**
+- **Image Upload:** User uploads JPG/PNG image via react-dropzone.
+- **Preprocessing:** Python FastAPI converts to grayscale, applies adaptive thresholding, performs skew correction via contour analysis.
+- **Line Segmentation:** Horizontal projection identifies text lines, splits image into line segments.
+- **TrOCR Inference:** Each line processed through microsoft/trocr-base-handwritten model (Vision Transformer encoder + GPT decoder). Confidence scores computed.
+- **Fallback OCR:** Low-confidence lines (<0.7) re-processed with EasyOCR for improved accuracy.
+- **Spell Correction:** PySpellChecker dictionary-based correction, autocorrect library for context-aware fixes.
+- **Output:** Structured JSON with per-line text and confidence scores.
+
+**Validations:**
+- Image format (JPG, PNG only)
+- Image size limit (e.g., 10MB max)
+- Credit check (1 credit per OCR operation)
+- File upload authentication via middleware
+
+### 4. User Interface (UI) Components
+
+**Main UI Elements Across Pages:**
+
+**1. Synthesis Page:**
+- **Components:** Multi-line textarea for text input (max 1500 chars), style selector dropdown (0-12 styles with preview), bias slider (0-1.5 with live value display), color picker (hex input), stroke width slider (1-5px), "Generate" button with loading state.
+- **Functionality:** Real-time character/line count display, validation error messages, SVG preview panel updating on generation, "Save to Gallery" button post-generation.
+
+**2. Gallery Page:**
+- **Components:** Grid/list view toggle, search bar with debounced input, tag filter multi-select, favorites filter toggle, style filter dropdown, infinite scroll pagination, generation cards with preview thumbnails.
+- **Functionality:** Click card to view full SVG/PNG, favorite toggle icon, tag management modal, batch selection checkboxes, "Delete Selected" bulk action, "Apply Realistic Effects" action per card.
+
+**3. Team Management Page:**
+- **Components:** Team creation form (name, slug, description), member list table with role badges, invite member form (email, role selector), team settings (credit management), team gallery view.
+- **Functionality:** Send invitations via email, promote/demote member role buttons (OWNER/ADMIN only), remove member action with confirmation, team credit balance display, team-wide generation statistics.
+
+**4. Credit Purchase Page:**
+- **Components:** Credit package cards (Starter/Pro/Enterprise) with pricing, current credit balance badge, Razorpay checkout modal, payment history table.
+- **Functionality:** Select package → initiate Razorpay order → redirect to payment gateway → webhook validates payment → credits added to account.
+
+**5. Batch/Bulk Processing Page:**
+- **Components:** Style multi-select checkboxes (batch), CSV upload dropzone with format instructions (bulk), job status table with progress bars, individual item status badges.
+- **Functionality:** Track job progress in real-time, view per-item results, cancel in-progress jobs with credit refunds, download ZIP export on completion.
+
+### 5. Analysis Based on UI Images and Code
+
+**1. Synthesis and Generation Pages:**
+
+**UI Analysis:**
+- Clean, modern interface following Tailwind CSS design system with consistent spacing and typography.
+- Parameter controls organized vertically on left sidebar, live preview occupying main content area on right.
+- Real-time validation feedback with inline error messages below input fields.
+
+**Code Analysis:**
+- React Server Components for initial page load, Client Components for interactive controls (textarea, sliders, color picker).
+- tRPC useMutation hook handles synthesis API calls with onSuccess/onError callbacks for state management.
+- Optimistic UI updates show loading spinner during generation, success state shows preview with "Save" action.
+
+**2. Gallery and Management:**
+
+**UI Analysis:**
+- Masonry grid layout for generation cards, responsive breakpoints (1 col mobile, 2 col tablet, 3-4 col desktop).
+- Filter sidebar with collapsible sections (Search, Tags, Favorites, Style), applied filters shown as dismissible chips.
+- Hover states reveal action buttons (View, Favorite, Delete, Apply Effects).
+
+**Code Analysis:**
+- React Query infinite scroll pagination with useInfiniteQuery hook, cursor-based fetching for performance.
+- Filter state managed via URL search params for shareable filtered views.
+- Batch actions use Promise.all for parallel deletions, wrapped in transaction for atomicity.
+
+**3. Team Collaboration:**
+
+**UI Analysis:**
+- Team selector dropdown in navbar for switching active context (personal vs. team workspaces).
+- Role-based UI rendering hides admin actions from MEMBER role users.
+- Invitation flow uses modal dialog with stepper UI (Enter email → Select role → Confirm).
+
+**Code Analysis:**
+- Permission checking via custom hook useTeamPermissions(teamId, userId) before rendering admin controls.
+- TeamInvite records have 7-day expiry enforced via database query filter (WHERE expiresAt > NOW()).
+- Email invitations sent via nodemailer with handlebars templates, token embedded in accept URL.
+
+**4. Payment Integration:**
+
+**UI Analysis:**
+- Credit package cards use pricing tables with feature comparison (credits per package, effective cost per credit).
+- Razorpay checkout modal opens on package selection, inline loading state during order creation.
+- Success/failure states handled with toast notifications.
+
+**Code Analysis:**
+- Razorpay order creation via tRPC procedure, returns orderId and key for frontend checkout.
+- Payment verification webhook (POST /api/razorpay/webhook) validates signature, updates Payment record status.
+- Credits added via atomic transaction: Payment record + User credits increment.
 
 ---
 
-## 4.4 Naming Conventions
+## 4.4 Naming Convention
 
-### 4.4.1 File Naming
+**File Naming:**
 
 | Type | Convention | Example |
 |------|------------|---------|
 | React Components | kebab-case.tsx | `synthesis-dashboard.tsx` |
-| Python Modules | snake_case.py | `post_processing.py` |
+| Python Modules | snake_case.py | `post_processing.py`, `trocr_ocr.py` |
 | Prisma Schema | schema.prisma | `schema.prisma` |
-| Config Files | kebab-case.js | `next.config.js` |
+| tRPC Routers | kebab-case.ts | `synthesis.ts`, `teams.ts`, `credits.ts` |
+| Config Files | kebab-case.js/ts | `next.config.js`, `tailwind.config.ts` |
 
-### 4.4.2 Variable Naming
+**Variable Naming:**
 
 | Language | Convention | Example |
 |----------|------------|---------|
-| TypeScript Variables | camelCase | `strokeColor`, `userId` |
-| TypeScript Constants | UPPER_SNAKE_CASE | `MAX_LINES`, `VALID_CHARS` |
-| Python Variables | snake_case | `stroke_color`, `user_id` |
-| Python Constants | UPPER_SNAKE_CASE | `MAX_LINES`, `VALID_CHARS` |
-| Database Fields | camelCase | `createdAt`, `batchJobId` |
+| TypeScript Variables | camelCase | `strokeColor`, `userId`, `batchJobId` |
+| TypeScript Constants | UPPER_SNAKE_CASE | `MAX_LINES`, `VALID_CHARS`, `SYNTHESIS_API_URL` |
+| Python Variables | snake_case | `stroke_color`, `user_id`, `paper_type` |
+| Python Constants | UPPER_SNAKE_CASE | `MAX_LINES`, `VALID_CHARS`, `MAX_CHARS_PER_LINE` |
+| Database Fields | camelCase (Prisma) | `createdAt`, `strokeWidth`, `batchJobId` |
 
-### 4.4.3 Function Naming
-
-| Type | Convention | Example |
-|------|------------|---------|
-| TypeScript Functions | camelCase | `handleGenerate()`, `validateText()` |
-| React Hooks | use prefix | `useState`, `useSession` |
-| Python Functions | snake_case | `get_hand()`, `process_realistic()` |
-| tRPC Procedures | camelCase verbs | `getGallery`, `makeRealistic` |
-| API Endpoints | kebab-case | `/synthesize/realistic` |
-
-### 4.4.4 Type/Class Naming
+**Function Naming:**
 
 | Type | Convention | Example |
 |------|------------|---------|
-| TypeScript Interfaces | PascalCase | `SynthesisRequest`, `GalleryItem` |
-| Python Classes | PascalCase | `SynthesisRequest`, `PaperType` |
-| Enums | PascalCase | `GenerationStatus`, `InkType` |
-| Prisma Models | PascalCase | `User`, `SavedGeneration` |
+| TypeScript Functions | camelCase | `handleGenerate()`, `validateText()`, `checkCredits()` |
+| React Hooks | use prefix + camelCase | `useState`, `useSession`, `useMutation` |
+| Python Functions | snake_case | `get_hand()`, `process_realistic_base64()`, `generate_perlin_noise()` |
+| tRPC Procedures | camelCase verbs | `generate`, `makeRealistic`, `getGallery`, `saveGeneration` |
+| API Endpoints | kebab-case | `/synthesize`, `/process/realistic`, `/ocr/recognize` |
+
+**Type/Class Naming:**
+
+| Type | Convention | Example |
+|------|------------|---------|
+| TypeScript Interfaces | PascalCase | `SynthesisRequest`, `GalleryItem`, `TeamMember` |
+| Python Classes | PascalCase | `SynthesisRequest`, `PaperType`, `InkType` |
+| Enums | PascalCase | `GenerationStatus`, `TeamRole`, `PaymentStatus` |
+| Prisma Models | PascalCase | `User`, `SavedGeneration`, `Team`, `BatchJob` |
+
+**React Components:**
+
+| Type | Convention | Example |
+|------|------------|---------|
+| Page Components | PascalCase + "Page" | `SynthesisPage`, `GalleryPage`, `TeamPage` |
+| UI Components | PascalCase | `Button`, `Input`, `Modal`, `Navbar` |
+| Layout Components | PascalCase + "Layout" | `DashboardLayout`, `AuthLayout` |
+
+**tRPC & API:**
+
+| Type | Convention | Example |
+|------|------------|---------|
+| Router Names | camelCase + "Router" | `synthesisRouter`, `teamsRouter`, `creditsRouter` |
+| Procedure Names | camelCase action verbs | `create`, `update`, `delete`, `list`, `get` |
+| Event Names | domain/action.state | `synthesis/batch.requested`, `payment/order.verified` |
 
 ---
 
 ## 4.5 Validations
 
-**Handwriting Synthesis Form:**
+**User Authentication Forms:**
 
-- *Text input validation:* The synthesis form requires non-empty text input. Both client-side (TypeScript) and server-side (Python/Pydantic) validators check that the text is not empty or whitespace-only, rejecting submissions with an appropriate error message.
+- **Email validation:** All authentication routes require valid email format using z.string().email(). Duplicate email check queries database with unique constraint preventing registration with existing email.
+- **Password strength:** Credentials provider enforces minimum 8 characters using z.string().min(8). Passwords hashed with bcrypt (10 salt rounds) before storage.
+- **OAuth validation:** Google and Discord providers validate tokens via provider APIs. Email linking allowed (allowDangerousEmailAccountLinking: true) to merge OAuth and credentials accounts.
 
-- *Character whitelist:* Input text is validated against a strict character whitelist containing letters (a-z, A-P, R, S, T, U, V, W, Y), digits (0-9), and common punctuation. The letters Q, X, and Z are explicitly unsupported due to training data limitations. Invalid characters trigger a validation error listing the offending characters.
+**Handwriting Synthesis Input:**
 
-- *Line and length limits:* Text is limited to a maximum of 20 lines, with each line restricted to 75 characters. The validateText() function splits input by newline and checks each line individually, returning specific error messages like "Line 3 exceeds 75 characters" if limits are exceeded.
+- **Text validation:** Both client (TypeScript) and server (Python Pydantic) enforce:
+  - Non-empty text (z.string().min(1) / if not v.strip(): raise ValueError)
+  - Maximum 20 lines (len(lines) > MAX_LINES check)
+  - Maximum 75 chars per line (len(line) > MAX_CHARS_PER_LINE check)
+  - Character whitelist (VALID_CHARS set excludes Q, X, Z uppercase)
+  - Invalid character reporting lists offending characters in error message
 
-- *Numeric parameter constraints:* Style selection uses z.number().min(0).max(12) to ensure only valid style indices (0-12) are accepted. Bias (neatness) is constrained to 0.0-1.5, and stroke width to 1-5 pixels using similar Zod schema validators.
+- **Numeric parameter constraints:**
+  - Style: z.number().min(0).max(12) ensures valid style index
+  - Bias: z.number().min(0).max(1.5) constrains randomness parameter
+  - Stroke width: z.number().min(1).max(5) limits pixel width range
+  - Wear level: z.number().min(0).max(1) bounds degradation intensity
 
 **Realistic Rendering Options:**
 
-- *Paper and ink type enums:* The paper_type field accepts only predefined values (white, cream, aged, lined, grid, recycled) validated via Python's Enum class. Similarly, ink_type is restricted to ballpoint, gel, fountain, marker, or pencil.
-
-- *Wear level bounds:* The wear_level parameter uses Pydantic's Field(ge=0.0, le=1.0) constraint to ensure the degradation intensity stays within the valid 0-1 range, where 0 represents pristine output and 1 represents heavily worn appearance.
+- **Enum validations:**
+  - Paper type: z.enum(["white", "cream", "aged", "lined", "grid", "recycled"]) rejects invalid paper selections
+  - Ink type: z.enum(["ballpoint", "gel", "fountain", "marker", "pencil"]) restricts ink options
+  - Python backend uses Enum classes (PaperType, InkType) for additional type safety
 
 **Gallery and Storage:**
 
-- *File upload validation:* UploadThing configuration restricts uploads to SVG files (image/svg+xml MIME type) with a maximum size of 4MB. The middleware verifies user authentication before allowing uploads.
+- **Ownership verification:** All gallery queries include userId filter (WHERE userId = ctx.session.user.id) preventing access to other users' generations. Returns NOT_FOUND rather than FORBIDDEN to prevent resource enumeration.
+- **File upload limits:** UploadThing configured for SVG files (image/svg+xml MIME type) with 4MB max size. Middleware verifies authentication before accepting uploads.
+- **Unique constraints:** Database enforces unique fileKey and uploadKey preventing duplicate file references. Email field on User also unique to prevent duplicate accounts.
 
-- *Ownership verification:* All gallery operations (view, edit, delete, make realistic) include a userId filter in database queries to ensure users can only access their own generations. Attempting to access another user's resource returns a NOT_FOUND error rather than FORBIDDEN, preventing resource enumeration attacks.
+**Team Management:**
 
-- *Unique constraints:* Database-level unique constraints on fileKey and realisticKey prevent duplicate file references. The email field on User is also unique to prevent duplicate accounts.
+- **Slug validation:** Team slug must match pattern /^[a-z0-9-]+$/ (lowercase alphanumeric + hyphens only). Database unique constraint prevents duplicate slugs.
+- **Role permissions:** Before team operations, system checks user role via TeamMember query. OWNER-only actions (delete team, transfer ownership) blocked for ADMIN/MEMBER roles.
+- **Invitation expiry:** TeamInvite records filtered by expiresAt > NOW() before acceptance. Expired invitations rejected with appropriate error message.
 
-**Authentication and Authorization:**
+**Credit System:**
 
-- *Session validation:* Protected tRPC procedures use middleware that checks for a valid session. If ctx.session or ctx.session.user is null/undefined, the request is rejected with an UNAUTHORIZED error code before any business logic executes.
+- **Balance checks:** All credit-consuming operations (synthesis, realistic rendering, OCR, batch, bulk) query user.credits before execution. If credits < required amount, throws TRPCError with code FORBIDDEN and message "Insufficient credits".
+- **Atomic transactions:** Credit deduction and usage logging wrapped in Prisma transaction ensuring both operations succeed/fail together (prevents credit loss on failed operations).
+- **Payment verification:** Razorpay webhook validates payment signature using crypto.createHmac comparing signature with computed hash. Only verified payments trigger credit addition.
 
-- *Credit verification:* Before any credit-consuming operation (synthesis, batch generation), the system queries the user's current credit balance. If credits are insufficient for the requested operation, a FORBIDDEN error is thrown with the message "Insufficient credits" and the operation is aborted.
+**Batch and Bulk Processing:**
 
-**Batch Processing:**
+- **Array length limits:**
+  - Batch: z.array(z.number()).min(1).max(13) ensures 1-13 style variants (matching available styles)
+  - Bulk: CSV row count limited (e.g., 100 rows max) to prevent resource exhaustion
 
-- *Variant limits:* Batch generation requests are limited to 1-13 variants maximum using z.array(...).min(1).max(13), corresponding to one variant per available style.
+- **Credit pre-checks:** Before creating BatchJob/BulkJob, system verifies user.credits >= total required credits. Job creation rejected if insufficient credits, preventing partially completed jobs.
+- **Job cancellation refunds:** When user cancels PENDING/PROCESSING job, system calculates unused credits and refunds via User.credits increment. Only unprocessed items eligible for refund.
 
-- *Credit pre-check:* Before queuing a batch job, the system verifies the user has enough credits for all requested variants. The check compares user.credits against variants.length to prevent jobs from starting that cannot complete.
+**OCR Upload:**
 
-**API Route Usage:** These validation schemas are applied consistently across the stack. The tRPC router parses and validates input against Zod schemas, throwing TRPCError with appropriate codes (BAD_REQUEST for validation failures, FORBIDDEN for authorization failures). The Python FastAPI backend uses Pydantic models with field_validator decorators that raise ValueError exceptions, automatically converted to 400 Bad Request responses. This dual-layer validation ensures data integrity regardless of how the API is accessed.
+- **Image format:** react-dropzone accept configuration limits uploads to image/jpeg and image/png MIME types. File extension check (.jpg, .jpeg, .png) as secondary validation.
+- **Image size:** Maximum 10MB upload size enforced via UploadThing configuration and client-side validation before upload attempt.
+- **Credit consumption:** OCR operation consumes 1 credit verified before image processing begins. Failed OCR does not deduct credit (error handling includes credit rollback).
+
+**API Route Usage:**
+
+These validation schemas applied consistently across the stack:
+- **tRPC procedures:** Input parsed with .input(z.object(...)) throwing TRPCError on validation failure (code: BAD_REQUEST, FORBIDDEN, etc.)
+- **FastAPI endpoints:** Pydantic models with @field_validator decorators raise ValueError automatically converted to 400 Bad Request
+- **Database constraints:** Prisma enforces unique constraints, foreign key checks, and type validation at database level as final safety layer
+- **Dual-layer validation:** Both frontend (type-safe tRPC inputs) and backend (Pydantic/Zod) validation ensures data integrity regardless of API access method
+
+**Error Handling Patterns:**
+
+- **Validation errors:** Return 400 Bad Request with specific validation message listing fields and constraints violated
+- **Authentication errors:** Return 401 Unauthorized when session missing or invalid
+- **Authorization errors:** Return 403 Forbidden when user lacks required permissions (insufficient credits, wrong team role, etc.)
+- **Not found errors:** Return 404 Not Found for missing resources with ownership filtering (prevents enumeration)
+- **Server errors:** Return 500 Internal Server Error with generic message (detailed error logged server-side only)
