@@ -616,29 +616,77 @@ Sys --> User : previews, gallery, exports
 
 ## 3.6.10 Data-Flow Diagram (DFD)
 
+### 3.6.10.1 DFD Level 0 — Context Diagram
+
 ```plantuml
 @startuml
 skinparam monochrome true
 skinparam shadowing false
 
-rectangle "Text Input\n(Frontend UI)" as Input
-rectangle "Validation + Auth\n(tRPC + NextAuth)" as Validate
-rectangle "Synthesis API\n(FastAPI LSTM/MDN)" as Synthesize
-rectangle "Realistic Processing\n(OpenCV/Pillow/CairoSVG)" as Effects
-rectangle "Persistence\n(Prisma + PostgreSQL)" as Persist
-rectangle "Storage\n(UploadThing)" as Store
-rectangle "Async Jobs\n(Inngest)" as Async
-rectangle "Client Output\n(SVG/PNG/PDF/JSON)" as Output
+rectangle "User" as User
+rectangle "Payment Gateway\n(Razorpay)" as Pay
+rectangle "OAuth Provider\n(Google/Discord)" as OAuth
 
-Input --> Validate
-Validate --> Synthesize
-Synthesize --> Effects
-Effects --> Persist
-Persist --> Store
-Store --> Output
-Validate --> Async
-Async --> Synthesize
-Async --> Persist
+rectangle "0\nHandwriting Platform\n(Monorepo System)" as Sys
+
+database "PostgreSQL\n(Neon)" as DB
+cloud "CDN\n(UploadThing)" as CDN
+
+User --> Sys : text, style, bias,\nbatch input, credentials
+Pay --> Sys : payment confirmation
+OAuth --> Sys : auth token
+
+Sys --> User : SVG / PNG / PDF output,\ngallery, job status
+Sys --> DB : read/write users,\ngenerations, jobs, credits
+Sys --> CDN : store/retrieve\nSVG/PNG assets
+@enduml
+```
+
+---
+
+### 3.6.10.2 DFD Level 1 — Internal Processes
+
+```plantuml
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+
+rectangle "User" as User
+rectangle "Payment Gateway" as Pay
+rectangle "OAuth Provider" as OAuth
+
+rectangle "P1\nAuthentication\n& Auth" as P1
+rectangle "P2\nValidation\n& Credit Check" as P2
+rectangle "P3\nHandwriting\nSynthesis\n(LSTM/MDN)" as P3
+rectangle "P4\nRealistic\nPost-Processing\n(OpenCV/Pillow)" as P4
+rectangle "P5\nPersistence\n& Storage" as P5
+rectangle "P6\nAsync / Batch\nOrchestration\n(Inngest)" as P6
+
+database "D1: User & Credits\n(PostgreSQL)" as D1
+database "D2: Generations &\nJob Records\n(PostgreSQL)" as D2
+cloud "D3: Asset Store\n(UploadThing CDN)" as D3
+
+User --> P1 : credentials / OAuth token
+OAuth --> P1 : verified identity
+P1 --> D1 : read/write user session
+
+User --> P2 : text + style + bias
+P2 --> D1 : check/deduct credits
+P2 --> P3 : validated request (single)
+P2 --> P6 : validated request (batch/bulk)
+
+P3 --> P4 : raw SVG strokes
+P4 --> P5 : processed SVG/PNG
+
+P6 --> P3 : per-item synthesis call
+P6 --> D2 : update job item status
+
+P5 --> D2 : save generation record
+P5 --> D3 : upload SVG/PNG artifact
+D3 --> User : SVG/PNG/PDF output
+D2 --> User : gallery & job status
+
+Pay --> P2 : payment verified → credit top-up
 @enduml
 ```
 
